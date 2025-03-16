@@ -178,7 +178,7 @@
                 <treeselect
                   v-model="StateModules"
                   :multiple="true"
-                  :options="gettersZoneResponsable"
+                  :options="getterAffectationzone"
                 />
               </div>
             </div>

@@ -11,7 +11,8 @@ const role ={
  
     zoneInterventions: [] ,
     StateAffectationZone: [],
-   stateZoneResponsable:[],
+    stateZoneResponsable: [],
+      stateCarteZone:[],
   //   loading: false,// ajout de l'état de chargement
   // loading: false, // Statut de chargement
   error: null     // Erreur de l'enregistrement
@@ -19,6 +20,9 @@ const role ={
   mutations: {
     SET_ZONE_RESPONSABLE(state, StateModule) {
     state.stateZoneResponsable = StateModule;
+    },
+    SET_CARTE_ZONE(state, StateModule) {
+    state.stateCarteZone = StateModule;
     },
 SET_AFFECTATION_ZONE(state, StateModule) {
     state.StateAffectationZone = StateModule;
@@ -76,17 +80,17 @@ SET_AFFECTATION_ZONE(state, StateModule) {
     // commit('SET_ERROR', null); // Reset erreur
 
       // try {
-        if (!objet.libelle) {
-            commit('SET_CHAMP_VIDE_TRUE');
-            // Affichage d'une alerte d'erreur en cas de champs vides
-            Swal.fire({
-              icon: 'error',
-              title: 'Champs vides',
-              text: 'Veuillez remplir tous les champs.',
-              confirmButtonText: 'OK',
-            });
-            return;
-          }
+        // if (!objet.libelle) {
+        //     commit('SET_CHAMP_VIDE_TRUE');
+        //     // Affichage d'une alerte d'erreur en cas de champs vides
+        //     Swal.fire({
+        //       icon: 'error',
+        //       title: 'Champs vides',
+        //       text: 'Veuillez remplir tous les champs.',
+        //       confirmButtonText: 'OK',
+        //     });
+        //     return;
+        //   }
       const response = await apiGuest.post('/ajouterZoneIntervention', objet, { headers: authHeader() });
          commit('AJOUTER_ZONE_INTERVENTION', response.data); // Sauvegarder le produit dans le store
         dispatch('getzoneInterventions');
@@ -192,8 +196,33 @@ async supprimerzoneInterventions({ commit,dispatch }, id) {
         console.error("Erreur lors de la récupération des Sous-préfectures:", error);
         commit('SET_ZONE_RESPONSABLE', []);
     }
-}
+},
 
+      
+      
+            async getCarteZone({ commit }) {
+     
+        try {
+          // Effacer les sous-préfectures existantes avant de charger de nouvelles
+          commit('SET_CARTE_ZONE', []);
+          
+          // Appel à l'API ou à une autre source de données
+                 const responseSp = await apiGuest.get('/listeZoneIntervention', { headers: authHeader() });
+    
+          const sousPrefectures = responseSp.data.map(sp => ({
+            id: sp.id,
+            name: `${sp.libelle}`,
+            lat: `${sp.latitude}`,
+            lng: `${sp.longitude}`,
+          }));
+    
+          commit('SET_CARTE_ZONE', sousPrefectures);
+          return sousPrefectures;
+        } catch (error) {
+          console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+          commit('SET_CARTE_ZONE', []);
+        }
+    },
   },
   getters: {
   
@@ -206,6 +235,9 @@ getterAffectationzone(state) {
     },
 gettersZoneResponsable(state) {
       return state.stateZoneResponsable
+    },
+    gettersCarteZone(state) {
+      return state.stateCarteZone
     },
     
   error(state) {

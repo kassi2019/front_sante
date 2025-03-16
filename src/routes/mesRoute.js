@@ -12,16 +12,22 @@ import ZoneUtilisateur from "../page/dossierParametrage/ZoneUtilisateur.vue"
 import menage from "../page/dossierParametrage/menage.vue"
 import typePatient from "../page/dossierParametrage/typePatient.vue"
 import detailPatient from "../page/dossierParametrage/detailPatient.vue"
+import localiseZone from "../page/dossierParametrage/localiseZone.vue"
 // import accueil from "../page/accueil.vue"
 const gestionutilisateur = [
-   
+   {
+        path: '/localiseZone',
+        name:"localiseZone",
+      component: localiseZone,
+      //   meta: { layout: "no-sidebar", requiresAuth: true },
+     },
      {
     path: "/detailPatient/:id",
     name: "detailPatient",
     component: detailPatient,
   },
    {
-        path: '/typePatient:id',
+        path: '/typePatient',
         name:"typePatient",
       component: typePatient,
       //   meta: { layout: "no-sidebar", requiresAuth: true },
