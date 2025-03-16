@@ -1,0 +1,433 @@
+<template>
+  <!-- dashboard inner -->
+
+  <div>
+    <div class="row column_title">
+      <div class="col-md-12">
+        <div class="page_title"><h2>Affectation des Modules</h2></div>
+      </div>
+    </div>
+    <div v-if="loading" class="loader">Chargement...</div>
+    <div v-else>
+      <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30">
+          <div
+            class="full graph_head d-flex justify-content-end align-items-start"
+          >
+            <div
+              class="heading1 margin_0 d-flex justify-content-between align-items-center"
+            >
+              <h2></h2>
+              <!-- Aligner le bouton à droite et ouvrir le modal -->
+              <button
+                type="button"
+                class="btn btn-outline-primary ms-auto btn-rounded-shadow"
+                data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop"
+              >
+                <i class="fa fa-plus"></i>
+                AJOUTER
+              </button>
+            </div>
+          </div>
+          <div class="table_section padding_infor_info">
+              <span style="font-size: 15px;font-weight: bold;">Affectation module</span>
+            <div class="table-responsive-sm">
+              <table class="table">
+                <thead>
+               
+                  <tr>
+                    <th></th>
+                    <th>Libelle</th>
+
+                    <th style="width: 9% !important; text-align: center">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody v-for="data in getterRoleModule3" :key="data.role_id">
+                  <tr style="background-color: #c4d7ed">
+                    <td colspan="2">
+                      <i class="fa fa-share"></i>
+                      <span style="font-weight: bolder">Rôle</span> :
+                      <span style="font-size: 15px !important">{{
+                        data.libelle
+                      }}</span>
+                    </td>
+
+                    <td class="button_block"></td>
+                  </tr>
+                  <tr
+                    v-for="data1 in afficheModuleParRole(data.role_id)"
+                    :key="data1.id_modules"
+                  >
+                    <td></td>
+
+                    <td>
+                      <i class="fa fa-hand-o-right"> </i>
+                      <span style="font-weight: bolder">Module</span> :
+                      {{ data1.libelle }}
+                    </td>
+                    <td class="button_block">
+                      <button
+                        type="button"
+                        class="btn cur-p btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdropModification"
+                        @click.prevent="
+                          AfficheModalModification(
+                            data1.id_modules,
+                            data.role_id
+                          )
+                        "
+                      >
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn cur-p btn-danger"
+                        @click.prevent="supprimerRoleModule(data1.id)"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- modal d ajout -->
+      <div
+        class="modal fade"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="staticBackdropLabel"
+                style="text-transform: capitalize !important"
+              >
+                Afféctation des modules
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">Rôle</label>
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  v-model="id_roles"
+                >
+                  <option selected></option>
+                  <option
+                    v-for="data in getterRole"
+                    :key="data.id"
+                    :value="data.id"
+                  >
+                    {{ data.libelle }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">Module</label>
+                <treeselect
+                  v-model="StateModules"
+                  :multiple="true"
+                  :options="getterRoleModule"
+                />
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Fermer
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                :disabled="loading"
+                @click.prevent="enregistreModule()"
+              >
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- modal de modification -->
+      <div
+        class="modal fade"
+        id="staticBackdropModification"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="staticBackdropLabel"
+                style="text-transform: capitalize !important"
+              >
+                Modifier Afféctation des modules
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">Rôle</label>
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  v-model="ObjetModifier.id_roles"
+                >
+                  <option selected></option>
+                  <option
+                    v-for="data in getterRole"
+                    :key="data.id"
+                    :value="data.id"
+                  >
+                    {{ data.libelle }}
+                  </option>
+                </select>
+              </div>
+              <!-- <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">libelle</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez libelle"
+                    v-model="ObjetModifier.libelle"
+                  />
+                </div>
+              </div> -->
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">Module</label>
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  v-model="ObjetModifier.id_modules"
+                >
+                  <option selected></option>
+                  <option
+                    v-for="data in getterRoleModule"
+                    :key="data.id"
+                    :value="data.id"
+                  >
+                    {{ data.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Fermer
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                :disabled="loading"
+                @click.prevent="modifierAffectationModule()"
+              >
+                Modifier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- end dashboard inner -->
+</template>
+
+<script>
+//import { useStore } from "vuex"; // Importation du store
+import { mapActions, mapGetters } from "vuex";
+// import Loader from "./Loader.vue";
+
+// import the component
+import Treeselect from "vue3-treeselect";
+// import the styles
+import "vue3-treeselect/dist/vue3-treeselect.css";
+export default {
+  components: { Treeselect },
+  data() {
+    return {
+      StateModules: [],
+      id_roles: null,
+      isLoading: false, // Définir isLoading ici
+
+      objet: {
+        code: "",
+        libelle: "",
+      },
+      selectItem: null,
+      ObjetModifier: {
+        id_roles: "",
+        id_modules: "",
+      },
+    };
+  },
+
+  name: "Counter",
+
+  // Hook created pour charger l'utilisateur quand le composant est créé
+  created() {
+    this.getRoles();
+    this.getRoleModule();
+    this.getRoleModules();
+    this.getModulesParRole();
+  },
+
+  computed: {
+    // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
+    ...mapGetters([
+      "getterModule",
+      "loading",
+      "getterRole",
+      "getterRoleModule",
+      "getterRoleModule3",
+      "getterModuleParRole",
+    ]),
+
+    loading() {
+      return this.$store.state.loading;
+    },
+    error() {
+      return this.$store.getters.error;
+    },
+
+    afficheNiveauModule() {
+      return this.getterModule.length + 1;
+    },
+  },
+
+  methods: {
+    ...mapActions([
+      "getRoleModule",
+      "getRoles",
+      "enregistrerModule",
+      "supprimerRoleModule",
+      "modifierModule",
+      "getRoleModules",
+      "enregistrerRoleModule",
+      "getModulesParRole","modifierRoleModule"
+    ]),
+
+    afficheModuleParRole($id) {
+      return this.getterModuleParRole.filter(
+        (qtreel) => qtreel.id_roles == $id
+      );
+    },
+
+    async enregistreModule() {
+      let ob = {
+        id_roles: this.id_roles,
+        DataModule: this.StateModules,
+      };
+      this.enregistrerRoleModule(ob);
+      (this.id_roles = ""), (StateModules = []);
+    },
+
+    async modifierAffectationModule() {
+      let ob = {
+        id: this.ObjetModifier.id,
+        id_modules: this.ObjetModifier.id_modules,
+        id_roles: this.ObjetModifier.id_roles,
+      };
+      this.modifierRoleModule(ob);
+      // modal.hide();
+    },
+
+    async AfficheModalModification(id, id1) {
+      this.ObjetModifier = this.getterModuleParRole.find(
+        (items) => items.id_modules == id && items.id_roles == id1
+      );
+    },
+  },
+};
+</script>
+
+<style scoped>
+.loader {
+  border: 8px solid #f3f3f3; /* Couleur du fond du cercle */
+  border-top: 8px solid #3498db; /* Couleur de la barre animée */
+  border-radius: 50%; /* Rendre la forme circulaire */
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite; /* Animation */
+  margin: auto;
+}
+
+/* Animation de rotation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.btn-rounded-shadow {
+  background-color: #008cba; /* Bleu */
+  color: white;
+  padding: 10px 10px;
+  border: 2px solid #008cba;
+  border-radius: 25px; /* Bordures arrondies */
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile */
+  transition: all 0.3s ease;
+}
+.btn-rounded-shadow:hover {
+  background-color: #007b9a;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Ombre plus marquée au survol */
+}
+th {
+  font-weight: 500 !important;
+  font-size: 16px;
+  background-color: #007b9a;
+  color: aliceblue;
+}
+</style>
