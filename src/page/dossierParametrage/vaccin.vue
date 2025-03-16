@@ -5,12 +5,13 @@
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Liste Médicament</h2>
+          <h2>Liste des Vaccins</h2>
         </div>
       </div>
     </div>
-    <div v-if="loading" class="loader">Chargement...</div>
-    <div v-else>
+    
+    <div >
+        
       <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
           <div
@@ -33,18 +34,15 @@
             </div>
           </div>
           <div class="table_section padding_infor_info">
-          
+            
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>
                   <tr>
                     <th>#</th>
                     <!-- <th>Code</th> -->
-                    <th>
-                      Nom du médicament
-                    </th>
-                    <th>Unité de comptage</th>
-                    <th>dosage</th>
+                    <th>Libelle</th>
+
                     <th style="width: 9% !important; text-align: center">
                       Action
                     </th>
@@ -56,8 +54,6 @@
                     <td>{{ index + 1 }}</td>
                     <!-- <td>{{ data.code }}</td> -->
                     <td>{{ data.libelle }}</td>
-                    <td>{{ data.unite_comptage }}</td>
-                    <td>{{ data.dosage }}</td>
 
                     <td class="button_block">
                       <button
@@ -72,7 +68,7 @@
                       <button
                         type="button"
                         class="btn cur-p btn-danger"
-                        @click.prevent="supprimermedicaments(data.id)"
+                        @click.prevent="supprimervaccins(data.id)"
                       >
                         <i class="fa fa-trash"></i>
                       </button>
@@ -80,7 +76,7 @@
                   </tr>
                 </tbody>
               </table>
-              <!-- Pagination controls -->
+
               <div class="pagination">
                 <button
                   @click="changePage(currentPage - 1)"
@@ -131,7 +127,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Enregistrer Médicament
+                Enregistrer Vaccin
               </h5>
               <button
                 type="button"
@@ -142,9 +138,7 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Nom du médicament</label
-                >
+                <label for="inputWithIcon" class="form-label">Libelle</label>
                 <div class="input-group">
                   <span class="input-group-text"
                     ><i class="fa fa-book" aria-hidden="true"></i
@@ -153,42 +147,8 @@
                     type="text"
                     class="form-control"
                     id="inputWithIcon"
-                    placeholder="Entrez Nom du médicament"
+                    placeholder="Entrez Libelle"
                     v-model="objet.libelle"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Unité de comptage</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez Unité de comptage"
-                    v-model="objet.unite_comptage"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Dosage/Forme</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez dosage"
-                    v-model="objet.dosage"
                   />
                 </div>
               </div>
@@ -206,7 +166,7 @@
                 type="button"
                 class="btn btn-success"
                 :disabled="loading"
-                @click.prevent="enregistrezoneintervention()"
+                @click.prevent="enregistretypePatient()"
               >
                 Enregistrer
               </button>
@@ -233,7 +193,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Modifier Médicament
+                Modifier Vaccin
               </h5>
               <button
                 type="button"
@@ -243,10 +203,8 @@
               ></button>
             </div>
             <div class="modal-body">
-             <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Nom du médicament</label
-                >
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">libelle</label>
                 <div class="input-group">
                   <span class="input-group-text"
                     ><i class="fa fa-book" aria-hidden="true"></i
@@ -255,42 +213,8 @@
                     type="text"
                     class="form-control"
                     id="inputWithIcon"
-                    placeholder="Entrez Nom du médicament"
+                    placeholder="Entrez libelle"
                     v-model="ObjetModifier.libelle"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Unité de comptage</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez Unité de comptage"
-                    v-model="ObjetModifier.unite_comptage"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Dosage/Forme</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez dosage"
-                    v-model="ObjetModifier.dosage"
                   />
                 </div>
               </div>
@@ -308,7 +232,7 @@
                 type="button"
                 class="btn btn-success"
                 :disabled="loading"
-                @click.prevent="modifiermedicamentss()"
+                @click.prevent="modifiervaccinss()"
               >
                 Modifier
               </button>
@@ -339,63 +263,51 @@ export default {
       isLoading: false, // Définir isLoading ici
 
       objet: {
+        code: "",
         libelle: "",
-        unite_comptage: "",
-        dosage: "",
       },
       selectItem: null,
       ObjetModifier: {
+        code: "",
         libelle: "",
-        unite_comptage: "",
-        dosage: "",
       },
-
       currentPage: 1,
-      itemsPerPage: 10, // Nombre d'éléments à afficher par page
-      totalItems: 0, // Nombre total d'éléments dans les données
+      itemsPerPage: 10,
+      totalItems: 0,
     };
   },
 
   name: "Counter",
-  // mounted() {
 
-  //   this.getmedicaments();
-  // },
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
-    this.getmedicaments();
-  
+    this.getvaccination();
   },
 
   computed: {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
-    ...mapGetters(["gettermedicaments", "loading"]),
-    // Calcule les éléments à afficher en fonction de la page actuelle...
-    loadData() {
-      // Par exemple : remplacer par un appel à une API ou un autre moyen de charger les données
-  
-        return this.totalItems = this.gettermedicaments.length;
-     
-    },
-    visiblePages() {
+    ...mapGetters(["getterVaccin", "loading"]),
+ visiblePages() {
       let pages = [];
       let startPage = Math.max(1, this.currentPage - 2);
       let endPage = Math.min(this.totalPages, this.currentPage + 2);
-
+      console.log(endPage);
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
       return pages;
     },
+
+    // Calcule les éléments à afficher en fonction de la page actuelle
     paginatedData() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      return this.gettermedicaments.slice(
+      return this.getterVaccin.slice(
         startIndex,
         startIndex + this.itemsPerPage
       );
     },
     totalPages() {
-      return Math.ceil(this.gettermedicaments.length / this.itemsPerPage);
+      return Math.ceil(this.getterVaccin.length / this.itemsPerPage);
     },
     loading() {
       return this.$store.state.loading;
@@ -407,46 +319,39 @@ export default {
 
   methods: {
     ...mapActions([
-      "getmedicaments",
-      "enregistrermedicaments",
-      "supprimermedicaments",
-      "modifiermedicaments",
+      "getvaccination",
+      "enregistrervaccins",
+      "supprimervaccins",
+      "modifiervaccins",
     ]),
-changePage(page) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  },
-
-    async enregistrezoneintervention() {
+ changePage(page) {
+      if (page > 0 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
+    async enregistretypePatient() {
       let ob = {
         libelle: this.objet.libelle,
-        dosage: this.objet.dosage,
-        unite_comptage: this.objet.unite_comptage,
       };
-      this.enregistrermedicaments(ob);
+      this.enregistrervaccins(ob);
 
       this.objet = {
         libelle: "",
-        unite_comptage: "",
-        dosage: "",
       };
     },
 
-    async modifiermedicamentss() {
+    async modifiervaccinss() {
       let ob = {
         id: this.ObjetModifier.id,
         libelle: this.ObjetModifier.libelle,
-        dosage: this.ObjetModifier.dosage,
-        unite_comptage: this.ObjetModifier.unite_comptage,
       };
-      this.modifiermedicaments(ob);
+      this.modifiervaccins(ob);
       // $('#staticBackdrop').modal('hide');
       // modal.hide();
     },
 
     async AfficheModalModification(id) {
-      this.ObjetModifier = this.gettermedicaments.find(
+      this.ObjetModifier = this.getterVaccin.find(
         (items) => items.id == id
       );
     },
@@ -455,7 +360,6 @@ changePage(page) {
 </script>
 
 <style scoped>
-
 .loader {
   border: 8px solid #f3f3f3; /* Couleur du fond du cercle */
   border-top: 8px solid #3498db; /* Couleur de la barre animée */

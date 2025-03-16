@@ -1,9 +1,12 @@
 <template>
   <div>
+    <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Type patient</h2>
+          <h1 style="text-align: center !important">
+            CARTE DES ZONES D'INTERVENTIONS DES AGENTS DE SANTE COMMUNAUTAIRE
+          </h1>
         </div>
       </div>
     </div>
@@ -22,6 +25,8 @@
     <div
       class="modal fade"
       id="locationModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
       tabindex="-1"
       aria-labelledby="locationModalLabel"
       aria-hidden="true"

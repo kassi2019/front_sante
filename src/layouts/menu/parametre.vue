@@ -49,6 +49,12 @@
           ><i class="fa fa-hand-o-right"></i> <span>Médicaments</span></a
         >
       </li>
+       <li>
+        <a href="" @click.prevent="affichePage('vaccin')"
+          ><i class="fa fa-hand-o-right"></i> <span>Vaccin</span></a
+        >
+      </li>
+      
       <!-- <li>
         <a href="" @click.prevent="affichePage('')"
           ><i class="fa fa-hand-o-right"></i>

@@ -1,11 +1,11 @@
 <template>
   <!-- dashboard inner -->
 
-  <div>
+  <div><br/><br/><br/>
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Module</h2>
+          <h2>Liste Module</h2>
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="table_section padding_infor_info">
-            <span style="font-size: 15px;font-weight: bold;">Liste Module</span>
+          
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>

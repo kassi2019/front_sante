@@ -13,8 +13,15 @@ import menage from "../page/dossierParametrage/menage.vue"
 import typePatient from "../page/dossierParametrage/typePatient.vue"
 import detailPatient from "../page/dossierParametrage/detailPatient.vue"
 import localiseZone from "../page/dossierParametrage/localiseZone.vue"
+import vaccin from "../page/dossierParametrage/vaccin.vue"
 // import accueil from "../page/accueil.vue"
 const gestionutilisateur = [
+   {
+        path: '/vaccin',
+        name:"vaccin",
+      component: vaccin,
+      //   meta: { layout: "no-sidebar", requiresAuth: true },
+     },
    {
         path: '/localiseZone',
         name:"localiseZone",

@@ -11,6 +11,7 @@ import zoneUtilisateur from './modules/zoneUtilisateur';
 import chefMenage from './modules/chefMenage'; 
 import typePatient from './modules/typePatient'; 
 import patient from './modules/patient'; 
+import vaccin from './modules/vaccin'; 
 const store = createStore({
   modules: {
     utilisateur, 
@@ -22,7 +23,8 @@ const store = createStore({
     zoneUtilisateur,
     chefMenage,
     typePatient,
-    patient
+    patient,
+    vaccin
   },
 });
 

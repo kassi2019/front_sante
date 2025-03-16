@@ -1,10 +1,10 @@
 <template>
   <!-- dashboard inner -->
 
-  <div>
+  <div><br/><br/><br/>
     <div class="row column_title">
       <div class="col-md-12">
-        <div class="page_title"><h2>Affectation des Modules</h2></div>
+        <div class="page_title"><h2>Affectation module</h2></div>
       </div>
     </div>
     <div v-if="loading" class="loader">Chargement...</div>
@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="table_section padding_infor_info">
-              <span style="font-size: 15px;font-weight: bold;">Affectation module</span>
+            
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>

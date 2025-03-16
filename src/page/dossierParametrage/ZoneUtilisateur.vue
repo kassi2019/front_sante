@@ -1,7 +1,7 @@
 <template>
   <!-- dashboard inner -->
 
-  <div>
+  <div><br/><br/><br/>
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
@@ -33,9 +33,7 @@
             </div>
           </div>
           <div class="table_section padding_infor_info">
-            <span style="font-size: 15px; font-weight: bold"
-              >Affectation des Zones Par Utilisateur</span
-            >
+          
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>
