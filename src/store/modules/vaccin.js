@@ -10,11 +10,13 @@ const role ={
   state: {
  
     vaccins: [] ,
-   
+   Statevacinstreselect: [],
   error: null     // Erreur de l'enregistrement
   },
   mutations: {
-
+SET_VACCIN_TREE_SELECT(state, StateModule) {
+    state.Statevacinstreselect = StateModule;
+    },
      SET_VACCIN(state, modules){
        state.vaccins = modules;
     },
@@ -39,7 +41,27 @@ const role ={
   
   actions: {
   
-
+async getVaccinTreeSelect({ commit }) {
+     
+        try {
+          // Effacer les sous-préfectures existantes avant de charger de nouvelles
+          commit('SET_VACCIN_TREE_SELECT', []);
+          
+          // Appel à l'API ou à une autre source de données
+                 const responseSp = await apiGuest.get('/vaccin', { headers: authHeader() });
+    
+          const sousPrefectures = responseSp.data.map(sp => ({
+            id: sp.id,
+            label: `${sp.libelle}`,
+          }));
+    
+          commit('SET_VACCIN_TREE_SELECT', sousPrefectures);
+          return sousPrefectures;
+        } catch (error) {
+          console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+          commit('SET_VACCIN_TREE_SELECT', []);
+        }
+    },
     async getvaccination({ commit }) {
     // Activer le loader
     // commit('SET_LOADING', true);
@@ -135,7 +157,9 @@ async supprimervaccins({ commit,dispatch }, id) {
     getterVaccin(state) {
       return state.vaccins.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },
-
+getterVaccinTreeSelect(state) {
+      return state.Statevacinstreselect.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
   error(state) {
     return state.error;
   }

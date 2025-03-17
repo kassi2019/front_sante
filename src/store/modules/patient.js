@@ -9,6 +9,7 @@ const isLoading = false; // Variable pour contrôler l'état de chargement// Imp
 const Patient ={
   state: {
     patients: [],
+    
   error: null     // Erreur de l'enregistrement
   },
   mutations: {
@@ -127,7 +128,11 @@ async supprimerpatient({ commit,dispatch }, id) {
                  timer: 1500
                });
     });
-}
+    },
+    
+
+
+    
   },
   getters: {
   

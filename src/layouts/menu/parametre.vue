@@ -41,7 +41,7 @@
       </li>
                  <li>
         <a href="" @click.prevent="affichePage('localiseZone')"
-          ><i class="fa fa-hand-o-right"></i> <span>Carte zone d'intervention</span></a
+          ><i class="fa fa-hand-o-right"></i> <span>Localisation zone d'intervention</span></a
         >
       </li>
       <li>

@@ -360,7 +360,7 @@ import { FormWizard, TabContent } from "vue3-form-wizard";
 // import the component
 import Treeselect from "vue3-treeselect";
 // import the styles
-import "vue3-treeselect/dist/vue3-treeselect.css";
+
 export default {
   components: { Treeselect, FormWizard, TabContent },
   data() {

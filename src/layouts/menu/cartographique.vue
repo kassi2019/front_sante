@@ -11,8 +11,8 @@
                            <li><a href="invoice.html">> <span>Invoice</span></a></li>
                         </ul>
                      </li> -->
-           
-                     <!-- <li>
+
+      <!-- <li>
         <a href="" @click.prevent="affichePage('typePatient')"
           ><i class="fa fa-hand-o-right"></i> <span>Type de patient</span></a
         >
@@ -22,7 +22,13 @@
           ><i class="fa fa-hand-o-right"></i> <span>Chef de Famille</span></a
         >
       </li>
-    
+      <li>
+        <a href="" @click.prevent="affichePage('localisationChefFamille')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span>Localisation Chef de Famille</span></a
+        >
+      </li>
+
       <li style="background-color: #007b9a">
         <a href="" @click.prevent="affichePage('presentation')"
           ><i class="fa fa-eye"></i> <span>VOIR LES MODULES</span></a

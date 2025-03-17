@@ -9,12 +9,16 @@ import router from '../../routes';
 const Menage ={
   state: {
     menages: [],
+    stateCarteChefFamille:[],
   // error: null     // Erreur de l'enregistrement
   },
   mutations: {
 
      SET_MENAGE(state, menages){
        state.menages = menages;
+    },
+    SET_CARTE_CHEF_FAMILLE(state, StateModule) {
+    state.stateCarteChefFamille = StateModule;
     },
 //  SET_ERROR(state, error) {
 //     state.error = error;
@@ -127,13 +131,41 @@ async supprimermenages({ commit,dispatch }, id) {
                  timer: 1500
                });
     });
-}
+    },
+    
+
+    async getCarteChefFamille({ commit }) {
+         
+            try {
+              // Effacer les sous-préfectures existantes avant de charger de nouvelles
+              commit('SET_CARTE_CHEF_FAMILLE', []);
+              
+              // Appel à l'API ou à une autre source de données
+                     const responseSp = await apiGuest.get('/menage', { headers: authHeader() });
+        
+              const sousPrefectures = responseSp.data.map(sp => ({
+                id: sp.id,
+                name: `${sp.nom_chef}`,
+                lat: `${sp.latitude}`,
+                lng: `${sp.longitude}`,
+              }));
+        
+              commit('SET_CARTE_CHEF_FAMILLE', sousPrefectures);
+              return sousPrefectures;
+            } catch (error) {
+              console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+              commit('SET_CARTE_CHEF_FAMILLE', []);
+            }
+        },
   },
   getters: {
   
    
     gettermenages(state) {
       return state.menages.sort((a, b) => (a.nom < b.nom) ? -1 : 1)
+    },
+    getterCarteChefFamille(state) {
+      return state.stateCarteChefFamille.sort((a, b) => (a.nom_chef < b.nom_chef) ? -1 : 1)
     },
 
     // isLoading: state => state.isLoading, // Accès à l'état du loader

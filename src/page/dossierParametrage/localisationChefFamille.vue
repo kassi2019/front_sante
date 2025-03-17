@@ -4,111 +4,13 @@
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h5 style="text-align: center !important">
-            CARTE DES ZONES D'INTERVENTIONS DES AGENTS DE SANTE COMMUNAUTAIRE
-          </h5>
+          <h1 style="text-align: center !important">
+            LOCALISATION DES CHEF DE FAMILLE
+          </h1>
         </div>
       </div>
     </div>
-    <div class="row column_title">
-      <div class="col-md-12">
-        <div class="page_title">
-          <h2>TABLEAU DE BORD</h2>
-        </div>
-      </div>
-    </div>
-    <div class="row column1">
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-user yellow_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">2500</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Enfant de 0 à 11 mois</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-clock-o blue1_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">123.50</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Enfant de 12 à 59 mois</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-cloud-download green_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">1,805</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Femme Enceinte</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-cloud-download green_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">1,805</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Nbre total de Femme</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-cloud-download green_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">1,805</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Nbre total d'enfant</p>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      <!-- <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-comments-o red_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">54</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Enfant de 12 à 59 mois</p>
-            </div>
-          </div>
-        </div>
-      </div> -->
-    </div>
+
     <div>
       <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
@@ -197,10 +99,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["gettersCarteZone"]),
+    ...mapGetters(["getterCarteChefFamille"]),
   },
   async mounted() {
-    await this.getCarteZone(); // Charge les données avant d'initialiser la carte
+    await this.getCarteChefFamille(); // Charge les données avant d'initialiser la carte
     this.initMap();
 
     // Récupérer l'instance du modal Bootstrap
@@ -209,7 +111,7 @@ export default {
     );
   },
   methods: {
-    ...mapActions(["getCarteZone"]),
+    ...mapActions(["getCarteChefFamille"]),
 
     openModal(location) {
       this.selectedLocation = location; // Stocker les infos
@@ -239,8 +141,8 @@ export default {
         });
 
       // Vérifier si des localisations sont disponibles
-      if (this.gettersCarteZone && this.gettersCarteZone.length > 0) {
-        this.gettersCarteZone.forEach((loc) => {
+      if (this.getterCarteChefFamille && this.getterCarteChefFamille.length > 0) {
+        this.getterCarteChefFamille.forEach((loc) => {
           if (loc.lat && loc.lng) {
             const marker = L.marker([loc.lat, loc.lng]).addTo(map);
             marker.on("click", () => this.openModal(loc)); // Ouvre le modal au clic

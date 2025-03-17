@@ -666,7 +666,7 @@ AfficheTypePatient() {
       );
     },
     afficheLesPatientEnCours() {
-      return this.getterpatient.filter((data) => data.encours == 0);
+      return this.getterpatient.filter((data) => data.encours == 0 && data.chef_famille_id==this.idChefFamille);
     },
 
     totalPages() {
@@ -683,7 +683,7 @@ AfficheTypePatient() {
       );
     },
     afficheLesPatientTerminer() {
-      return this.getterpatient.filter((data) => data.encours == 1);
+      return this.getterpatient.filter((data) => data.encours == 1 && data.chef_famille_id==this.idChefFamille);
     },
 
     totalPagesPatient() {

@@ -46,10 +46,7 @@
                     <th>Longitude(-)</th>
                     <th>Latitude(+)</th>
                     <th>Zone intervention</th>
-                    <!-- <th>Nbre femme enciente</th>
-                    <th>Nbre enfant -5 ans</th>
-                    <th>Nbre enfant</th>
-                    <th>Nbre femme</th> -->
+
                     <th style="width: 15% !important; text-align: center">
                       Action
                     </th>
@@ -68,27 +65,7 @@
                     <td>
                       {{ libelleZoneIntervention(data.zone_intervention_id) }}
                     </td>
-                    <!-- <td style="text-align: center">
-                      <span class="badge rounded-pill text-bg-success">{{
-                        data.nbre_femme_enceinte
-                      }}</span>
-                    </td>
-                    <td style="text-align: center">
-                      <span class="badge rounded-pill text-bg-info">{{
-                        data.nbre_enfant_moin_cinq
-                      }}</span>
-                    </td>
 
-                    <td style="text-align: center">
-                      <span class="badge rounded-pill text-bg-dark">{{
-                        data.nbre_femme
-                      }}</span>
-                    </td>
-                    <td style="text-align: center">
-                      <span class="badge rounded-pill text-bg-secondary">{{
-                        data.nbre_enfant
-                      }}</span>
-                    </td> -->
                     <td class="button_block">
                       <button
                         type="button"
@@ -239,24 +216,24 @@
                       </div>
                     </div>
                   </div>
-                 
+
                   <div class="mb-3 row">
                     <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
-                      >Numero téléphone</label
-                    >
-                    <div class="input-group">
-                      <span class="input-group-text"
-                        ><i class="fa fa-book" aria-hidden="true"></i
-                      ></span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="inputWithIcon"
-                        placeholder="Entrez numero"
-                        v-model="objet.numero"
-                      />
-                    </div>
+                        >Numero téléphone</label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text"
+                          ><i class="fa fa-book" aria-hidden="true"></i
+                        ></span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputWithIcon"
+                          placeholder="Entrez numero"
+                          v-model="objet.numero"
+                        />
+                      </div>
                     </div>
                     <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
@@ -370,33 +347,35 @@
                   </div>
                 </TabContent>
                 <TabContent title="PATIENT" icon="fa fa-stethoscope">
-                  <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Nom chef de famille
-                      <span
-                        style="
-                          color: red;
-                          font-weight: 900 !important;
-                          font-size: 15px;
-                        "
-                        >*</span
-                      ></label
-                    >
-                    <div class="input-group">
-                      <model-list-select
-                        style=""
-                        :list="afficheNomChefFamille"
-                        v-model="objetPatient.chef_famille_id"
-                        option-value="id"
-                        option-text="groupe"
-                        placeholder="séléctionner le nom du chef"
-                      >
-                      </model-list-select>
-                    </div>
-                  </div>
-
+                  <!-- <div class="mb-3">
+                    
+                  </div> -->
                   <div class="mb-3 row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
+                      <label for="inputWithIcon" class="form-label"
+                        >Nom chef de famille
+                        <span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                          >*</span
+                        ></label
+                      >
+                      <div class="input-group">
+                        <model-list-select
+                          style=""
+                          :list="afficheNomChefFamille"
+                          v-model="objetPatient.chef_famille_id"
+                          option-value="id"
+                          option-text="groupe"
+                          placeholder="séléctionner le nom du chef"
+                        >
+                        </model-list-select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
                       <label for="inputWithIcon" class="form-label"
                         >Nom Patient
                         <span
@@ -421,7 +400,9 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-9">
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-md-6">
                       <label for="inputWithIcon" class="form-label"
                         >Prénoms Patient
                         <span
@@ -446,6 +427,40 @@
                         />
                       </div>
                     </div>
+                    <div class="col-md-3">
+                      <label for="inputWithIcon" class="form-label"
+                        >Date de naissance</label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                        </span>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="inputWithIcon"
+                          placeholder="Entrez date_naissance"
+                          v-model="objetPatient.date_naissance"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label for="inputWithIcon" class="form-label"
+                        >Lieu de naissance</label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputWithIcon"
+                          placeholder="Entrez lieu naissance"
+                          v-model="objetPatient.lieu_naissance"
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-md-4">
@@ -467,43 +482,6 @@
                     </div>
                     <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
-                        >Date de naissance</label
-                      >
-                      <div class="input-group">
-                        <span class="input-group-text">
-                          <i class="fa fa-book" aria-hidden="true"></i>
-                        </span>
-                        <input
-                          type="date"
-                          class="form-control"
-                          id="inputWithIcon"
-                          placeholder="Entrez date_naissance"
-                          v-model="objetPatient.date_naissance"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <label for="inputWithIcon" class="form-label"
-                        >Lieu de naissance</label
-                      >
-                      <div class="input-group">
-                        <span class="input-group-text">
-                          <i class="fa fa-book" aria-hidden="true"></i>
-                        </span>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="inputWithIcon"
-                          placeholder="Entrez lieu naissance"
-                          v-model="objetPatient.lieu_naissance"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mb-3 row">
-                    <div class="col-md-3">
-                      <label for="inputWithIcon" class="form-label"
                         >Numéro CMU</label
                       >
                       <div class="input-group">
@@ -519,7 +497,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
                         >Numéro CNI</label
                       >
@@ -536,7 +514,10 @@
                         />
                       </div>
                     </div>
-                      <div class="col-md-3">
+                  </div>
+
+                  <div class="mb-3 row">
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label">Sexe</label>
                       <select
                         class="form-select form-select-lg mb-3"
@@ -549,7 +530,7 @@
                         <option value="A">Autre</option>
                       </select>
                     </div>
-                     <div class="col-md-3">
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
                         >Type de patient</label
                       >
@@ -567,6 +548,32 @@
                           {{ data.libelle }}
                         </option>
                       </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="inputWithIcon" class="form-label"
+                        >Vaccin</label
+                      >
+                      <treeselect
+                        v-model="StateModules"
+                        :multiple="true"
+                        :options="getterVaccinTreeSelect"
+                      />
+                      
+
+                      <!-- <select
+                        class="form-select form-select-lg mb-3"
+                        aria-label=".form-select-lg example"
+                        v-model="objetPatient.type_patient_id"
+                      >
+                        <option selected></option>
+                        <option
+                          v-for="data in getterTypePatient"
+                          :key="data.id"
+                          :value="data.id"
+                        >
+                          {{ data.libelle }}
+                        </option>
+                      </select> -->
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -793,15 +800,17 @@
 import { mapActions, mapGetters } from "vuex";
 import { FormWizard, TabContent } from "vue3-form-wizard";
 import { ModelListSelect } from "vue-search-select";
+import Treeselect from "vue3-treeselect";
 export default {
   components: {
     FormWizard,
     TabContent,
     ModelListSelect,
-    // Treeselect,  // Enregistrer le composant
+     Treeselect,
   },
   data() {
     return {
+      StateModules: [],
       isLoading: false, // Définir isLoading ici
       //  showModal: true,
       objet: {
@@ -851,6 +860,7 @@ export default {
   created() {
     this.getZoneParAgent();
     this.getTypePatient();
+    this.getVaccinTreeSelect();
     this.getmenages();
   },
 
@@ -858,6 +868,7 @@ export default {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
     ...mapGetters([
       "gettermenages",
+      "getterVaccinTreeSelect",
       "loading",
       "getterZoneParAgent",
       "getterTypePatient",
@@ -926,6 +937,7 @@ export default {
   methods: {
     ...mapActions([
       "getmenages",
+      "getVaccinTreeSelect",
       "getTypePatient",
       "enregistrermenages",
       "supprimermenages",
@@ -960,6 +972,8 @@ export default {
         numero_cmu: this.objetPatient.numero_cmu,
         numero_cni: this.objetPatient.numero_cni,
         chef_famille_id: this.objetPatient.chef_famille_id,
+        
+        DataModule: this.StateModules,
       };
       this.enregistrerpatient(ob);
 

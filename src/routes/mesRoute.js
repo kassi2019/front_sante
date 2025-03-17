@@ -14,8 +14,15 @@ import typePatient from "../page/dossierParametrage/typePatient.vue"
 import detailPatient from "../page/dossierParametrage/detailPatient.vue"
 import localiseZone from "../page/dossierParametrage/localiseZone.vue"
 import vaccin from "../page/dossierParametrage/vaccin.vue"
+import localisationChefFamille from "../page/dossierParametrage/localisationChefFamille.vue"
 // import accueil from "../page/accueil.vue"
 const gestionutilisateur = [
+  {
+        path: '/localisationChefFamille',
+        name:"localisationChefFamille",
+      component: localisationChefFamille,
+      //   meta: { layout: "no-sidebar", requiresAuth: true },
+     },
    {
         path: '/vaccin',
         name:"vaccin",
