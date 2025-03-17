@@ -20,8 +20,6 @@
             <div
               class="heading1 margin_0 d-flex justify-content-between align-items-center"
             >
-              <h2></h2>
-              <!-- Aligner le bouton à droite et ouvrir le modal -->
               <button
                 type="button"
                 class="btn btn-outline-primary ms-auto btn-rounded-shadow"

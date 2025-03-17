@@ -52,7 +52,7 @@
                         <td>{{ data.lieu_naissance }}</td>
                         <td>{{ data.sexe }}</td>
                         <td>
-                          {{ afficherStatutPatient(data.type_patient_id) }}
+                          {{ AfficheTypePatient(data.type_patient_id) }}
                         </td>
 
                         <td>{{ data.numero_cmu }}</td>
@@ -152,7 +152,7 @@
                         <td>{{ data.lieu_naissance }}</td>
                         <td>{{ data.sexe }}</td>
                         <td>
-                          {{ afficherStatutPatient(data.type_patient_id) }}
+                          {{ AfficheTypePatient(data.type_patient_id) }}
                         </td>
 
                         <td>{{ data.numero_cmu }}</td>
@@ -598,7 +598,19 @@ export default {
       "gettermenages",
       "getterTypePatient",
     ]),
+    
+AfficheTypePatient() {
+      return (id) => {
+        if (id != null && id != "") {
+          const qtereel = this.getterTypePatient.find((qtreel) => qtreel.id == id);
 
+          if (qtereel) {
+            return qtereel.libelle;
+          }
+          return "6";
+        }
+      };
+    },
     AfficheNomFamille() {
       return (id) => {
         if (id != null && id != "") {
@@ -700,6 +712,10 @@ export default {
       if ($id == 1) {
         return "Enfants de moins de 5 ans";
       } else if ($id == 2) {
+        return "femme enceinte";
+      }else if ($id == 2) {
+        return "femme enceinte";
+      }else if ($id == 2) {
         return "femme enceinte";
       } else {
         return "";

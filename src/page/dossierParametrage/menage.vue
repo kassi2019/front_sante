@@ -1,7 +1,8 @@
 <template>
   <!-- dashboard inner -->
 
-  <div><br/><br/><br/>
+  <div>
+    <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
@@ -33,7 +34,6 @@
             </div>
           </div>
           <div class="table_section padding_infor_info">
-           
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>
@@ -43,14 +43,14 @@
                     <th>Nom</th>
                     <th>Prenoms</th>
                     <th>Numero</th>
-                    <th>Longitude</th>
-                    <th>Latitude</th>
+                    <th>Longitude(-)</th>
+                    <th>Latitude(+)</th>
                     <th>Zone intervention</th>
-                    <th>Nbre femme enciente</th>
+                    <!-- <th>Nbre femme enciente</th>
                     <th>Nbre enfant -5 ans</th>
                     <th>Nbre enfant</th>
-                    <th>Nbre femme</th>
-                    <th style="width: 12% !important; text-align: center">
+                    <th>Nbre femme</th> -->
+                    <th style="width: 15% !important; text-align: center">
                       Action
                     </th>
                   </tr>
@@ -68,7 +68,7 @@
                     <td>
                       {{ libelleZoneIntervention(data.zone_intervention_id) }}
                     </td>
-                    <td style="text-align: center">
+                    <!-- <td style="text-align: center">
                       <span class="badge rounded-pill text-bg-success">{{
                         data.nbre_femme_enceinte
                       }}</span>
@@ -88,21 +88,20 @@
                       <span class="badge rounded-pill text-bg-secondary">{{
                         data.nbre_enfant
                       }}</span>
-                    </td>
+                    </td> -->
                     <td class="button_block">
                       <button
                         type="button"
                         class="btn cur-p btn-warning"
                         data-bs-toggle="modal"
                         @click.prevent="detailPatient(data.id)"
-                        
                       >
                         <i
                           class="fa fa-folder-open"
                           aria-hidden="true"
                           style="color: black"
                         >
-                          Voir Détail</i
+                          Détail</i
                         >
                       </button>
                       <button
@@ -168,7 +167,7 @@
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h5
@@ -188,59 +187,62 @@
             <div class="modal-body">
               <FormWizard @on-complete="onComplete" color="#457DBB">
                 <TabContent title="CHEF DE FAMILLE" icon="fa fa-user-tie">
-                  <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Nom
-
-                      <span
-                        style="
-                          color: red;
-                          font-weight: 900 !important;
-                          font-size: 15px;
-                        "
-                        >*</span
+                  <div class="mb-3 row">
+                    <div class="col-md-3">
+                      <label for="inputWithIcon" class="form-label"
+                        >Nom
+                        <span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                          >*</span
+                        ></label
                       >
-                    </label>
-                    <div class="input-group">
-                      <span class="input-group-text"
-                        ><i class="fa fa-book" aria-hidden="true"></i
-                      ></span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="inputWithIcon"
-                        placeholder="Entrez Nom"
-                        v-model="objet.nom"
-                      />
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputWithIcon"
+                          placeholder="Entrez Nom"
+                          v-model="objet.nom"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-9">
+                      <label for="inputWithIcon" class="form-label"
+                        >Prénoms
+                        <span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                          >*</span
+                        ></label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputWithIcon"
+                          placeholder="Entrez prenoms"
+                          v-model="objet.prenoms"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Prénoms
-                      <span
-                        style="
-                          color: red;
-                          font-weight: 900 !important;
-                          font-size: 15px;
-                        "
-                        >*</span
-                      ></label
-                    >
-                    <div class="input-group">
-                      <span class="input-group-text"
-                        ><i class="fa fa-book" aria-hidden="true"></i
-                      ></span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="inputWithIcon"
-                        placeholder="Entrez prenoms"
-                        v-model="objet.prenoms"
-                      />
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
+                 
+                  <div class="mb-3 row">
+                    <div class="col-md-4">
+                      <label for="inputWithIcon" class="form-label"
                       >Numero téléphone</label
                     >
                     <div class="input-group">
@@ -255,9 +257,8 @@
                         v-model="objet.numero"
                       />
                     </div>
-                  </div>
-                  <div class="mb-3 row">
-                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
                         >Numéro CMU</label
                       >
@@ -274,7 +275,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
                         >Numéro CNI</label
                       >
@@ -294,9 +295,9 @@
                   </div>
 
                   <div class="mb-3 row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
-                        >Longitude</label
+                        >Longitude(-)</label
                       >
                       <div class="input-group">
                         <span class="input-group-text">
@@ -311,9 +312,9 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
-                        >Latitude</label
+                        >Latitude(+)</label
                       >
                       <div class="input-group">
                         <span class="input-group-text">
@@ -328,26 +329,28 @@
                         />
                       </div>
                     </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Zone Intervention</label
-                    >
-                    <select
-                      class="form-select form-select-lg mb-3"
-                      aria-label=".form-select-lg example"
-                      v-model="objet.zone_intervention_id"
-                    >
-                      <option selected></option>
-                      <option
-                        v-for="data in getterZoneParAgent"
-                        :key="data.zone_intervention_id"
-                        :value="data.zone_intervention_id"
+
+                    <div class="col-md-6">
+                      <label for="inputWithIcon" class="form-label"
+                        >Zone Intervention</label
                       >
-                        {{ data.libelle }}
-                      </option>
-                    </select>
+                      <select
+                        class="form-select form-select-lg mb-3"
+                        aria-label=".form-select-lg example"
+                        v-model="objet.zone_intervention_id"
+                      >
+                        <option selected></option>
+                        <option
+                          v-for="data in getterZoneParAgent"
+                          :key="data.zone_intervention_id"
+                          :value="data.zone_intervention_id"
+                        >
+                          {{ data.libelle }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
+
                   <div class="modal-footer">
                     <!-- <button
                 type="button"
@@ -391,76 +394,78 @@
                       </model-list-select>
                     </div>
                   </div>
-                  <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Nom
-                      <span
-                        style="
-                          color: red;
-                          font-weight: 900 !important;
-                          font-size: 15px;
-                        "
-                        >*</span
-                      ></label
-                    >
-                    <div class="input-group">
-                      <span class="input-group-text"
-                        ><i class="fa fa-book" aria-hidden="true"></i
-                      ></span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="inputWithIcon"
-                        placeholder="Entrez Nom"
-                        v-model="objetPatient.nom"
-                      />
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Prénoms
-                      <span
-                        style="
-                          color: red;
-                          font-weight: 900 !important;
-                          font-size: 15px;
-                        "
-                        >*</span
-                      ></label
-                    >
-                    <div class="input-group">
-                      <span class="input-group-text"
-                        ><i class="fa fa-book" aria-hidden="true"></i
-                      ></span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="inputWithIcon"
-                        placeholder="Entrez prenoms"
-                        v-model="objetPatient.prenoms"
-                      />
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Numéro de téléphone</label
-                    >
-                    <div class="input-group">
-                      <span class="input-group-text"
-                        ><i class="fa fa-book" aria-hidden="true"></i
-                      ></span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="inputWithIcon"
-                        placeholder="Entrez numero"
-                        v-model="objetPatient.numero"
-                      />
-                    </div>
-                  </div>
 
                   <div class="mb-3 row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                      <label for="inputWithIcon" class="form-label"
+                        >Nom Patient
+                        <span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                          >*</span
+                        ></label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputWithIcon"
+                          placeholder="Entrez Nom"
+                          v-model="objetPatient.nom"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-9">
+                      <label for="inputWithIcon" class="form-label"
+                        >Prénoms Patient
+                        <span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                          >*</span
+                        ></label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputWithIcon"
+                          placeholder="Entrez prenoms"
+                          v-model="objetPatient.prenoms"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-md-4">
+                      <label for="inputWithIcon" class="form-label"
+                        >Numéro de téléphone</label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text"
+                          ><i class="fa fa-book" aria-hidden="true"></i
+                        ></span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputWithIcon"
+                          placeholder="Entrez numero"
+                          v-model="objetPatient.numero"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
                         >Date de naissance</label
                       >
@@ -477,7 +482,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
                         >Lieu de naissance</label
                       >
@@ -495,8 +500,9 @@
                       </div>
                     </div>
                   </div>
+
                   <div class="mb-3 row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
                         >Numéro CMU</label
                       >
@@ -513,7 +519,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
                         >Numéro CNI</label
                       >
@@ -530,9 +536,7 @@
                         />
                       </div>
                     </div>
-                  </div>
-                  <div class="mb-3 row">
-                    <div class="col-md-6">
+                      <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label">Sexe</label>
                       <select
                         class="form-select form-select-lg mb-3"
@@ -545,7 +549,7 @@
                         <option value="A">Autre</option>
                       </select>
                     </div>
-                    <div class="col-md-6">
+                     <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
                         >Type de patient</label
                       >
@@ -565,7 +569,6 @@
                       </select>
                     </div>
                   </div>
-
                   <div class="modal-footer">
                     <!-- <button
                 type="button"
@@ -705,7 +708,7 @@
               <div class="mb-3 row">
                 <div class="col-md-6">
                   <label for="inputWithIcon" class="form-label"
-                    >Longitude</label
+                    >Longitude(-)</label
                   >
                   <div class="input-group">
                     <span class="input-group-text">
@@ -721,7 +724,9 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="inputWithIcon" class="form-label">Latitude</label>
+                  <label for="inputWithIcon" class="form-label"
+                    >Latitude(+)</label
+                  >
                   <div class="input-group">
                     <span class="input-group-text">
                       <i class="fa fa-book" aria-hidden="true"></i>
@@ -929,7 +934,6 @@ export default {
       "enregistrerpatient",
     ]),
     async detailPatient($id) {
-      
       this.$router.push({
         name: "detailPatient",
         params: { id: $id },
@@ -966,7 +970,6 @@ export default {
         this.objetPatient.numero != "" ||
         this.objetPatient.lieu_naissance != "" ||
         this.objetPatient.sexe != "" ||
-        this.objetPatient.chef_famille_id != "" ||
         this.objetPatient.type_patient_id != ""
       ) {
         this.objetPatient = {
@@ -978,7 +981,7 @@ export default {
           sexe: "",
           numero_cni: "",
           numero_cmu: "",
-          chef_famille_id: "",
+
           type_patient_id: "",
         };
       } else {

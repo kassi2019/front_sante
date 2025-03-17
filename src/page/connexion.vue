@@ -4,8 +4,15 @@
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7">
-            <h2 style="text-align: center"><strong>TéraSanté</strong></h2>
-            <h3 style="text-align: center">"Terrain" et "Santé"</h3>
+            <h2 style="text-align: center" class="logo-text">
+              <strong>TéraSanté</strong>
+            </h2>
+            <h6
+              style="text-align: center; font-size: 20px !important"
+              class="logo-text"
+            >
+              "Terrain" et "Santé"
+            </h6>
             <p class="mb-4"></p>
             <form action="#" method="post">
               <div class="form-group first">
@@ -56,22 +63,19 @@
       </div>
     </div>
     <div
-      class=""
-  
-       style="
+      class="white_shd full margin_bottom_30 image-shadow"
+      style="
         background-image: url('/assetLogin/images/image.webp');
         width: 60%;
         height: 100%;
         border: 1px solid #000;
         filter: blur(0px); /* Applique un flou sur l'image */
-       
+
         top: 0;
         left: 0;
         z-index: -1; /* Assure que l'image se trouve derrière le contenu */
       "
-    >
-     
-    </div>
+    ></div>
   </div>
 </template>
 
@@ -156,4 +160,16 @@ img {
   height: auto;
   filter: grayscale(50%) blur(2px) brightness(90%) contrast(120%);
 }
+.logo-text {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #005797;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-style: italic;
+}
+
 </style>

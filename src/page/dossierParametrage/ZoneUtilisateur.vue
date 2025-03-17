@@ -1,7 +1,8 @@
 <template>
   <!-- dashboard inner -->
 
-  <div><br/><br/><br/>
+  <div>
+    <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
@@ -9,8 +10,8 @@
         </div>
       </div>
     </div>
-    <div v-if="loading" class="loader">Chargement...</div>
-    <div v-else>
+
+    <div>
       <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
           <div
@@ -33,7 +34,6 @@
             </div>
           </div>
           <div class="table_section padding_infor_info">
-          
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>
@@ -132,71 +132,126 @@
               ></button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Responsable</label
-                >
-                <select
-                  class="form-select form-select-lg mb-3"
-                  aria-label=".form-select-lg example"
-                  v-model="responsable_id"
-                >
-                  <option
-                    v-for="data in listeNomResponsable"
-                    :key="data.id"
-                    :value="data.responsable_id"
-                  >
-                    {{ NomResponsable(data.responsable_id) }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Utilisateur</label
-                >
-                <select
-                  class="form-select form-select-lg mb-3"
-                  aria-label=".form-select-lg example"
-                  v-model="utilisateur_id"
-                >
-                  <option selected></option>
-                  <option
-                    v-for="data in listeUtilisateurParResponsable"
-                    :key="data.id"
-                    :value="data.id"
-                  >
-                    {{ data.noms }} {{ data.prenoms }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Zone d'intervention</label
-                >
-                <treeselect
-                  v-model="StateModules"
-                  :multiple="true"
-                  :options="getterAffectationzone"
-                />
-              </div>
-            </div>
+              <FormWizard @on-complete="onComplete" color="#457DBB">
+                <TabContent
+                  title="Affectation des zones au Responsable"
+                  icon="fa fa-user-tie"
+                  ><div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Responsable</label
+                    >
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg example"
+                      v-model="utilisateur_id"
+                    >
+                      <option
+                        v-for="data in getterResponsables"
+                        :key="data.id"
+                        :value="data.responsable_id"
+                      >
+                        {{ NomResponsable(data.responsable_id) }}
+                      </option>
+                    </select>
+                  </div>
 
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-dismiss="modal"
-              >
-                Fermer
-              </button>
-              <button
-                type="button"
-                class="btn btn-success"
-                :disabled="loading"
-                @click.prevent="enregistreModule()"
-              >
-                Enregistrer
-              </button>
+                  <div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Zone d'intervention</label
+                    >
+                    <treeselect
+                      v-model="StateModules"
+                      :multiple="true"
+                      :options="getterAffectationzone"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >
+                      Fermer
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-success"
+                      :disabled="loading"
+                      @click.prevent="enregistreModule()"
+                    >
+                      Enregistrer
+                    </button>
+                  </div>
+                </TabContent>
+                <TabContent
+                  title="Affectation des zones au agents"
+                  icon="fa fa-users"
+                  ><div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Responsable</label
+                    >
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg example"
+                      v-model="responsable_id"
+                    >
+                      <option
+                        v-for="data in getterResponsables"
+                        :key="data.id"
+                        :value="data.responsable_id"
+                      >
+                        {{ NomResponsable(data.responsable_id) }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Utilisateur</label
+                    >
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg example"
+                      v-model="utilisateur_id"
+                    >
+                      <option selected></option>
+                      <option
+                        v-for="data in listeUtilisateurParResponsable"
+                        :key="data.id"
+                        :value="data.id"
+                      >
+                        {{ data.noms }} {{ data.prenoms }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Zone d'intervention</label
+                    >
+                    <treeselect
+                      v-model="StateModules"
+                      :multiple="true"
+                      :options="gettersZoneResponsable"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >
+                      Fermer
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-success"
+                      :disabled="loading"
+                      @click.prevent="enregistreModule()"
+                    >
+                      Enregistrer
+                    </button>
+                  </div>
+                </TabContent>
+              </FormWizard>
             </div>
           </div>
         </div>
@@ -301,19 +356,19 @@
 //import { useStore } from "vuex"; // Importation du store
 import { mapActions, mapGetters } from "vuex";
 // import Loader from "./Loader.vue";
-
+import { FormWizard, TabContent } from "vue3-form-wizard";
 // import the component
 import Treeselect from "vue3-treeselect";
 // import the styles
 import "vue3-treeselect/dist/vue3-treeselect.css";
 export default {
-  components: { Treeselect },
+  components: { Treeselect, FormWizard, TabContent },
   data() {
     return {
       StateModules: [],
       utilisateur_id: null,
       isLoading: false, // Définir isLoading ici
-responsable_id:0,
+      responsable_id: 0,
       objet: {
         code: "",
         libelle: "",
@@ -330,6 +385,7 @@ responsable_id:0,
 
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
+    this.getResponsable();
     this.getListeUtilisateur();
     this.getzoneInterventions();
     this.getAffectationZone();
@@ -341,9 +397,11 @@ responsable_id:0,
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
     ...mapGetters([
       "getterModule",
+      "getterResponsables",
       "loading",
       "getterRole",
-      "getterAffectationzone","gettersZoneResponsable",
+      "getterAffectationzone",
+      "gettersZoneResponsable",
       "getterZoneUtilisateur",
       "getterzoneInterventions",
       "getterZoneParUtilisateur",
@@ -355,7 +413,7 @@ responsable_id:0,
         (qtreel) => qtreel.responsable_id != null
       );
     },
-     listeUtilisateurParResponsable() {
+    listeUtilisateurParResponsable() {
       return this.getterUtilisateur.filter(
         (qtreel) => qtreel.responsable_id == this.responsable_id
       );
@@ -389,13 +447,15 @@ responsable_id:0,
   methods: {
     ...mapActions([
       "getListeUtilisateur",
+      "getResponsable",
       "getzoneInterventions",
       "getAffectationZone",
       "getzoneUtilisateur",
       "getZoneParUtilisateur",
       "enregistrerZoneUtilisateur",
       "supprimerZoneUtilisateur",
-      "modifierZoneUtilisateur","getZoneParResponsable"
+      "modifierZoneUtilisateur",
+      "getZoneParResponsable",
     ]),
 
     afficheZoneParUtilisateur($id) {
@@ -430,18 +490,17 @@ responsable_id:0,
     },
   },
 
-   watch: {
-  responsable_id: function (value) {
+  watch: {
+    responsable_id: function (value) {
       let objet = {
         respo: value,
       };
       //this.getListeNatureEconomiqueParActiviteHs(objet);
       this.getZoneParResponsable(objet);
-    
 
       // }
     },
-  }
+  },
 };
 </script>
 

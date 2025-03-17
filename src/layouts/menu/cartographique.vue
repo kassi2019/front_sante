@@ -12,14 +12,14 @@
                         </ul>
                      </li> -->
            
-                     <li>
+                     <!-- <li>
         <a href="" @click.prevent="affichePage('typePatient')"
           ><i class="fa fa-hand-o-right"></i> <span>Type de patient</span></a
         >
-      </li>
+      </li> -->
       <li>
         <a href="" @click.prevent="affichePage('menage')"
-          ><i class="fa fa-hand-o-right"></i> <span>Chef de famille</span></a
+          ><i class="fa fa-hand-o-right"></i> <span>Chef de Famille</span></a
         >
       </li>
     

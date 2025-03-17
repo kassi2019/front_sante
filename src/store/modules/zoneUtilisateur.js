@@ -11,9 +11,13 @@ const ZoneUtilisateur ={
     utilisateurId: null,
     stateZoneUtilisateur: [],
     stateZoneParUtilisateur: [],
-    stateZoneParAgent:[]
+    stateZoneParAgent: [],
+    stateResponsables:[]
   },
   mutations: {
+    SET_RESPONSABLE(state, StateModule) {
+    state.stateResponsables = StateModule;
+    },
     SET_ZONE_PAR_UTILISATEUR(state, StateModule) {
     state.stateZoneParUtilisateur = StateModule;
     },
@@ -171,11 +175,32 @@ async modifierZoneUtilisateur({ commit,dispatch }, nouveau) {
             // Désactiver le loader après l'appel API
             // commit('SET_LOADING', false);
         }
+    },
+ 
+ 
+ async getResponsable({ commit }) {
+        // Activer le loader
+        // commit('SET_LOADING', true);
+    
+        try {
+            const resultat = await apiGuest.get('/Responsable', { headers: authHeader() });
+            
+            // Mettre à jour les données dans le store
+            commit('SET_RESPONSABLE', resultat.data);
+        } catch (error) {
+            //console.log(error);
+        } finally {
+            // Désactiver le loader après l'appel API
+            // commit('SET_LOADING', false);
+        }
         },
   },
   getters: {
  getterZoneUtilisateur(state) {
     return state.stateZoneUtilisateur;
+    },
+     getterResponsables(state) {
+    return state.stateResponsables;
     },
 
       getterZoneParUtilisateur(state) {

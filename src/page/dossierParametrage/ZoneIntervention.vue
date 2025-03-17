@@ -156,7 +156,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Longitude</label>
+                <label for="inputWithIcon" class="form-label">Longitude(-)</label>
                 <div class="input-group">
                   <span class="input-group-text"
                     ><i class="fa fa-book" aria-hidden="true"></i
@@ -171,7 +171,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Latitude</label>
+                <label for="inputWithIcon" class="form-label">Latitude(+)</label>
                 <div class="input-group">
                   <span class="input-group-text"
                     ><i class="fa fa-book" aria-hidden="true"></i
@@ -252,7 +252,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Longitude</label>
+                <label for="inputWithIcon" class="form-label">Longitude(-)</label>
                 <div class="input-group">
                   <span class="input-group-text"
                     ><i class="fa fa-book" aria-hidden="true"></i
@@ -267,7 +267,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Latitude</label>
+                <label for="inputWithIcon" class="form-label">Latitude(+)</label>
                 <div class="input-group">
                   <span class="input-group-text"
                     ><i class="fa fa-book" aria-hidden="true"></i

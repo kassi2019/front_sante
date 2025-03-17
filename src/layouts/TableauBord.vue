@@ -1,165 +1,162 @@
 <template>
-  <!-- dashboard inner -->
-
   <div>
+    <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Dashboard</h2>
+          <h1 style="text-align: center !important">
+            CARTE DES ZONES D'INTERVENTIONS DES AGENTS DE SANTE COMMUNAUTAIRE
+          </h1>
         </div>
       </div>
     </div>
-    <div class="row column1">
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-user yellow_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">2500</p>
-              <p class="head_couter">Welcome</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-clock-o blue1_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">123.50</p>
-              <p class="head_couter">Average Time</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-cloud-download green_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">1,805</p>
-              <p class="head_couter">Collections</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-comments-o red_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">54</p>
-              <p class="head_couter">Comments</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-    <div class="row column1 social_media_section">
-      <div class="col-md-6 col-lg-3">
-        <div class="full socile_icons fb margin_bottom_30">
-          <div class="social_icon">
-            <i class="fa fa-facebook"></i>
-          </div>
-          <div class="social_cont">
-            <ul>
-              <li>
-                <span><strong>35k</strong></span>
-                <span>Friends</span>
-              </li>
-              <li>
-                <span><strong>128</strong></span>
-                <span>Feeds</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full socile_icons tw margin_bottom_30">
-          <div class="social_icon">
-            <i class="fa fa-twitter"></i>
-          </div>
-          <div class="social_cont">
-            <ul>
-              <li>
-                <span><strong>584k</strong></span>
-                <span>Followers</span>
-              </li>
-              <li>
-                <span><strong>978</strong></span>
-                <span>Tweets</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full socile_icons linked margin_bottom_30">
-          <div class="social_icon">
-            <i class="fa fa-linkedin"></i>
-          </div>
-          <div class="social_cont">
-            <ul>
-              <li>
-                <span><strong>758+</strong></span>
-                <span>Contacts</span>
-              </li>
-              <li>
-                <span><strong>365</strong></span>
-                <span>Feeds</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full socile_icons google_p margin_bottom_30">
-          <div class="social_icon">
-            <i class="fa fa-google-plus"></i>
-          </div>
-          <div class="social_cont">
-            <ul>
-              <li>
-                <span><strong>450</strong></span>
-                <span>Followers</span>
-              </li>
-              <li>
-                <span><strong>57</strong></span>
-                <span>Circles</span>
-              </li>
-            </ul>
+
+    <div>
+      <div class="col-md-12">
+        <div class="white_shd full margin_bottom_30">
+          <div id="map-container">
+            <div id="map"></div>
           </div>
         </div>
       </div>
     </div>
 
-
+    <!-- Modal Bootstrap -->
+    <div
+      class="modal fade"
+      id="locationModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="locationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="locationModalLabel">
+              {{ selectedLocation?.name }}
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h6>
+              Nbre d'enfants de 12 à 59 mois:<span>{{
+                selectedLocation?.lat
+              }}</span>
+            </h6>
+            <h6>
+              Nbre d'Enfant de 0 à 11 mois:<span>{{
+                selectedLocation?.lat
+              }}</span>
+            </h6>
+            <h6>
+              Nbre Femme enceinte recensé:<span>{{
+                selectedLocation?.lat
+              }}</span>
+            </h6>
+            <h6>
+              Nbre total de Femme:<span>{{ selectedLocation?.lat }}</span>
+            </h6>
+            <h6>
+              Nbre total d'enfant':<span>{{ selectedLocation?.lat }}</span>
+            </h6>
+            <h6>
+              id::<span>{{ selectedLocation?.id }}</span>
+            </h6>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-
-  <!-- end dashboard inner -->
 </template>
-<script setup></script>
-<style scoped>
-/* .read-the-docs {
-  color: #888;
-} */
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
+
+export default {
+  data() {
+    return {
+      selectedLocation: null, // Stocke la localisation sélectionnée
+      modalInstance: null, // Instance du modal Bootstrap
+    };
+  },
+  computed: {
+    ...mapGetters(["gettersCarteZone"]),
+  },
+  async mounted() {
+    await this.getCarteZone(); // Charge les données avant d'initialiser la carte
+    this.initMap();
+
+    // Récupérer l'instance du modal Bootstrap
+    this.modalInstance = new bootstrap.Modal(
+      document.getElementById("locationModal")
+    );
+  },
+  methods: {
+    ...mapActions(["getCarteZone"]),
+
+    openModal(location) {
+      this.selectedLocation = location; // Stocker les infos
+      this.modalInstance.show(); // Afficher le modal Bootstrap
+    },
+
+    initMap() {
+      const map = L.map("map").setView([7.5, -5.0], 7);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(map);
+
+      // Charger les frontières de la Côte d'Ivoire
+      const geojsonUrl =
+        "https://raw.githubusercontent.com/johan/world.geo.json/master/countries/CIV.geo.json";
+      fetch(geojsonUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          L.geoJSON(data, {
+            style: {
+              color: "",
+              weight: 2,
+              fillOpacity: 0,
+            },
+          }).addTo(map);
+        });
+
+      // Vérifier si des localisations sont disponibles
+      if (this.gettersCarteZone && this.gettersCarteZone.length > 0) {
+        this.gettersCarteZone.forEach((loc) => {
+          if (loc.lat && loc.lng) {
+            const marker = L.marker([loc.lat, loc.lng]).addTo(map);
+            marker.on("click", () => this.openModal(loc)); // Ouvre le modal au clic
+          }
+        });
+      }
+    },
+  },
+};
+</script>
+
+<style>
+#map {
+  width: 100%;
+  height: 500px;
+}
 </style>

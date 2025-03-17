@@ -3441,3 +3441,6 @@ table.projects tr td:first-child {
   background-color: #0056b3;
   font-weight: bold;
 }
+input{
+  text-transform: capitalize !important;
+}
