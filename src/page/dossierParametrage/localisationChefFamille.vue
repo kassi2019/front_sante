@@ -45,29 +45,28 @@
             ></button>
           </div>
           <div class="modal-body">
-            <h6>
-              Nbre d'enfants de 12 à 59 mois:<span>{{
-                selectedLocation?.lat
-              }}</span>
+            <h6 class="info-row">
+              <span>Nbre d'Enfants de 0 à 11 mois </span>
+              <span>{{ Enfantde0a11mois(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre d'Enfant de 0 à 11 mois:<span>{{
-                selectedLocation?.lat
-              }}</span>
+            <h6 class="info-row">
+              <span>Nbre d'enfants de 12 à 59 mois </span>
+              <span>{{ Enfantde12a59mois(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre Femme enceinte recensé:<span>{{
-                selectedLocation?.lat
-              }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Femme enceinte encours </span>
+              <span>{{ Femmeenceinte(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre total de Femme:<span>{{ selectedLocation?.lat }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Total de Femmes </span>
+              <span>{{ FemmeRecense(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre total d'enfant':<span>{{ selectedLocation?.lat }}</span>
-            </h6>
-            <h6>
-              id::<span>{{ selectedLocation?.id }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Total d'Hommes </span>
+              <span>{{ HommeRecense(selectedLocation?.id) }}</span>
             </h6>
           </div>
           <div class="modal-footer">
@@ -99,10 +98,66 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getterCarteChefFamille"]),
+    ...mapGetters(["getterCarteChefFamille",'getterpatient']),
+
+      Enfantde12a59mois() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.chef_famille_id == id &&
+              12 <= qtreel.age_en_jours <= 59 &&
+              qtreel.type_patient_id != 2
+          ).length;
+        }
+      };
+    },
+    Enfantde0a11mois() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.chef_famille_id == id &&
+              qtreel.age_en_jours <= 11 &&
+              qtreel.type_patient_id != 2
+          ).length;
+        }
+      };
+    },
+    Femmeenceinte() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.chef_famille_id == id &&
+              qtreel.type_patient_id == 2 &&
+              qtreel.encours == 0
+          ).length;
+        }
+      };
+    },
+    FemmeRecense() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) => qtreel.chef_famille_id == id && qtreel.sexe == "F"
+          ).length;
+        }
+      };
+    },
+    HommeRecense() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) => qtreel.chef_famille_id == id && qtreel.sexe == "M"
+          ).length;
+        }
+      };
+    },
   },
   async mounted() {
     await this.getCarteChefFamille(); // Charge les données avant d'initialiser la carte
+    await this.getpatients();
     this.initMap();
 
     // Récupérer l'instance du modal Bootstrap
@@ -111,7 +166,7 @@ export default {
     );
   },
   methods: {
-    ...mapActions(["getCarteChefFamille"]),
+    ...mapActions(["getCarteChefFamille","getpatients"]),
 
     openModal(location) {
       this.selectedLocation = location; // Stocker les infos
@@ -154,9 +209,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #map {
   width: 100%;
   height: 500px;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Pour s'assurer que la ligne prend toute la largeur */
+  font-size: 16px; /* Ajuste la taille du texte si nécessaire */
+  margin-bottom: 10px; /* Espacement entre les lignes */
 }
 </style>

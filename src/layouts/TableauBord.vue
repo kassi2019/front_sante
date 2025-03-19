@@ -1,6 +1,7 @@
 <template>
   <div>
     <br /><br /><br />
+    <!-- 
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
@@ -9,7 +10,7 @@
           </h5>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
@@ -18,96 +19,146 @@
       </div>
     </div>
     <div class="row column1">
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
+      <div class="col-md-6 col-lg-2" style="cursor: pointer">
+        <div
+          class="full counter_section margin_bottom_30"
+          style="cursor: pointer"
+        >
+          <!-- <div class="couter_icon">
             <div>
-              <i class="fa fa-user yellow_color"></i>
+              <i class="fa fa-user yellow_color" style="font-size: 14px;"></i>
             </div>
-          </div>
-          <div class="counter_no">
+          </div> -->
+          <div class="counter_no" style="cursor: pointer">
             <div>
-              <p class="total_no">2500</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Enfant de 0 à 11 mois</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-clock-o blue1_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">123.50</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Enfant de 12 à 59 mois</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
-            <div>
-              <i class="fa fa-cloud-download green_color"></i>
-            </div>
-          </div>
-          <div class="counter_no">
-            <div>
-              <p class="total_no">1,805</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Femme Enceinte</p>
+              <p
+                class="total_no"
+                style="text-align: center; font-weight: bolder"
+              >
+                {{ Enfantde0a11moisTotal }}
+              </p>
+              <p
+                class="head_couter logo-text1"
+                style="color: black; font-weight: bolder;text-align: center !important;"
+              >
+                Enfant de 0 à 11 mois
+              </p>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
+      <div class="col-md-6 col-lg-2" style="cursor: pointer">
+        <div
+          class="full counter_section margin_bottom_30"
+          style="cursor: pointer"
+        >
+          <!-- <div class="couter_icon">
             <div>
-              <i class="fa fa-cloud-download green_color"></i>
+              <i class="fa fa-clock-o blue1_color" style="font-size: 14px;"></i>
             </div>
-          </div>
+          </div> -->
           <div class="counter_no">
             <div>
-              <p class="total_no">1,805</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Nbre total de Femme</p>
+              <p
+                class="total_no"
+                style="text-align: center; font-weight: bolder"
+              >
+                {{ Enfantde12a59moisTotal }}
+              </p>
+              <p
+                class="head_couter logo-text1"
+                style="color: black; font-weight: bolder;text-align: center !important;"
+              >
+                Enfant de 12 à 59 mois
+              </p>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
+      <div class="col-md-6 col-lg-2" style="cursor: pointer">
+        <div
+          class="full counter_section margin_bottom_30"
+          style="cursor: pointer"
+        >
+          <!-- <div class="couter_icon">
             <div>
-              <i class="fa fa-cloud-download green_color"></i>
+              <i class="fa fa-cloud-download green_color" style="font-size: 14px;"></i>
             </div>
-          </div>
+          </div> -->
           <div class="counter_no">
             <div>
-              <p class="total_no">1,805</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Nbre total d'enfant</p>
+              <p
+                class="total_no"
+                style="text-align: center; font-weight: bolder"
+              >
+                {{ FemmeenceinteTotal }}
+              </p>
+              <p
+                class="head_couter logo-text1"
+                style="color: black; font-weight: bolder;text-align: center !important;"
+              >
+                Femme Enceinte encours
+              </p>
             </div>
           </div>
         </div>
-      </div> -->
-      <!-- <div class="col-md-6 col-lg-3">
-        <div class="full counter_section margin_bottom_30">
-          <div class="couter_icon">
+      </div>
+      <div class="col-md-6 col-lg-2" style="cursor: pointer">
+        <div
+          class="full counter_section margin_bottom_30"
+          style="cursor: pointer"
+        >
+          <!-- <div class="couter_icon">
             <div>
-              <i class="fa fa-comments-o red_color"></i>
+              <i class="fa fa-cloud-download green_color" style="font-size: 14px;"></i>
             </div>
-          </div>
+          </div> -->
           <div class="counter_no">
             <div>
-              <p class="total_no">54</p>
-              <p class="head_couter" style="color: black;font-weight: bolder;">Enfant de 12 à 59 mois</p>
+              <p
+                class="total_no"
+                style="text-align: center; font-weight: bolder"
+              >
+                {{ FemmeRecenseTotal }}
+              </p>
+              <p
+                class="head_couter logo-text1"
+                style="color: black; font-weight: bolder;text-align: center !important;"
+              >
+                Nbre total de Femme
+              </p>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
+      <div class="col-md-6 col-lg-2" style="cursor: pointer">
+        <div
+          class="full counter_section margin_bottom_30"
+          style="cursor: pointer"
+        >
+          <!-- <div class="couter_icon">
+            <div>
+              <i class="fa fa-cloud-download green_color" style="font-size: 14px;"></i>
+            </div>
+          </div> -->
+          <div class="counter_no">
+            <div>
+              <p
+                class="total_no"
+                style="text-align: center; font-weight: bolder"
+              >
+                {{ HommeRecenseTotal }}
+              </p>
+              <p
+                class="head_couter logo-text1"
+                style="color: black; font-weight: bolder;text-align: center !important;"
+              >
+                Nbre total d'Hommes
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       <div class="col-md-12">
@@ -132,7 +183,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="locationModalLabel">
+            <h5 class="modal-title logo-text" id="locationModalLabel">
               {{ selectedLocation?.name }}
             </h5>
             <button
@@ -143,35 +194,39 @@
             ></button>
           </div>
           <div class="modal-body">
-            <h6>
-              Nbre d'enfants de 12 à 59 mois:<span>{{
-                selectedLocation?.lat
-              }}</span>
+            <h6 class="info-row">
+              <span>Nbre d'Enfants de 0 à 11 mois </span>
+              <span>{{ Enfantde0a11mois(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre d'Enfant de 0 à 11 mois:<span>{{
-                selectedLocation?.lat
-              }}</span>
+            <h6 class="info-row">
+              <span>Nbre d'enfants de 12 à 59 mois </span>
+              <span>{{ Enfantde12a59mois(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre Femme enceinte recensé:<span>{{
-                selectedLocation?.lat
-              }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Femme enceinte encours </span>
+              <span>{{ Femmeenceinte(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre total de Femme:<span>{{ selectedLocation?.lat }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Total de Femmes </span>
+              <span>{{ FemmeRecense(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre total d'enfant':<span>{{ selectedLocation?.lat }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Total d'Hommes </span>
+              <span>{{ HommeRecense(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              id::<span>{{ selectedLocation?.id }}</span>
-            </h6>
+
+            <!-- <h6 class="info-row">
+              <span>ID :</span>
+              <span>{{ selectedLocation?.id }}</span>
+            </h6> -->
           </div>
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-danger"
               data-bs-dismiss="modal"
             >
               Fermer
@@ -197,10 +252,89 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["gettersCarteZone"]),
+    ...mapGetters(["gettersCarteZone", "getterpatient"]),
+    HommeRecenseTotal() {
+      return this.getterpatient.filter((qtreel) => qtreel.sexe == "M").length;
+    },
+    FemmeRecenseTotal() {
+      return this.getterpatient.filter((qtreel) => qtreel.sexe == "F").length;
+    },
+    FemmeenceinteTotal() {
+      return this.getterpatient.filter(
+        (qtreel) => qtreel.type_patient_id == 2 && qtreel.encours == 0
+      ).length;
+    },
+    Enfantde12a59moisTotal() {
+      return this.getterpatient.filter(
+        (qtreel) =>
+          12 <= qtreel.age_en_jours &&
+          qtreel.age_en_jours <= 59 &&
+          qtreel.type_patient_id != 2
+      ).length;
+    },
+    Enfantde0a11moisTotal() {
+      return this.getterpatient.filter(
+        (qtreel) => qtreel.age_en_jours <= 11 && qtreel.type_patient_id != 2
+      ).length;
+    },
+    Enfantde12a59mois() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.zone_intervention_id == id &&
+              12 <= qtreel.age_en_jours <= 59 &&
+              qtreel.type_patient_id != 2
+          ).length;
+        }
+      };
+    },
+    Enfantde0a11mois() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.zone_intervention_id == id &&
+              qtreel.age_en_jours <= 11 &&
+              qtreel.type_patient_id != 2
+          ).length;
+        }
+      };
+    },
+    Femmeenceinte() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.zone_intervention_id == id &&
+              qtreel.type_patient_id == 2 &&
+              qtreel.encours == 0
+          ).length;
+        }
+      };
+    },
+    FemmeRecense() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) => qtreel.zone_intervention_id == id && qtreel.sexe == "F"
+          ).length;
+        }
+      };
+    },
+    HommeRecense() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) => qtreel.zone_intervention_id == id && qtreel.sexe == "M"
+          ).length;
+        }
+      };
+    },
   },
   async mounted() {
     await this.getCarteZone(); // Charge les données avant d'initialiser la carte
+    await this.getpatients();
     this.initMap();
 
     // Récupérer l'instance du modal Bootstrap
@@ -209,7 +343,7 @@ export default {
     );
   },
   methods: {
-    ...mapActions(["getCarteZone"]),
+    ...mapActions(["getCarteZone", "getpatients"]),
 
     openModal(location) {
       this.selectedLocation = location; // Stocker les infos
@@ -252,9 +386,65 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #map {
   width: 100%;
   height: 500px;
+}
+.logo-text {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #005797;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-style: italic;
+}
+
+.logo-text1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 13px !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-style: italic;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Pour s'assurer que la ligne prend toute la largeur */
+  font-size: 16px; /* Ajuste la taille du texte si nécessaire */
+  margin-bottom: 10px; /* Espacement entre les lignes */
+}
+
+.row.column1 {
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  flex-wrap: wrap; /* Permet le retour à la ligne si besoin */
+  gap: 20px; /* Espacement entre les éléments */
+}
+
+.col-md-6.col-lg-2 {
+  display: flex;
+  justify-content: center; /* Centre chaque élément horizontalement */
+  align-items: center; /* Centre verticalement */
+}
+
+.full.counter_section {
+  width: 250px; /* Ajuste la largeur du cercle */
+  height: 120px; /* Ajuste la hauteur du cercle */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 80%; /* Rend le div complètement rond */
+  background-color: #f8f9fa; /* Couleur de fond */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #000 !important;
 }
 </style>

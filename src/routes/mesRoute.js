@@ -5,7 +5,7 @@ import Role from "../page/dossierGestionUtilisateur/Role.vue"
 import Module from "../page/dossierGestionUtilisateur/Module.vue"
 import RoleModule from "../page/dossierGestionUtilisateur/RoleModule.vue"
 import utilisateur from "../page/dossierGestionUtilisateur/utilisateur.vue"
-import Accueil from "../layouts/TableauBord.vue"
+import TableauBord from "../layouts/TableauBord.vue"
 import ZoneIntervention from "../page/dossierParametrage/ZoneIntervention.vue"
 import medicament from "../page/dossierParametrage/medicament.vue"
 import ZoneUtilisateur from "../page/dossierParametrage/ZoneUtilisateur.vue"
@@ -15,8 +15,15 @@ import detailPatient from "../page/dossierParametrage/detailPatient.vue"
 import localiseZone from "../page/dossierParametrage/localiseZone.vue"
 import vaccin from "../page/dossierParametrage/vaccin.vue"
 import localisationChefFamille from "../page/dossierParametrage/localisationChefFamille.vue"
+import Accueil from "../layouts/TableauBord2.vue"
 // import accueil from "../page/accueil.vue"
 const gestionutilisateur = [
+  {
+        path: '/TableauBord',
+        name:"TableauBord",
+      component: TableauBord,
+      //   meta: { layout: "no-sidebar", requiresAuth: true },
+     },
   {
         path: '/localisationChefFamille',
         name:"localisationChefFamille",

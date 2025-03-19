@@ -429,7 +429,14 @@
                     </div>
                     <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
-                        >Date de naissance</label
+                        >Date de naissance<span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                          >*</span
+                        ></label
                       >
                       <div class="input-group">
                         <span class="input-group-text">
@@ -873,6 +880,20 @@ export default {
       "getterZoneParAgent",
       "getterTypePatient",
     ]),
+    recuperationIdZone() {
+      return (id) => {
+        if (id != null && id != "") {
+          let qtereel = this.gettermenages.find(
+            (qtreel) => qtreel.id == id
+          );
+
+          if (qtereel) {
+            return qtereel.zone_intervention_id;
+          }
+          return "";
+        }
+      };
+    },
     afficheNomChefFamille() {
       let collet = [];
       this.gettermenages.filter((item) => {
@@ -972,11 +993,10 @@ export default {
         numero_cmu: this.objetPatient.numero_cmu,
         numero_cni: this.objetPatient.numero_cni,
         chef_famille_id: this.objetPatient.chef_famille_id,
-        
+        zone_intervention_id:this.recuperationIdZone(this.objetPatient.chef_famille_id),
         DataModule: this.StateModules,
       };
       this.enregistrerpatient(ob);
-
       if (
         this.objetPatient.nom != "" ||
         this.objetPatient.prenoms != "" ||
@@ -995,7 +1015,6 @@ export default {
           sexe: "",
           numero_cni: "",
           numero_cmu: "",
-
           type_patient_id: "",
         };
       } else {

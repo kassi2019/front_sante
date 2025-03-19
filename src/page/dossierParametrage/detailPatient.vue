@@ -302,7 +302,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Modifier Rôle
+                Modifier Patient
               </h5>
               <button
                 type="button"
@@ -598,7 +598,20 @@ export default {
       "gettermenages",
       "getterTypePatient",
     ]),
-    
+    recuperationIdZone() {
+      return (id) => {
+        if (id != null && id != "") {
+          let qtereel = this.gettermenages.find(
+            (qtreel) => qtreel.id == id
+          );
+
+          if (qtereel) {
+            return qtereel.zone_intervention_id;
+          }
+          return "";
+        }
+      };
+    },
 AfficheTypePatient() {
       return (id) => {
         if (id != null && id != "") {
@@ -747,6 +760,7 @@ AfficheTypePatient() {
         numero_cmu: this.objetPatient.numero_cmu,
         numero_cni: this.objetPatient.numero_cni,
         chef_famille_id: this.objetPatient.chef_famille_id,
+        zone_intervention_id:this.recuperationIdZone(this.objetPatient.chef_famille_id),
       };
       this.modifierpatient(ob);
       // modal.hide();

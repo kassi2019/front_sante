@@ -63,7 +63,7 @@ const Patient ={
     // commit('SET_ERROR', null); // Reset erreur
 
       // try {
-        if (!objet.nom || !objet.prenoms) {
+        if (!objet.nom || !objet.prenoms || !objet.date_naissance) {
             commit('SET_CHAMP_VIDE_TRUE');
             // Affichage d'une alerte d'erreur en cas de champs vides
             Swal.fire({

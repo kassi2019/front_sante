@@ -14,12 +14,12 @@
                 <div class="row column_title">
                   <div class="col-md-12">
                     <div class="page_title">
-                      <h2 style="text-align: center">
-                        <strong style="font-size: 30px !important"
+                      <h2 style="text-align: left">
+                        <strong style="font-size: 20px !important"
                           >ASC Santé</strong
                         >
                         :
-                        <span style="font-size: 30px !important"
+                        <span style="font-size: 20px !important"
                           >Agents de Santé Communautaire</span
                         >
                       </h2>
@@ -269,6 +269,54 @@
                   </div>
                   <!-- fin Gestion des événements et activités -->
                   <!-- *************************************************************************** -->
+
+                  <div class="col-md-4 col-lg-4">
+                    <div
+                      class="full socile_icons fb margin_bottom_30"
+                      style="border-radius: 90% !important"
+                      @click="ParametreGeneraux(6)"
+                      @click.prevent="affichePage('TableauBord')"
+                      v-if="VoirModuleactivitesTb == 6"
+                    >
+                      <div class="social_icon" style="cursor: pointer">
+                        <i class="fa fa-life-bouy"></i>
+                      </div>
+                      <div
+                        class="social_cont"
+                        @click="ParametreGeneraux(6)"
+                        @click.prevent="affichePage('TableauBord')"
+                      >
+                        <ul>
+                          <span class="desigText">{{
+                            afficheibelleModule(6)
+                          }}</span>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div
+                      v-else
+                      class="full socile_icons fb margin_bottom_30"
+                      style="border-radius: 90% !important"
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdrop"
+                    >
+                      <div class="social_icon" style="cursor: pointer">
+                        <i class="fa fa-life-bouy"></i>
+                      </div>
+                      <div
+                        class="social_cont"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                      >
+                        <ul>
+                          <span class="desigText">{{
+                            afficheibelleModule(6)
+                          }}</span>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <!-- graph -->
               </div>
@@ -476,7 +524,21 @@ export default {
       //   }
       // };
     },
+    VoirModuleactivitesTb() {
+      // return (id) => {
+      //   if (id != null && id != "") {
+      const qtereel = this.getterModuleUtilisateurConneceter.find(
+        (qtreel) =>
+          qtreel.id_roles == this.roleUtilisateur && qtreel.id_modules == 6
+      );
 
+      if (qtereel) {
+        return 6;
+      }
+      return 0;
+      //   }
+      // };
+    },
     VoirModuleTableaubord() {
       // return (id) => {
       //   if (id != null && id != "") {
