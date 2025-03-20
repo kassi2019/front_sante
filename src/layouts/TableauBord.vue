@@ -350,7 +350,7 @@ export default {
       this.modalInstance.show(); // Afficher le modal Bootstrap
     },
 
-    initMap() {
+  initMap() {
       const map = L.map("map").setView([7.5, -5.0], 7);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -377,6 +377,13 @@ export default {
         this.gettersCarteZone.forEach((loc) => {
           if (loc.lat && loc.lng) {
             const marker = L.marker([loc.lat, loc.lng]).addTo(map);
+            
+            // Ajouter un tooltip avec le nom de la localisation
+            marker.bindTooltip(loc.name, {
+              permanent: false, // S'affiche au survol
+              direction: "top",
+            });
+
             marker.on("click", () => this.openModal(loc)); // Ouvre le modal au clic
           }
         });

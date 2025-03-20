@@ -4,9 +4,7 @@
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h1 style="text-align: center !important">
-            CARTE DES ZONES D'INTERVENTIONS DES AGENTS DE SANTE COMMUNAUTAIRE
-          </h1>
+          <h1 style="text-align: center !important">CARTE DES DSITRICTS</h1>
         </div>
       </div>
     </div>
@@ -33,8 +31,8 @@
     >
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="locationModalLabel">
+          <div class="modal-header ">
+            <h5 class="modal-title logo-text" id="locationModalLabel">
               {{ selectedLocation?.name }}
             </h5>
             <button
@@ -45,29 +43,28 @@
             ></button>
           </div>
           <div class="modal-body">
-            <h6>
-              Nbre d'enfants de 12 à 59 mois:<span>{{
-                selectedLocation?.lat
-              }}</span>
+             <h6 class="info-row">
+              <span>Nbre d'Enfants de 0 à 11 mois </span>
+              <span>{{ Enfantde0a11mois(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre d'Enfant de 0 à 11 mois:<span>{{
-                selectedLocation?.lat
-              }}</span>
+            <h6 class="info-row">
+              <span>Nbre d'enfants de 12 à 59 mois </span>
+              <span>{{ Enfantde12a59mois(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre Femme enceinte recensé:<span>{{
-                selectedLocation?.lat
-              }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Femme enceinte encours </span>
+              <span>{{ Femmeenceinte(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre total de Femme:<span>{{ selectedLocation?.lat }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Total de Femmes </span>
+              <span>{{ FemmeRecense(selectedLocation?.id) }}</span>
             </h6>
-            <h6>
-              Nbre total d'enfant':<span>{{ selectedLocation?.lat }}</span>
-            </h6>
-            <h6>
-              id::<span>{{ selectedLocation?.id }}</span>
+
+            <h6 class="info-row">
+              <span>Nbre Total d'Hommes </span>
+              <span>{{ HommeRecense(selectedLocation?.id) }}</span>
             </h6>
           </div>
           <div class="modal-footer">
@@ -99,10 +96,78 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["gettersCarteZone"]),
+    ...mapGetters(["gettersCarteZone", "getterpatient"]),
+
+    nfantde12a59mois() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.zone_intervention_id == id &&
+              12 <= qtreel.age_en_jours <= 59 &&
+              qtreel.type_patient_id != 2
+          ).length;
+        }
+      };
+    },
+      Enfantde12a59mois() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.zone_intervention_id == id &&
+              12 <= qtreel.age_en_jours <= 59 &&
+              qtreel.type_patient_id != 2
+          ).length;
+        }
+      };
+    },
+    Enfantde0a11mois() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.zone_intervention_id == id &&
+              qtreel.age_en_jours <= 11 &&
+              qtreel.type_patient_id != 2
+          ).length;
+        }
+      };
+    },
+    Femmeenceinte() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) =>
+              qtreel.zone_intervention_id == id &&
+              qtreel.type_patient_id == 2 &&
+              qtreel.encours == 0
+          ).length;
+        }
+      };
+    },
+    FemmeRecense() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) => qtreel.zone_intervention_id == id && qtreel.sexe == "F"
+          ).length;
+        }
+      };
+    },
+    HommeRecense() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getterpatient.filter(
+            (qtreel) => qtreel.zone_intervention_id == id && qtreel.sexe == "M"
+          ).length;
+        }
+      };
+    },
   },
   async mounted() {
-    await this.getCarteZone(); // Charge les données avant d'initialiser la carte
+    await this.getCarteZone();
+    await this.getpatients(); // Charge les données avant d'initialiser la carte
     this.initMap();
 
     // Récupérer l'instance du modal Bootstrap
@@ -111,7 +176,7 @@ export default {
     );
   },
   methods: {
-    ...mapActions(["getCarteZone"]),
+    ...mapActions(["getCarteZone", "getpatients"]),
 
     openModal(location) {
       this.selectedLocation = location; // Stocker les infos
@@ -158,5 +223,24 @@ export default {
 #map {
   width: 100%;
   height: 500px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Pour s'assurer que la ligne prend toute la largeur */
+  font-size: 16px; /* Ajuste la taille du texte si nécessaire */
+  margin-bottom: 10px; /* Espacement entre les lignes */
+}
+.logo-text {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #005797;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-style: italic;
 }
 </style>

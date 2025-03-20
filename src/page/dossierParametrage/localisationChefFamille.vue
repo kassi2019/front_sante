@@ -98,9 +98,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getterCarteChefFamille",'getterpatient']),
+    ...mapGetters(["getterCarteChefFamille", "getterpatient"]),
 
-      Enfantde12a59mois() {
+    Enfantde12a59mois() {
       return (id) => {
         if (id != null && id != "") {
           return this.getterpatient.filter(
@@ -166,7 +166,7 @@ export default {
     );
   },
   methods: {
-    ...mapActions(["getCarteChefFamille","getpatients"]),
+    ...mapActions(["getCarteChefFamille", "getpatients"]),
 
     openModal(location) {
       this.selectedLocation = location; // Stocker les infos
@@ -196,14 +196,15 @@ export default {
         });
 
       // Vérifier si des localisations sont disponibles
-      if (this.getterCarteChefFamille && this.getterCarteChefFamille.length > 0) {
-        this.getterCarteChefFamille.forEach((loc) => {
-          if (loc.lat && loc.lng) {
-            const marker = L.marker([loc.lat, loc.lng]).addTo(map);
-            marker.on("click", () => this.openModal(loc)); // Ouvre le modal au clic
-          }
-        });
-      }
+      this.getterCarteChefFamille.forEach((loc) => {
+        if (loc.lat && loc.lng) {
+          const marker = L.marker([loc.lat, loc.lng])
+            .addTo(map)
+            .bindTooltip(loc.name, { permanent: false, direction: "top" });
+
+          marker.on("click", () => this.openModal(loc)); // Ouvre le modal au clic
+        }
+      });
     },
   },
 };

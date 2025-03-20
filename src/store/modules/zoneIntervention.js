@@ -9,30 +9,27 @@ const isLoading = false; // Variable pour contrôler l'état de chargement// Imp
 const role ={
   state: {
  
-    zoneInterventions: [] ,
-    StateAffectationZone: [],
+        zoneInterventions: [],
+        statedistrictZone: [],
+      stateaireSanitaireZone:[],
+      groupeDistricts: [],
+    
     stateZoneResponsable: [],
       stateCarteZone:[],
   //   loading: false,// ajout de l'état de chargement
   // loading: false, // Statut de chargement
   error: null     // Erreur de l'enregistrement
   },
-  mutations: {
-    SET_ZONE_RESPONSABLE(state, StateModule) {
-    state.stateZoneResponsable = StateModule;
+    mutations: {
+ SET_DISTRICT_ZONE_INTERVENTION(state, District){
+       state.statedistrictZone = District;
+        },
+         SET_AIRE_SANITAIRE_ZONE_INTERVENTION(state, District){
+       state.stateaireSanitaireZone = District;
     },
-    SET_CARTE_ZONE(state, StateModule) {
-    state.stateCarteZone = StateModule;
+     SET_ZONE_INTERVENTION(state, District){
+       state.zoneInterventions = District;
     },
-SET_AFFECTATION_ZONE(state, StateModule) {
-    state.StateAffectationZone = StateModule;
-    },
-     SET_ZONE_INTERVENTION(state, zoneInterventions){
-       state.zoneInterventions = zoneInterventions;
-    },
-//  SET_LOADING(state, isLoading) {
-//         state.loading = isLoading;
-//     },
 
  SET_ERROR(state, error) {
     state.error = error;
@@ -52,18 +49,68 @@ SET_AFFECTATION_ZONE(state, StateModule) {
         }
         return response
     })
-}
+        },
+
   },
   
-  actions: {
-  
-
-    async getzoneInterventions({ commit }) {
+    actions: {
+      
+          
+  async getdistrictZone({ commit }) {
     // Activer le loader
     // commit('SET_LOADING', true);
 
     try {
-        const resultat = await apiGuest.get('/listeZoneIntervention', { headers: authHeader() });
+        const resultat = await apiGuest.get('/listeDistrict_zi', { headers: authHeader() });
+        
+        // Mettre à jour les données dans le store
+        commit('SET_DISTRICT_ZONE_INTERVENTION', resultat.data);
+    } catch (error) {
+        //console.log(error);
+    } finally {
+        // Désactiver le loader après l'appel API
+        // commit('SET_LOADING', false);
+    }
+      },
+      async getaireSanitaireZone({ commit }) {
+    // Activer le loader
+    // commit('SET_LOADING', true);
+
+    try {
+        const resultat = await apiGuest.get('/listeaireSanitaire_zi', { headers: authHeader() });
+        
+        // Mettre à jour les données dans le store
+        commit('SET_AIRE_SANITAIRE_ZONE_INTERVENTION', resultat.data);
+    } catch (error) {
+        //console.log(error);
+    } finally {
+        // Désactiver le loader après l'appel API
+        // commit('SET_LOADING', false);
+    }
+      },
+async getdistrictgroupe({ commit }) {
+    // Activer le loader
+    // commit('SET_LOADING', true);
+
+    try {
+        const resultat = await apiGuest.get('/districtgroupe', { headers: authHeader() });
+        
+        // Mettre à jour les données dans le store
+        commit('SET_GROUPE_DISTRICT', resultat.data);
+    } catch (error) {
+        //console.log(error);
+    } finally {
+        // Désactiver le loader après l'appel API
+        // commit('SET_LOADING', false);
+    }
+      },
+      
+    async getzoneintervention({ commit }) {
+    // Activer le loader
+    // commit('SET_LOADING', true);
+
+    try {
+        const resultat = await apiGuest.get('/zoneintervention', { headers: authHeader() });
         
         // Mettre à jour les données dans le store
         commit('SET_ZONE_INTERVENTION', resultat.data);
@@ -75,25 +122,11 @@ SET_AFFECTATION_ZONE(state, StateModule) {
     }
     },
 
-     async enregistrerzoneInterventions({ commit,dispatch }, objet) {
-    // commit('SET_LOADING', true);
-    // commit('SET_ERROR', null); // Reset erreur
+     async enregistrerzoneintervention({ commit,dispatch }, objet) {
 
-      // try {
-        // if (!objet.libelle) {
-        //     commit('SET_CHAMP_VIDE_TRUE');
-        //     // Affichage d'une alerte d'erreur en cas de champs vides
-        //     Swal.fire({
-        //       icon: 'error',
-        //       title: 'Champs vides',
-        //       text: 'Veuillez remplir tous les champs.',
-        //       confirmButtonText: 'OK',
-        //     });
-        //     return;
-        //   }
-      const response = await apiGuest.post('/ajouterZoneIntervention', objet, { headers: authHeader() });
+      const response = await apiGuest.post('/zoneintervention', objet, { headers: authHeader() });
          commit('AJOUTER_ZONE_INTERVENTION', response.data); // Sauvegarder le produit dans le store
-        dispatch('getzoneInterventions');
+        dispatch('getzoneintervention');
           Swal.fire({
                  position: "top-end",
                  icon: "success",
@@ -105,7 +138,7 @@ SET_AFFECTATION_ZONE(state, StateModule) {
   },
 
      
-async supprimerzoneInterventions({ commit,dispatch }, id) {
+async supprimerzoneintervention({ commit,dispatch }, id) {
   // Show the confirmation dialog with SweetAlert2
   Swal.fire({
     title: "Êtes-vous sûr de",
@@ -117,9 +150,9 @@ async supprimerzoneInterventions({ commit,dispatch }, id) {
     confirmButtonText: 'OUI'
   }).then((result) => {
     if (result.isConfirmed) {
-  apiGuest.delete('/supprimerZoneIntervention/' + id, { headers: authHeader() })
+  apiGuest.delete('/zoneintervention/' + id, { headers: authHeader() })
      commit('SUPPRIMER_ZONE_INTERVENTION', id)
-     dispatch('getzoneInterventions');
+     dispatch('getzoneintervention');
        Swal.fire({
                  position: "top-end",
                  icon: "success",
@@ -132,11 +165,11 @@ async supprimerzoneInterventions({ commit,dispatch }, id) {
     },
 
     
-    async modifierzoneInterventions({ commit,dispatch }, nouveau) {
-  apiGuest.put("/modifierZoneIntervention/" + nouveau.id, nouveau, { headers: authHeader() })
+    async modifierzoneintervention({ commit,dispatch }, nouveau) {
+  apiGuest.put("/zoneintervention/" + nouveau.id, nouveau, { headers: authHeader() })
     .then(response => {
       commit("MODIFIER_ZONE_INTERVENTION", response.data);
-      dispatch('getzoneInterventions');
+      dispatch('getzoneintervention');
   Swal.fire({
                  position: "top-end",
                  icon: "success",
@@ -146,93 +179,23 @@ async supprimerzoneInterventions({ commit,dispatch }, id) {
                });
     });
     },
-    
 
-
-
-
-
-      async getAffectationZone({ commit }) {
-     
-        try {
-          // Effacer les sous-préfectures existantes avant de charger de nouvelles
-          commit('SET_AFFECTATION_ZONE', []);
-          
-          // Appel à l'API ou à une autre source de données
-                 const responseSp = await apiGuest.get('/listeZoneIntervention', { headers: authHeader() });
-    
-          const sousPrefectures = responseSp.data.map(sp => ({
-            id: sp.id,
-            label: `${sp.libelle}`,
-          }));
-    
-          commit('SET_AFFECTATION_ZONE', sousPrefectures);
-          return sousPrefectures;
-        } catch (error) {
-          console.error("Erreur lors de la récupération des Sous-préfectures:", error);
-          commit('SET_AFFECTATION_ZONE', []);
-        }
-    },
-      
-      
-      async getZoneParResponsable({ commit }, objet) {
-    try {
-        // Effacer les sous-préfectures existantes avant de charger de nouvelles
-        commit('SET_ZONE_RESPONSABLE', []);
-
-        // Appel à l'API avec le user_id en paramètre
-        const responseSp = await apiGuest.get('/listeZoneResponsable/'+ objet.respo, { 
-            headers: authHeader() 
-        });
-
-        const sousPrefectures = responseSp.data.map(sp => ({
-            id: sp.zone_intervention_id,
-            label: `${sp.libelle_zone}`,
-        }));
-
-        commit('SET_ZONE_RESPONSABLE', sousPrefectures);
-        return sousPrefectures;
-    } catch (error) {
-        console.error("Erreur lors de la récupération des Sous-préfectures:", error);
-        commit('SET_ZONE_RESPONSABLE', []);
-    }
-},
-
-      
-      
-            async getCarteZone({ commit }) {
-     
-        try {
-          // Effacer les sous-préfectures existantes avant de charger de nouvelles
-          commit('SET_CARTE_ZONE', []);
-          
-          // Appel à l'API ou à une autre source de données
-                 const responseSp = await apiGuest.get('/listeZoneIntervention', { headers: authHeader() });
-    
-          const sousPrefectures = responseSp.data.map(sp => ({
-            id: sp.id,
-            name: `${sp.libelle}`,
-            lat: `${sp.latitude}`,
-            lng: `${sp.longitude}`,
-          }));
-    
-          commit('SET_CARTE_ZONE', sousPrefectures);
-          return sousPrefectures;
-        } catch (error) {
-          console.error("Erreur lors de la récupération des Sous-préfectures:", error);
-          commit('SET_CARTE_ZONE', []);
-        }
-    },
   },
   getters: {
-  
-   
+
+       gettersdistrictZone(state) {
+      return state.statedistrictZone.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+      },
+        gettersaireSanitaireZone(state) {
+      return state.stateaireSanitaireZone.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
+     gettergroupeDistricts(state) {
+      return state.groupeDistricts.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
     getterzoneInterventions(state) {
       return state.zoneInterventions.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },
-getterAffectationzone(state) {
-      return state.StateAffectationZone.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
-    },
+
 gettersZoneResponsable(state) {
       return state.stateZoneResponsable
     },

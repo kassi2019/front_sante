@@ -134,11 +134,11 @@
             <div class="modal-body">
               <FormWizard @on-complete="onComplete" color="#457DBB">
                 <TabContent
-                  title="Affectation des zones au Responsable"
+                  title="Affectation des zones au Superviseurs"
                   icon="fa fa-user-tie"
                   ><div class="mb-3">
                     <label for="inputWithIcon" class="form-label"
-                      >Responsable</label
+                      >Superviseurs</label
                     >
                     <select
                       class="form-select form-select-lg mb-3"
@@ -157,7 +157,7 @@
 
                   <div class="mb-3">
                     <label for="inputWithIcon" class="form-label"
-                      >Zone d'intervention</label
+                      >Aire de sanitaire</label
                     >
                     <treeselect
                       v-model="StateModules"
@@ -188,7 +188,7 @@
                   icon="fa fa-users"
                   ><div class="mb-3">
                     <label for="inputWithIcon" class="form-label"
-                      >Responsable</label
+                      >Nom Superviseur </label
                     >
                     <select
                       class="form-select form-select-lg mb-3"
@@ -203,6 +203,16 @@
                         {{ NomResponsable(data.responsable_id) }}
                       </option>
                     </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Aire de sanitaire</label
+                    >
+                    <treeselect
+                      v-model="StateModules"
+                      :multiple="true"
+                      :options="gettersZoneResponsable"
+                    />
                   </div>
                   <div class="mb-3">
                     <label for="inputWithIcon" class="form-label"

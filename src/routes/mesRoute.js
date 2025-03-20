@@ -6,7 +6,7 @@ import Module from "../page/dossierGestionUtilisateur/Module.vue"
 import RoleModule from "../page/dossierGestionUtilisateur/RoleModule.vue"
 import utilisateur from "../page/dossierGestionUtilisateur/utilisateur.vue"
 import TableauBord from "../layouts/TableauBord.vue"
-import ZoneIntervention from "../page/dossierParametrage/ZoneIntervention.vue"
+import District from "../page/dossierParametrage/District.vue"
 import medicament from "../page/dossierParametrage/medicament.vue"
 import ZoneUtilisateur from "../page/dossierParametrage/ZoneUtilisateur.vue"
 import menage from "../page/dossierParametrage/menage.vue"
@@ -16,8 +16,22 @@ import localiseZone from "../page/dossierParametrage/localiseZone.vue"
 import vaccin from "../page/dossierParametrage/vaccin.vue"
 import localisationChefFamille from "../page/dossierParametrage/localisationChefFamille.vue"
 import Accueil from "../layouts/TableauBord2.vue"
+import aireSanitaire from "../page/dossierParametrage/aireSanitaire.vue"
+import zoneIntervention from "../page/dossierParametrage/zoneIntervention1.vue"
 // import accueil from "../page/accueil.vue"
 const gestionutilisateur = [
+  {
+        path: '/zoneIntervention',
+        name:"zoneIntervention",
+      component: zoneIntervention,
+     
+     },
+    {
+        path: '/aireSanitaire',
+        name:"aireSanitaire",
+      component: aireSanitaire,
+      //   meta: { layout: "no-sidebar", requiresAuth: true },
+     },
   {
         path: '/TableauBord',
         name:"TableauBord",
@@ -70,9 +84,9 @@ const gestionutilisateur = [
         component: medicament
      },
  {
-        path: '/ZoneIntervention',
-        name:"ZoneIntervention",
-        component: ZoneIntervention
+        path: '/District',
+        name:"District",
+        component: District
      },
    {
         path: '/utilisateur',

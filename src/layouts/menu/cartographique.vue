@@ -25,10 +25,27 @@
       <li>
         <a href="" @click.prevent="affichePage('localisationChefFamille')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Localisation Chef de Famille</span></a
+          <span>Carte des ménages</span></a
         >
       </li>
-
+      <li>
+        <a href="" @click.prevent="affichePage('localiseZone')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span>Carte  districts</span></a
+        >
+      </li>
+      <li>
+        <a href="" @click.prevent="affichePage('localiseZone')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span>Carte  aires sanitaire</span></a
+        >
+      </li>
+      <li>
+        <a href="" @click.prevent="affichePage('localiseZone')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span>Carte zones d'interventions</span></a
+        >
+      </li>
       <li style="background-color: #007b9a">
         <a href="" @click.prevent="affichePage('presentation')"
           ><i class="fa fa-eye"></i> <span>VOIR LES MODULES</span></a

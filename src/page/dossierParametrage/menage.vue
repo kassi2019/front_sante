@@ -6,7 +6,7 @@
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Liste Chef de Famille</h2>
+          <h2>Liste des ménages</h2>
         </div>
       </div>
     </div>
@@ -163,7 +163,7 @@
             </div>
             <div class="modal-body">
               <FormWizard @on-complete="onComplete" color="#457DBB">
-                <TabContent title="CHEF DE FAMILLE" icon="fa fa-user-tie">
+                <TabContent title="MENAGE" icon="fa fa-user-tie">
                   <div class="mb-3 row">
                     <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
@@ -342,7 +342,7 @@
                       :disabled="loading"
                       @click.prevent="enregistrecheffamille()"
                     >
-                      Enregistrer chef de famille
+                      Enregistrer ménages
                     </button>
                   </div>
                 </TabContent>
@@ -351,9 +351,9 @@
                     
                   </div> -->
                   <div class="mb-3 row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
-                        >Nom chef de famille
+                        >Nom ménages
                         <span
                           style="
                             color: red;
@@ -375,7 +375,7 @@
                         </model-list-select>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
                         >Nom Patient
                         <span
@@ -400,9 +400,7 @@
                         />
                       </div>
                     </div>
-                  </div>
-                  <div class="mb-3 row">
-                    <div class="col-md-6">
+                          <div class="col-md-6">
                       <label for="inputWithIcon" class="form-label"
                         >Prénoms Patient
                         <span
@@ -424,6 +422,32 @@
                           id="inputWithIcon"
                           placeholder="Entrez prenoms"
                           v-model="objetPatient.prenoms"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+               <div class="col-md-3">
+                      <label for="inputWithIcon" class="form-label"
+                        >Date debut de grossesse<span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                          ></span
+                        ></label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                        </span>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="inputWithIcon"
+                          
+                          v-model="objetPatient.date_debut_grossesse"
                         />
                       </div>
                     </div>
@@ -451,7 +475,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <label for="inputWithIcon" class="form-label"
                         >Lieu de naissance</label
                       >
@@ -625,7 +649,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Modifier Info Chef de famille
+                Modifier Info ménages
               </h5>
               <button
                 type="button"
@@ -993,6 +1017,7 @@ export default {
         numero_cmu: this.objetPatient.numero_cmu,
         numero_cni: this.objetPatient.numero_cni,
         chef_famille_id: this.objetPatient.chef_famille_id,
+        date_debut_grossesse:this.objetPatient.date_debut_grossesse,
         zone_intervention_id:this.recuperationIdZone(this.objetPatient.chef_famille_id),
         DataModule: this.StateModules,
       };

@@ -1,11 +1,12 @@
 <template>
   <!-- dashboard inner -->
 
-  <div><br/><br/><br/>
+  <div>
+    <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Liste Zone d'intervention</h2>
+          <h2>Liste Aire sanitaire</h2>
         </div>
       </div>
     </div>
@@ -34,14 +35,14 @@
           </div>
           <div class="table_section padding_infor_info">
             <span style="font-size: 15px; font-weight: bold"
-              >Liste Zone d'intervention</span
+              >Liste des Aire sanitaire</span
             >
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>
                   <tr>
                     <th>#</th>
-                    <!-- <th>Code</th> -->
+
                     <th>Libelle</th>
                     <th>Longitude</th>
                     <th>Latitude</th>
@@ -51,27 +52,36 @@
                   </tr>
                 </thead>
 
-                <tbody>
-                  <tr v-for="(data, index) in paginatedData" :key="data.id">
-                    <td>{{ index + 1 }}</td>
-                    <!-- <td>{{ data.code }}</td> -->
-                    <td>{{ data.libelle }}</td>
+                <tbody v-for="data in paginatedData" :key="data.district_id">
+                  <tr>
+                    <td><button type="button" class="btn btn-warning">District </button></td>
+                    <td>{{ data.libelle_district }} ({{listeAireSanitaire(data.district_id).length}})</td>
                     <td>{{ data.longitude }}</td>
                     <td>{{ data.latitude }}</td>
+                  </tr>
+                  <tr
+                    v-for="(data1,index) in listeAireSanitaire(data.district_id)"
+                    :key="data1.id"
+                  >
+                    <td></td>
+
+                    <td>{{ index+1 }})      {{ data1.libelle }}</td>
+                    <td>{{ data1.longitude }}</td>
+                    <td>{{ data1.latitude }}</td>
                     <td class="button_block">
                       <button
                         type="button"
                         class="btn cur-p btn-success"
                         data-bs-toggle="modal"
                         data-bs-target="#staticBackdropModification"
-                        @click.prevent="AfficheModalModification(data.id)"
+                        @click.prevent="AfficheModalModification(data1.id)"
                       >
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       </button>
                       <button
                         type="button"
                         class="btn cur-p btn-danger"
-                        @click.prevent="supprimerzoneInterventions(data.id)"
+                        @click.prevent="supprimerAireSanitaire(data1.id)"
                       >
                         <i class="fa fa-trash"></i>
                       </button>
@@ -80,7 +90,7 @@
                 </tbody>
               </table>
               <!-- Pagination controls -->
-              <div class="pagination">
+              <!-- <div class="pagination">
                 <button
                   @click="changePage(currentPage - 1)"
                   :disabled="currentPage === 1"
@@ -106,7 +116,7 @@
                 >
                   Suivant »
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -130,7 +140,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Enregistrer Zone d'Intervention
+                Enregistrer Aire sanitaire
               </h5>
               <button
                 type="button"
@@ -140,49 +150,79 @@
               ></button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Libelle</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez Libelle"
-                    v-model="objet.libelle"
-                  />
+              <div class="mb-3 row">
+                <div class="col-md-12">
+                  <label for="inputWithIcon" class="form-label"
+                    >District
+                    <span
+                      style="
+                        color: red;
+                        font-weight: 900 !important;
+                        font-size: 15px;
+                      "
+                      >*</span
+                    ></label
+                  >
+                  <div class="input-group">
+                    <model-list-select
+                      style=""
+                      :list="afficheLibelleDistrict"
+                      v-model="objet.district_id"
+                      option-value="id"
+                      option-text="groupe"
+                      placeholder="séléctionner"
+                    >
+                    </model-list-select>
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Longitude(-)</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez longitude"
-                    v-model="objet.longitude"
-                  />
+                <div class="col-md-12">
+                  <label for="inputWithIcon" class="form-label">Libelle</label>
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez Libelle"
+                      v-model="objet.libelle"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Latitude(+)</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez Libelle"
-                    v-model="objet.latitude"
-                  />
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Latitude(+)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez Latitude"
+                      v-model="objet.latitude"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Longitude(-)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez longitude"
+                      v-model="objet.longitude"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -226,7 +266,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Modifier Zone d'Intervention
+                Modifier Aire sanitaire
               </h5>
               <button
                 type="button"
@@ -236,49 +276,79 @@
               ></button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">libelle</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez libelle"
-                    v-model="ObjetModifier.libelle"
-                  />
+              <div class="mb-3 row">
+                <div class="col-md-12">
+                  <label for="inputWithIcon" class="form-label"
+                    >District
+                    <span
+                      style="
+                        color: red;
+                        font-weight: 900 !important;
+                        font-size: 15px;
+                      "
+                      >*</span
+                    ></label
+                  >
+                  <div class="input-group">
+                    <model-list-select
+                      style=""
+                      :list="afficheLibelleDistrict"
+                      v-model="ObjetModifier.district_id"
+                      option-value="id"
+                      option-text="groupe"
+                      placeholder="séléctionner"
+                    >
+                    </model-list-select>
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Longitude(-)</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez longitude"
-                    v-model="ObjetModifier.longitude"
-                  />
+                <div class="col-md-12">
+                  <label for="inputWithIcon" class="form-label">Libelle</label>
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez Libelle"
+                      v-model="ObjetModifier.libelle"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Latitude(+)</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez Libelle"
-                    v-model="ObjetModifier.latitude"
-                  />
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Latitude(+)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez Latitude"
+                      v-model="ObjetModifier.latitude"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Longitude(-)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez longitude"
+                      v-model="ObjetModifier.longitude"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -295,7 +365,7 @@
                 type="button"
                 class="btn btn-success"
                 :disabled="loading"
-                @click.prevent="modifierzoneInterventionss()"
+                @click.prevent="modifierAireSanitaires()"
               >
                 Modifier
               </button>
@@ -312,6 +382,7 @@
 <script>
 //import { useStore } from "vuex"; // Importation du store
 import { mapActions, mapGetters } from "vuex";
+import { ModelListSelect } from "vue-search-select";
 // import Loader from "./Loader.vue";
 
 // import "vue-treeselect/dist/vue-treeselect.css";
@@ -319,6 +390,7 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
+    ModelListSelect,
     // Treeselect,  // Enregistrer le composant
   },
   data() {
@@ -329,12 +401,14 @@ export default {
         libelle: "",
         longitude: "",
         latitude: "",
+        district_id: "",
       },
       selectItem: null,
       ObjetModifier: {
         libelle: "",
         longitude: "",
         latitude: "",
+        district_id: "",
       },
 
       currentPage: 1,
@@ -347,13 +421,40 @@ export default {
 
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
-    this.getzoneInterventions();
+    this.getDistrict();
+    this.getdistrictgroupe();
+    this.getAireSanitaire();
   },
 
   computed: {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
-    ...mapGetters(["getterzoneInterventions", "loading"]),
-
+    ...mapGetters([
+      "getteraireSanitaires",
+      "loading",
+      "getterDistrict",
+      "gettergroupeDistricts",
+    ]),
+    listeAireSanitaire() {
+      return (id) => {
+        if (id != null && id != "") {
+          return this.getteraireSanitaires.filter(
+            (qtreel) => qtreel.district_id == id
+          );
+        }
+      };
+    },
+    afficheLibelleDistrict() {
+      let collet = [];
+      this.getterDistrict.filter((item) => {
+        let data = {
+          id: item.id,
+          // code:item.code,
+          groupe: item.libelle,
+        };
+        collet.push(data);
+      });
+      return collet.sort((a, b) => (a.libelle > b.libelle ? 1 : -1));
+    },
     visiblePages() {
       let pages = [];
       let startPage = Math.max(1, this.currentPage - 2);
@@ -368,13 +469,13 @@ export default {
     // Calcule les éléments à afficher en fonction de la page actuelle
     paginatedData() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      return this.getterzoneInterventions.slice(
+      return this.gettergroupeDistricts.slice(
         startIndex,
         startIndex + this.itemsPerPage
       );
     },
     totalPages() {
-      return Math.ceil(this.getterzoneInterventions.length / this.itemsPerPage);
+      return Math.ceil(this.gettergroupeDistricts.length / this.itemsPerPage);
     },
     loading() {
       return this.$store.state.loading;
@@ -386,10 +487,12 @@ export default {
 
   methods: {
     ...mapActions([
-      "getzoneInterventions",
-      "enregistrerzoneInterventions",
-      "supprimerzoneInterventions",
-      "modifierzoneInterventions",
+      "getAireSanitaire",
+      "getDistrict",
+      "getdistrictgroupe",
+      "enregistrerAireSanitaire",
+      "supprimerAireSanitaire",
+      "modifierAireSanitaire",
     ]),
     // Fonction pour changer de page
     changePage(page) {
@@ -403,11 +506,12 @@ export default {
 
     async enregistrezoneintervention() {
       let ob = {
+        district_id: this.objet.district_id,
         libelle: this.objet.libelle,
         longitude: this.objet.longitude,
         latitude: this.objet.latitude,
       };
-      this.enregistrerzoneInterventions(ob);
+      this.enregistrerAireSanitaire(ob);
 
       this.objet = {
         libelle: "",
@@ -416,21 +520,22 @@ export default {
       };
     },
 
-    async modifierzoneInterventionss() {
+    async modifierAireSanitaires() {
       let ob = {
         id: this.ObjetModifier.id,
+        district_id: this.ObjetModifier.district_id,
         libelle: this.ObjetModifier.libelle,
         longitude: this.ObjetModifier.longitude,
         latitude: this.ObjetModifier.latitude,
       };
-      this.modifierzoneInterventions(ob);
+      this.modifierAireSanitaire(ob);
       //  this.showModal = false;
       // $('#staticBackdrop').modal('hide');
       // modal.hide();
     },
 
     async AfficheModalModification(id) {
-      this.ObjetModifier = this.getterzoneInterventions.find(
+      this.ObjetModifier = this.getteraireSanitaires.find(
         (items) => items.id == id
       );
     },

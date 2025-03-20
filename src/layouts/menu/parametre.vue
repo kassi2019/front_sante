@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar_blog_2">
-    <h4 style="text-align: center;">Paramètres Généraux</h4>
+    <h4 style="text-align: center">Paramètres Généraux</h4>
     <ul class="list-unstyled components">
       <!-- <li>
                         <a href="#element5" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-diamond purple_color"></i> <span>Elements</span></a>
@@ -34,27 +34,33 @@
         >
       </li>
       <li>
-        <a href="" @click.prevent="affichePage('ZoneIntervention')"
+        <a href="" @click.prevent="affichePage('District')"
+          ><i class="fa fa-hand-o-right"></i> <span>District</span></a
+        >
+      </li>
+      <li>
+        <a href="" @click.prevent="affichePage('aireSanitaire')"
+          ><i class="fa fa-hand-o-right"></i> <span>Aire Sanitaire</span></a
+        >
+      </li>
+      <li>
+        <a href="" @click.prevent="affichePage('zoneIntervention')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Zones d'intervention</span></a
+          <span>Zone d'Intervention</span></a
         >
       </li>
-                 <li>
-        <a href="" @click.prevent="affichePage('localiseZone')"
-          ><i class="fa fa-hand-o-right"></i> <span>Localisation zone d'intervention</span></a
-        >
-      </li>
+      
       <li>
         <a href="" @click.prevent="affichePage('medicament')"
           ><i class="fa fa-hand-o-right"></i> <span>Médicaments</span></a
         >
       </li>
-       <li>
+      <li>
         <a href="" @click.prevent="affichePage('vaccin')"
           ><i class="fa fa-hand-o-right"></i> <span>Vaccin</span></a
         >
       </li>
-      
+
       <!-- <li>
         <a href="" @click.prevent="affichePage('')"
           ><i class="fa fa-hand-o-right"></i>
@@ -67,7 +73,7 @@
           <span>Questions & Diagnostics</span></a
         >
       </li> -->
-  <li>
+      <li>
         <a href="" @click.prevent="affichePage('ZoneUtilisateur')"
           ><i class="fa fa-hand-o-right"></i>
           <span>Affectation des Zones</span></a
@@ -78,7 +84,6 @@
           ><i class="fa fa-eye"></i> <span>VOIR LES MODULES</span></a
         >
       </li>
-      
     </ul>
   </div>
 </template>
@@ -124,11 +129,9 @@ export default {
 
 <style scoped>
 li:hover {
-  background-color:#5F8CA3 !important;
+  background-color: #5f8ca3 !important;
   font-weight: bold !important;
   font-size: 16px !important;
   font-family: Arial, sans-serif !important;
-}  
-
-
+}
 </style>
