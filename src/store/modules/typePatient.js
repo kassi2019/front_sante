@@ -63,7 +63,7 @@ const typePatient ={
 
      async enregistrerTypePatient({ commit,dispatch }, objet) {
    
-    commit('SET_ERROR', null); // Reset erreur
+ 
 
       // try {
         if (!objet.libelle) {

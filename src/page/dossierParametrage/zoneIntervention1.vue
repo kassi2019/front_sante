@@ -77,27 +77,7 @@
                       <td>{{ data1.longitude }}</td>
                       <td>{{ data1.latitude }}</td>
                       <td></td>
-                      <!-- <td class="button_block">
-                        <button
-                          type="button"
-                          class="btn cur-p btn-success"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staticBackdropModification"
-                          @click.prevent="AfficheModalModification(data1.id)"
-                        >
-                          <i
-                            class="fa fa-pencil-square-o"
-                            aria-hidden="true"
-                          ></i>
-                        </button>
-                        <button
-                          type="button"
-                          class="btn cur-p btn-danger"
-                          @click.prevent="supprimerzoneintervention(data1.id)"
-                        >
-                          <i class="fa fa-trash"></i>
-                        </button>
-                      </td> -->
+            
                     </tr>
                     <tr
                       v-for="data2 in listezoneintervention(data1.id)"

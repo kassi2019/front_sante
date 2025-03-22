@@ -53,6 +53,7 @@ async getVaccinTreeSelect({ commit }) {
           const sousPrefectures = responseSp.data.map(sp => ({
             id: sp.id,
             label: `${sp.libelle}`,
+              typepatient: `${sp.type_patient}`,
           }));
     
           commit('SET_VACCIN_TREE_SELECT', sousPrefectures);

@@ -4,39 +4,26 @@ import apiGuest from '../../request/AppRequest';
 import Swal from 'sweetalert2';  // Assurez-vous d'importer SweetAlert2
 import authHeader from '../../services/auth-header';
 
-
-const isLoading = false; // Variable pour contrôler l'état de chargement// Importer le spinner
 const role ={
   state: {
  
         aireSanitaires: [],
       groupeDistricts: [],
     StateAffectationZone: [],
-    stateZoneResponsable: [],
-      stateCarteZone:[],
-  //   loading: false,// ajout de l'état de chargement
-  // loading: false, // Statut de chargement
-  error: null     // Erreur de l'enregistrement
+
+  error: null
   },
     mutations: {
       SET_GROUPE_DISTRICT(state, StateModule) {
     state.groupeDistricts = StateModule;
     },
-    SET_ZONE_RESPONSABLE(state, StateModule) {
-    state.stateZoneResponsable = StateModule;
-    },
-    SET_CARTE_ZONE(state, StateModule) {
-    state.stateCarteZone = StateModule;
-    },
+
 SET_AFFECTATION_ZONE(state, StateModule) {
     state.StateAffectationZone = StateModule;
     },
      SET_AIRE_SANITAIRE(state, District){
        state.aireSanitaires = District;
     },
-//  SET_LOADING(state, isLoading) {
-//         state.loading = isLoading;
-//     },
 
  SET_ERROR(state, error) {
     state.error = error;
@@ -117,6 +104,19 @@ async getdistrictgroupe({ commit }) {
 
      async enregistrerAireSanitaire({ commit,dispatch }, objet) {
 
+
+      // try {
+        if (!objet.libelle) {
+            commit('SET_CHAMP_VIDE_TRUE');
+            // Affichage d'une alerte d'erreur en cas de champs vides
+            Swal.fire({
+              icon: 'error',
+              title: 'Champs vides',
+              text: 'Veuillez remplir le champs.',
+              confirmButtonText: 'OK',
+            });
+            return;
+          }
       const response = await apiGuest.post('/airesanitaire', objet, { headers: authHeader() });
          commit('AJOUTER_AIRE_SANITAIRE', response.data); // Sauvegarder le produit dans le store
         dispatch('getAireSanitaire');
@@ -172,63 +172,7 @@ async supprimerAireSanitaire({ commit,dispatch }, id) {
                });
     });
     },
-    
 
-
-
-
-
-  
-      
-      
-      async getZoneParResponsable({ commit }, objet) {
-    try {
-        // Effacer les sous-préfectures existantes avant de charger de nouvelles
-        commit('SET_ZONE_RESPONSABLE', []);
-
-        // Appel à l'API avec le user_id en paramètre
-        const responseSp = await apiGuest.get('/listeZoneResponsable/'+ objet.respo, { 
-            headers: authHeader() 
-        });
-
-        const sousPrefectures = responseSp.data.map(sp => ({
-            id: sp.DISTRICT_id,
-            label: `${sp.libelle_zone}`,
-        }));
-
-        commit('SET_ZONE_RESPONSABLE', sousPrefectures);
-        return sousPrefectures;
-    } catch (error) {
-        console.error("Erreur lors de la récupération des Sous-préfectures:", error);
-        commit('SET_ZONE_RESPONSABLE', []);
-    }
-},
-
-      
-      
-    //         async getCarteZone({ commit }) {
-     
-    //     try {
-    //       // Effacer les sous-préfectures existantes avant de charger de nouvelles
-    //       commit('SET_CARTE_ZONE', []);
-          
-    //       // Appel à l'API ou à une autre source de données
-    //              const responseSp = await apiGuest.get('/listeZoneIntervention', { headers: authHeader() });
-    
-    //       const sousPrefectures = responseSp.data.map(sp => ({
-    //         id: sp.id,
-    //         name: `${sp.libelle}`,
-    //         lat: `${sp.latitude}`,
-    //         lng: `${sp.longitude}`,
-    //       }));
-    
-    //       commit('SET_CARTE_ZONE', sousPrefectures);
-    //       return sousPrefectures;
-    //     } catch (error) {
-    //       console.error("Erreur lors de la récupération des Sous-préfectures:", error);
-    //       commit('SET_CARTE_ZONE', []);
-    //     }
-    // },
   },
   getters: {
   
@@ -241,12 +185,10 @@ async supprimerAireSanitaire({ commit,dispatch }, id) {
 getterAffectationzone(state) {
       return state.StateAffectationZone.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },
-gettersZoneResponsable(state) {
-      return state.stateZoneResponsable
-    },
-    gettersCarteZone(state) {
-      return state.stateCarteZone
-    },
+
+    // gettersCarteZone(state) {
+    //   return state.stateCarteZone
+    // },
     
   error(state) {
     return state.error;

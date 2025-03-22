@@ -12,13 +12,7 @@ const role ={
         zoneInterventions: [],
         statedistrictZone: [],
       stateaireSanitaireZone:[],
-      groupeDistricts: [],
-    
-    stateZoneResponsable: [],
-      stateCarteZone:[],
-  //   loading: false,// ajout de l'état de chargement
-  // loading: false, // Statut de chargement
-  error: null     // Erreur de l'enregistrement
+  error: null     
   },
     mutations: {
  SET_DISTRICT_ZONE_INTERVENTION(state, District){
@@ -124,6 +118,19 @@ async getdistrictgroupe({ commit }) {
 
      async enregistrerzoneintervention({ commit,dispatch }, objet) {
 
+
+      // try {
+        if (!objet.libelle) {
+            commit('SET_CHAMP_VIDE_TRUE');
+            // Affichage d'une alerte d'erreur en cas de champs vides
+            Swal.fire({
+              icon: 'error',
+              title: 'Champs vides',
+              text: 'Veuillez remplir le champs.',
+              confirmButtonText: 'OK',
+            });
+            return;
+          }
       const response = await apiGuest.post('/zoneintervention', objet, { headers: authHeader() });
          commit('AJOUTER_ZONE_INTERVENTION', response.data); // Sauvegarder le produit dans le store
         dispatch('getzoneintervention');
@@ -189,20 +196,11 @@ async supprimerzoneintervention({ commit,dispatch }, id) {
         gettersaireSanitaireZone(state) {
       return state.stateaireSanitaireZone.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },
-     gettergroupeDistricts(state) {
-      return state.groupeDistricts.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
-    },
+
     getterzoneInterventions(state) {
       return state.zoneInterventions.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },
 
-gettersZoneResponsable(state) {
-      return state.stateZoneResponsable
-    },
-    gettersCarteZone(state) {
-      return state.stateCarteZone
-    },
-    
   error(state) {
     return state.error;
   }

@@ -587,24 +587,9 @@
                       <treeselect
                         v-model="StateModules"
                         :multiple="true"
-                        :options="getterVaccinTreeSelect"
+                        :options="afficheVaccinParTypePatient"
                       />
-                      
-
-                      <!-- <select
-                        class="form-select form-select-lg mb-3"
-                        aria-label=".form-select-lg example"
-                        v-model="objetPatient.type_patient_id"
-                      >
-                        <option selected></option>
-                        <option
-                          v-for="data in getterTypePatient"
-                          :key="data.id"
-                          :value="data.id"
-                        >
-                          {{ data.libelle }}
-                        </option>
-                      </select> -->
+             
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -618,7 +603,7 @@
                     <button
                       type="button"
                       class="btn btn-success"
-                      :disabled="loading"
+                   
                       @click.prevent="enregistrepatient()"
                     >
                       Enregistrer Patient
@@ -904,6 +889,16 @@ export default {
       "getterZoneParAgent",
       "getterTypePatient",
     ]),
+    afficheVaccinParTypePatient() {
+        
+      if (this.objetPatient.type_patient_id == 2) {
+ 
+        return this.getterVaccinTreeSelect.filter(data=>data.typepatient==this.objetPatient.type_patient_id)
+      } else {
+        return this.getterVaccinTreeSelect.filter(data=>data.typepatient!=2)
+      }
+      
+    },
     recuperationIdZone() {
       return (id) => {
         if (id != null && id != "") {
@@ -990,6 +985,7 @@ export default {
       "getZoneParAgent",
       "enregistrerpatient",
     ]),
+ 
     async detailPatient($id) {
       this.$router.push({
         name: "detailPatient",

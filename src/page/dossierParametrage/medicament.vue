@@ -39,7 +39,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <!-- <th>Code</th> -->
+                    <th>Code</th>
                     <th>
                       Nom du médicament
                     </th>
@@ -54,7 +54,7 @@
                 <tbody>
                   <tr v-for="(data, index) in paginatedData" :key="data.id">
                     <td>{{ index + 1 }}</td>
-                    <!-- <td>{{ data.code }}</td> -->
+                    <td>{{ data.code }}</td>
                     <td>{{ data.libelle }}</td>
                     <td>{{ data.unite_comptage }}</td>
                     <td>{{ data.dosage }}</td>
@@ -141,6 +141,23 @@
               ></button>
             </div>
             <div class="modal-body">
+                    <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Code</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez code"
+                    v-model="objet.code"
+                  />
+                </div>
+              </div>
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label"
                   >Nom du médicament</label
@@ -243,6 +260,23 @@
               ></button>
             </div>
             <div class="modal-body">
+                    <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Code</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez code"
+                    v-model="ObjetModifier.code"
+                  />
+                </div>
+              </div>
              <div class="mb-3">
                 <label for="inputWithIcon" class="form-label"
                   >Nom du médicament</label
@@ -342,12 +376,14 @@ export default {
         libelle: "",
         unite_comptage: "",
         dosage: "",
+        code:""
       },
       selectItem: null,
       ObjetModifier: {
         libelle: "",
         unite_comptage: "",
         dosage: "",
+        code:""
       },
 
       currentPage: 1,
@@ -420,6 +456,7 @@ changePage(page) {
 
     async enregistrezoneintervention() {
       let ob = {
+        code: this.objet.code,
         libelle: this.objet.libelle,
         dosage: this.objet.dosage,
         unite_comptage: this.objet.unite_comptage,
@@ -430,12 +467,14 @@ changePage(page) {
         libelle: "",
         unite_comptage: "",
         dosage: "",
+        code:""
       };
     },
 
     async modifiermedicamentss() {
       let ob = {
         id: this.ObjetModifier.id,
+        code: this.ObjetModifier.code,
         libelle: this.ObjetModifier.libelle,
         dosage: this.ObjetModifier.dosage,
         unite_comptage: this.ObjetModifier.unite_comptage,

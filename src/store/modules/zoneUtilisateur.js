@@ -10,11 +10,19 @@ const ZoneUtilisateur ={
   state: {
     utilisateurId: null,
     stateZoneUtilisateur: [],
+    stateAireSanitaireSup: [],
+    stateZoneInterventionSup:[],
     stateZoneParUtilisateur: [],
     stateZoneParAgent: [],
     stateResponsables:[]
   },
   mutations: {
+     SET_LISTE_ZONE_INTERVENTION_SUP(state, StateModule) {
+    state.stateZoneInterventionSup = StateModule;
+    },
+     SET_LISTE_AIRE_SANITAIRE_SUP(state, StateModule) {
+    state.stateAireSanitaireSup = StateModule;
+    },
     SET_RESPONSABLE(state, StateModule) {
     state.stateResponsables = StateModule;
     },
@@ -88,8 +96,7 @@ async supprimerZoneUtilisateur({ commit,dispatch }, id) {
         } catch (error) {
             //console.log(error);
         } finally {
-            // Désactiver le loader après l'appel API
-            // commit('SET_LOADING', false);
+
         }
         },
 
@@ -105,21 +112,39 @@ async supprimerZoneUtilisateur({ commit,dispatch }, id) {
         } catch (error) {
             //console.log(error);
         } finally {
-            // Désactiver le loader après l'appel API
-            // commit('SET_LOADING', false);
+
         }
         },
 
+async enregistrerZoneAuAgent({ commit,dispatch }, objet) {
 
-
-async enregistrerZoneUtilisateur({ commit,dispatch }, objet) {
-    // commit('SET_LOADING', true);
-    // commit('SET_ERROR', null); // Reset erreur
-
-      // try {
         if (!objet.utilisateur_id) {
             commit('SET_CHAMP_VIDE_TRUE');
-            // Affichage d'une alerte d'erreur en cas de champs vides
+            Swal.fire({
+              icon: 'error',
+              title: 'Champs vides',
+              text: 'Veuillez remplir tous les champs.',
+              confirmButtonText: 'OK',
+            });
+            return;
+          }
+      const response = await apiGuest.post('/enregistrerzoneParAgent', objet, { headers: authHeader() });
+         commit('AJOUTER_ZONE_UTILISATEUR', response.data); // Sauvegarder le produit dans le store
+ dispatch('getzoneUtilisateur');
+    dispatch('getZoneParUtilisateur');
+          Swal.fire({
+                 position: "top-end",
+                 icon: "success",
+                 title: "Enregistrement réussie",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
+  },
+
+async enregistrerZoneUtilisateur({ commit,dispatch }, objet) {
+
+        if (!objet.utilisateur_id) {
+            commit('SET_CHAMP_VIDE_TRUE');
             Swal.fire({
               icon: 'error',
               title: 'Champs vides',
@@ -131,8 +156,7 @@ async enregistrerZoneUtilisateur({ commit,dispatch }, objet) {
       const response = await apiGuest.post('/ajouterZoneUtilisateur', objet, { headers: authHeader() });
          commit('AJOUTER_ZONE_UTILISATEUR', response.data); // Sauvegarder le produit dans le store
   dispatch('getzoneUtilisateur');
-  dispatch('getZoneParUtilisateur');
-  
+    dispatch('getZoneParUtilisateur');
           Swal.fire({
                  position: "top-end",
                  icon: "success",
@@ -140,7 +164,6 @@ async enregistrerZoneUtilisateur({ commit,dispatch }, objet) {
                  showConfirmButton: false,
                  timer: 1500
                });
-       //}.catch();
   },
 
 async modifierZoneUtilisateur({ commit,dispatch }, nouveau) {
@@ -172,16 +195,13 @@ async modifierZoneUtilisateur({ commit,dispatch }, nouveau) {
         } catch (error) {
             //console.log(error);
         } finally {
-            // Désactiver le loader après l'appel API
-            // commit('SET_LOADING', false);
+
         }
     },
  
  
  async getResponsable({ commit }) {
-        // Activer le loader
-        // commit('SET_LOADING', true);
-    
+
         try {
             const resultat = await apiGuest.get('/Responsable', { headers: authHeader() });
             
@@ -190,10 +210,57 @@ async modifierZoneUtilisateur({ commit,dispatch }, nouveau) {
         } catch (error) {
             //console.log(error);
         } finally {
-            // Désactiver le loader après l'appel API
-            // commit('SET_LOADING', false);
+
         }
-        },
+    },
+ 
+ 
+ 
+ 
+       async getListeAireSanitaireParSuperviseur({ commit }, objet) {
+     try {
+
+         commit('SET_LISTE_AIRE_SANITAIRE_SUP', []);
+ 
+         const responseSp = await apiGuest.get('/AireSanitaireParsuperviseur/'+ objet.respo, { 
+             headers: authHeader() 
+         });
+ 
+         const sousPrefectures = responseSp.data.map(sp => ({
+             id: sp.aire_sanitaire_id,
+             label: `${sp.libelle_aire_Sanitaire}`,
+         }));
+ 
+         commit('SET_LISTE_AIRE_SANITAIRE_SUP', sousPrefectures);
+         return sousPrefectures;
+     } catch (error) {
+         console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+         commit('SET_LISTE_AIRE_SANITAIRE_SUP', []);
+     }
+    },
+       
+        
+       async getListeZoneInterventionParSuperviseur({ commit }, objet) {
+     try {
+
+         commit('SET_LISTE_ZONE_INTERVENTION_SUP', []);
+ 
+         const responseSp = await apiGuest.get('/listeZoneInterventParsuperviseur/'+ objet.aire, { 
+             headers: authHeader() 
+         });
+ 
+         const sousPrefectures = responseSp.data.map(sp => ({
+             id: sp.id,
+             label: `${sp.libelle}`,
+         }));
+ 
+         commit('SET_LISTE_ZONE_INTERVENTION_SUP', sousPrefectures);
+         return sousPrefectures;
+     } catch (error) {
+         console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+         commit('SET_LISTE_ZONE_INTERVENTION_SUP', []);
+     }
+ },
   },
   getters: {
  getterZoneUtilisateur(state) {
@@ -209,7 +276,12 @@ async modifierZoneUtilisateur({ commit,dispatch }, nouveau) {
       getterZoneParAgent(state) {
     return state.stateZoneParAgent;
     },  
-      
+        getterAireSanitaireSup(state) {
+    return state.stateAireSanitaireSup;
+    },
+      getterZoneInterventionSup(state) {
+    return state.stateZoneInterventionSup;
+    },  
       
   }
 };

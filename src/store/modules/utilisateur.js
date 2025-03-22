@@ -9,7 +9,7 @@ const utilisateur ={
   state: {
     count: 0, // Le compteur
     user: null,// L'utilisateur
-    economique: [] ,
+    stateAgentParSuperviseurs: [] ,
     isLoggedIn: !!localStorage.getItem('token'),
     user: localStorage.getItem('user'),
     loader: false, // Ajout du loader
@@ -26,8 +26,8 @@ const utilisateur ={
   //  SET_CHAMP_VIDE_TRUE(state, user) {
   //     state.user = user;
   //   },
-     SET_LISTE_PERSONNEL_RATTACHE_OPT(state, economique){
-       state.economique = economique;
+     GET_AGENT_PAR_SUERVISEUR(state, user) {
+      state.stateAgentParSuperviseurs = user;
     },
      LOGOUT_USER  (state)  {
     state.isLoggedIn = false
@@ -270,7 +270,32 @@ async creationUtilisateur({ commit,dispatch }, objet) {
                  timer: 1500
                });
        //}.catch();
-  },
+    },
+  
+
+
+
+    async getListeAgentParSuperviseur({ commit }, objet) {
+         try {
+    
+             commit('GET_AGENT_PAR_SUERVISEUR', []);
+     
+             const responseSp = await apiGuest.get('/listeAgentParsuperviseur/'+ objet.respo, { 
+                 headers: authHeader() 
+             });
+     
+             const sousPrefectures = responseSp.data.map(sp => ({
+                 id: sp.id,
+                 label: `${sp.nom_prenoms}`,
+             }));
+     
+             commit('GET_AGENT_PAR_SUERVISEUR', sousPrefectures);
+             return sousPrefectures;
+         } catch (error) {
+             console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+             commit('GET_AGENT_PAR_SUERVISEUR', []);
+         }
+     },
   },
   getters: {
 
@@ -280,7 +305,9 @@ async creationUtilisateur({ commit,dispatch }, objet) {
      getterModuleUtilisateurConneceter(state) {
       return state.stateModuleUtilisateurConnecter;
     },
-
+getterAgentParSuperviseurs(state) {
+      return state.stateAgentParSuperviseurs;
+    },
   }
 };
 export default utilisateur;

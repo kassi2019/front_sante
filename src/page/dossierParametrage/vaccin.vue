@@ -1,7 +1,8 @@
 <template>
   <!-- dashboard inner -->
 
-  <div><br/><br/><br/>
+  <div>
+    <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
@@ -9,9 +10,8 @@
         </div>
       </div>
     </div>
-    
-    <div >
-        
+
+    <div>
       <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
           <div
@@ -32,7 +32,6 @@
             </div>
           </div>
           <div class="table_section padding_infor_info">
-            
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>
@@ -47,35 +46,63 @@
                   </tr>
                 </thead>
 
-                <tbody>
-                  <tr v-for="(data, index) in paginatedData" :key="data.id">
-                    <td>{{ index + 1 }}</td>
-                    <!-- <td>{{ data.code }}</td> -->
-                    <td>{{ data.libelle }}</td>
+                <tbody v-for="data in typePatient" :key="data.id">
+                     <tr>
+                    <td>
+                      <button type="button" class="btn btn-primary">
+                      <i class="fa fa-hand-o-right" style="color:black"></i>  Type Patient
+                      </button>
+                      {{ data.libelle }}
+                    </td>
+                  </tr>
+                    <template
+                    v-for="data2 in afficheViccinParCategorie(data.id)"
+                    :key="data2.id"
+                  >
+                  
+                    <tr
+                      
+                    >
+                      <!-- <td></td>
+                      <td></td> -->
 
+                      <td style="">
+                        <button type="button" class="btn btn-success" style="margin-left: 15% !important">
+                         <i class="fa fa-hand-o-right" style="color:black"></i> Vaccin
+                        </button>
+                        {{ data2.libelle }}
+                      </td>
+                 
+                   
                     <td class="button_block">
                       <button
                         type="button"
                         class="btn cur-p btn-success"
                         data-bs-toggle="modal"
                         data-bs-target="#staticBackdropModification"
-                        @click.prevent="AfficheModalModification(data.id)"
+                        @click.prevent="AfficheModalModification(data2.id)"
                       >
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       </button>
                       <button
                         type="button"
                         class="btn cur-p btn-danger"
-                        @click.prevent="supprimervaccins(data.id)"
+                        @click.prevent="supprimervaccins(data2.id)"
                       >
                         <i class="fa fa-trash"></i>
                       </button>
                     </td>
-                  </tr>
+                    </tr>
+                  </template>
+                  <!-- <tr v-for="(data, index) in paginatedData" :key="data.id">
+                   
+
+                    
+                  </tr> -->
                 </tbody>
               </table>
 
-              <div class="pagination">
+              <!-- <div class="pagination">
                 <button
                   @click="changePage(currentPage - 1)"
                   :disabled="currentPage === 1"
@@ -101,7 +128,7 @@
                 >
                   Suivant »
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -135,6 +162,27 @@
               ></button>
             </div>
             <div class="modal-body">
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Type Patient
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                  ></span
+                ></label>
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  v-model="objet.type_patient"
+                >
+                  <option selected></option>
+                  <option value="2">Femme enceinte</option>
+                  <option value="3">Enfant</option>
+                </select>
+              </div>
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">Libelle</label>
                 <div class="input-group">
@@ -202,6 +250,27 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Type Patient
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                  ></span
+                ></label>
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  v-model="ObjetModifier.type_patient"
+                >
+                  <option selected></option>
+                  <option value="2">Femme enceinte</option>
+                  <option value="3">Enfant</option>
+                </select>
+              </div>
+              <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">libelle</label>
                 <div class="input-group">
                   <span class="input-group-text"
@@ -261,17 +330,21 @@ export default {
       isLoading: false, // Définir isLoading ici
 
       objet: {
-        code: "",
+        type_patient: "",
         libelle: "",
       },
       selectItem: null,
       ObjetModifier: {
-        code: "",
+        type_patient: "",
         libelle: "",
       },
       currentPage: 1,
       itemsPerPage: 10,
       totalItems: 0,
+     typePatient: [
+      { id: 2, libelle: 'Femme enceinte' },
+      { id: 3, libelle: 'Enfant' }
+    ]
     };
   },
 
@@ -285,7 +358,7 @@ export default {
   computed: {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
     ...mapGetters(["getterVaccin", "loading"]),
- visiblePages() {
+    visiblePages() {
       let pages = [];
       let startPage = Math.max(1, this.currentPage - 2);
       let endPage = Math.min(this.totalPages, this.currentPage + 2);
@@ -295,7 +368,7 @@ export default {
       }
       return pages;
     },
-
+ 
     // Calcule les éléments à afficher en fonction de la page actuelle
     paginatedData() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -322,13 +395,17 @@ export default {
       "supprimervaccins",
       "modifiervaccins",
     ]),
- changePage(page) {
+       afficheViccinParCategorie($id) {
+  return this.getterVaccin.filter(data=>data.type_patient==$id)
+},
+    changePage(page) {
       if (page > 0 && page <= this.totalPages) {
         this.currentPage = page;
       }
     },
     async enregistretypePatient() {
       let ob = {
+        type_patient: this.objet.type_patient,
         libelle: this.objet.libelle,
       };
       this.enregistrervaccins(ob);
@@ -341,6 +418,8 @@ export default {
     async modifiervaccinss() {
       let ob = {
         id: this.ObjetModifier.id,
+
+        type_patient: this.ObjetModifier.type_patient,
         libelle: this.ObjetModifier.libelle,
       };
       this.modifiervaccins(ob);
@@ -349,9 +428,7 @@ export default {
     },
 
     async AfficheModalModification(id) {
-      this.ObjetModifier = this.getterVaccin.find(
-        (items) => items.id == id
-      );
+      this.ObjetModifier = this.getterVaccin.find((items) => items.id == id);
     },
   },
 };
