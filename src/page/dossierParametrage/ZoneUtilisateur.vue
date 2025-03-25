@@ -18,7 +18,7 @@
             <div class="table-responsive-sm">
               <FormWizard @on-complete="onComplete" color="#457DBB">
                 <TabContent
-                  title="Affectation des zones au Superviseurs"
+                  title="Afféctation du District au Agent"
                   icon="fas fa-user-md"
                   ><div
                     class="full graph_head d-flex justify-content-end align-items-start"
@@ -35,11 +35,130 @@
                         data-bs-target="#staticBackdrop"
                       >
                         <i class="fa fa-plus"></i>
-                        AJOUTER SUPERVISEUR
+                        AJOUTER DISTRICT
                       </button>
                     </div>
                   </div>
 
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Libelle</th>
+
+                        <th style="width: 9% !important; text-align: center">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody
+                      v-for="data in afficherListeDesDistrict"
+                      :key="data.utilisateur_id"
+                    >
+                      <tr style="background-color: #c4d7ed">
+                        <td colspan="2">
+                          <i class="fa fa-share"></i>
+                          <span style="font-weight: bolder"
+                            >Agent du district</span
+                          >
+                          :
+                          <span style="font-size: 15px !important">{{
+                            data.nom_utilisateur
+                          }}</span>
+                        </td>
+
+                        <td class="button_block"></td>
+                      </tr>
+                      <tr
+                        v-for="data1 in afficheZoneParUtilisateur(
+                          data.utilisateur_id
+                        )"
+                        :key="data1.aire_sanitaire_id"
+                      >
+                        <td></td>
+
+                        <td>
+                          <i class="fa fa-hand-o-right"> </i>
+                          <span style="font-weight: bolder">District</span>
+                          :
+                          {{ data1.libelle_district }}
+                        </td>
+                        <td class="button_block">
+                          <button
+                            type="button"
+                            class="btn cur-p btn-success"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdropModification1"
+                            @click.prevent="AfficheModalModification(data1.id)"
+                          >
+                            <i
+                              class="fa fa-pencil-square-o"
+                              aria-hidden="true"
+                            ></i>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn cur-p btn-danger"
+                            @click.prevent="supprimerZoneUtilisateur(data1.id)"
+                          >
+                            <i class="fa fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- <div class="pagination">
+                    <button
+                      @click="changePage(currentPage - 1)"
+                      :disabled="currentPage === 1"
+                      class="btn-pagination"
+                    >
+                      « Précédent
+                    </button>
+
+                    <button
+                      v-for="page in visiblePages"
+                      :key="page"
+                      @click="changePage(page)"
+                      :class="{ active: currentPage === page }"
+                      class="btn-pagination"
+                    >
+                      {{ page }}
+                    </button>
+
+                    <button
+                      @click="changePage(currentPage + 1)"
+                      :disabled="currentPage === totalPages"
+                      class="btn-pagination"
+                    >
+                      Suivant »
+                    </button>
+                  </div> -->
+                </TabContent>
+                <TabContent
+                  title="Affectation des zones au Superviseurs"
+                  icon="fas fa-user-md"
+                  ><div
+                    class="full graph_head d-flex justify-content-end align-items-start"
+                  >
+                    <div
+                      class="heading1 margin_0 d-flex justify-content-between align-items-center"
+                    >
+                      <h2></h2>
+                      <!-- Aligner le bouton à droite et ouvrir le modal -->
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary ms-auto btn-rounded-shadow"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdropSup"
+                      >
+                        <i class="fa fa-plus"></i>
+                        AJOUTER SUPERVISEUR
+                      </button>
+                    </div>
+                  </div>
+              
                   <table class="table">
                     <thead>
                       <tr>
@@ -81,7 +200,7 @@
                             >Aire de sanitaire</span
                           >
                           :
-                          {{ data1.libelle }}
+                          {{ data1.libelle_aire_sanitaire }}
                         </td>
                         <td class="button_block">
                           <button
@@ -107,7 +226,7 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="pagination">
+                  <!-- <div class="pagination">
                     <button
                       @click="changePage(currentPage - 1)"
                       :disabled="currentPage === 1"
@@ -133,7 +252,7 @@
                     >
                       Suivant »
                     </button>
-                  </div>
+                  </div> -->
                 </TabContent>
                 <TabContent
                   title="Affectation des zones au agents"
@@ -189,7 +308,7 @@
                         v-for="data1 in afficheZoneParUtilisateur(
                           data.utilisateur_id
                         )"
-                        :key="data1.zone_intervention_id"
+                        :key="data1.id"
                       >
                         <td></td>
 
@@ -225,7 +344,7 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="pagination">
+                  <!-- <div class="pagination">
                     <button
                       @click="changePage(currentPage - 1)"
                       :disabled="currentPage === 1"
@@ -251,8 +370,8 @@
                     >
                       Suivant »
                     </button>
-                  </div></TabContent
-                >
+                  </div> -->
+                </TabContent>
               </FormWizard>
             </div>
           </div>
@@ -277,7 +396,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Afféctation Zone des Agents
+                Afféctation Zone
               </h5>
               <button
                 type="button"
@@ -289,11 +408,11 @@
             <div class="modal-body">
               <FormWizard @on-complete="onComplete" color="#457DBB">
                 <TabContent
-                  title="Affectation des zones au Superviseurs"
+                  title="Afféctation du District au Agent"
                   icon="fa fa-user-tie"
                   ><div class="mb-3">
                     <label for="inputWithIcon" class="form-label"
-                      >Superviseurs</label
+                      >Agent du district</label
                     >
                     <select
                       class="form-select form-select-lg mb-3"
@@ -301,23 +420,23 @@
                       v-model="utilisateur_id"
                     >
                       <option
-                        v-for="data in getterResponsables"
+                        v-for="data in afficheListeAgentDistrict"
                         :key="data.id"
-                        :value="data.responsable_id"
+                        :value="data.id"
                       >
-                        {{ NomResponsable(data.responsable_id) }}
+                        {{ data.nom_responsable }}
                       </option>
                     </select>
                   </div>
 
                   <div class="mb-3">
                     <label for="inputWithIcon" class="form-label"
-                      >Aire de sanitaire</label
+                      >District</label
                     >
                     <treeselect
                       v-model="StateModules"
                       :multiple="true"
-                      :options="getterAffectationzone"
+                      :options="getterAffectationDistrict"
                     />
                   </div>
                   <div class="modal-footer">
@@ -332,7 +451,7 @@
                       type="button"
                       class="btn btn-success"
                       :disabled="loading"
-                      @click.prevent="enregistreModule()"
+                      @click.prevent="enregistrerDistrictParAgent()"
                     >
                       Enregistrer
                     </button>
@@ -477,6 +596,125 @@
           </div>
         </div>
       </div>
+
+      <div
+        class="modal fade"
+        id="staticBackdropSup"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="staticBackdropLabel"
+                style="text-transform: capitalize !important"
+              >
+                Afféctation Zone
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <FormWizard @on-complete="onComplete" color="#457DBB">
+                <TabContent
+                  title="Afféctation du District au Agent"
+                  icon="fa fa-user-tie"
+                  ><div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Agent du districts</label
+                    >
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg example"
+                      v-model="utilisateur_distict_id"
+                    >
+                      <option
+                        v-for="data in afficheListeAgentDistrict"
+                        :key="data.id"
+                        :value="data.id"
+                      >
+                        {{ data.nom_responsable }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="md-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Nom Superviseur
+                      <span
+                        style="
+                          color: red;
+                          font-weight: 900 !important;
+                          font-size: 15px;
+                        "
+                        ></span
+                      ></label
+                    >
+                    <div class="input-group">
+                      <model-list-select
+                        style=""
+                        :list="affichesSuperviseurParDistrict"
+                        v-model="responsable_id"
+                        option-value="id"
+                        option-text="groupe"
+                        placeholder="séléctionner"
+                      >
+                      </model-list-select>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >District</label
+                    >
+                    <treeselect
+                      v-model="StateModules"
+                      :multiple="true"
+                      :options="getterDistrictParAgent"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputWithIcon" class="form-label"
+                      >Aire sanitaire</label
+                    >
+                    <treeselect
+                      v-model="StateModules"
+                      :multiple="true"
+                      :options="getterDistrictParAgent"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >
+                      Fermer
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-success"
+                      :disabled="loading"
+                      @click.prevent="enregistrerDistrictParAgent()"
+                    >
+                      Enregistrer
+                    </button>
+                  </div>
+                </TabContent>
+              </FormWizard>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- modal de modification -->
       <div
         class="modal fade"
@@ -567,13 +805,7 @@
         </div>
       </div>
 
-
-
-
-
-
-
-        <div
+      <div
         class="modal fade"
         id="staticBackdropModification1"
         data-bs-backdrop="static"
@@ -675,6 +907,7 @@ import { FormWizard, TabContent } from "vue3-form-wizard";
 // import the component
 import { ModelListSelect } from "vue-search-select";
 import Treeselect from "vue3-treeselect";
+
 // import the styles
 
 export default {
@@ -683,6 +916,7 @@ export default {
     return {
       StateModules: [],
       utilisateur_id: null,
+      utilisateur_distict_id:"",
       isLoading: false, // Définir isLoading ici
       responsable_id: 0,
       aire_sanitaire_id: 0,
@@ -710,6 +944,7 @@ export default {
     this.getListeUtilisateur();
     this.getzoneintervention();
     this.getAireSanitaire();
+    this.getAffectationDistrict();
     this.getAffectationZone();
     this.getZoneParUtilisateur();
     this.getzoneUtilisateur();
@@ -718,10 +953,12 @@ export default {
   computed: {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
     ...mapGetters([
-      "getterModule","getteraireSanitaires",
+      "getterModule",
+      "getteraireSanitaires",
       "getterResponsables",
       "loading",
       "getterRole",
+      "getterAffectationDistrict",
       "getterAffectationzone",
       "gettersZoneResponsable",
       "getterZoneUtilisateur",
@@ -730,13 +967,37 @@ export default {
       "getterUtilisateur",
       "getterAireSanitaireSup",
       "getterZoneInterventionSup",
-      "getterAgentParSuperviseurs",
+      "getterAgentParSuperviseurs","getterDistrictParAgent"
     ]),
-  afficherListeDesAgent() {
-      return this.getterZoneUtilisateur.filter(data => data.responsable_id != null);
+
+    affichesSuperviseurParDistrict() {
+      let collet = [];
+      this.AfficheSuperviseurParDistrict.filter((item) => {
+        let data = {
+          id: item.id,
+          // code:item.code,
+          groupe: item.nom_responsable,
+        };
+        collet.push(data);
+      });
+      return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
+    },
+    AfficheSuperviseurParDistrict() {
+      return this.getterUtilisateur.filter(
+        (qtreel) => qtreel.responsable_id == this.utilisateur_distict_id
+      );
+    },
+    afficheListeAgentDistrict() {
+      return this.getterUtilisateur.filter((data) => data.code_role == 4);
+    },
+    afficherListeDesAgent() {
+      return this.getterZoneUtilisateur.filter((data) => data.code_role == 2);
+    },
+    afficherListeDesDistrict() {
+      return this.getterZoneUtilisateur.filter((data) => data.code_role == 4);
     },
     afficherListeDesSuperviseur() {
-      return this.getterZoneUtilisateur.filter(data => data.responsable_id == null);
+      return this.getterZoneUtilisateur.filter((data) => data.code_role == 3);
     },
     afficheAgentParSuperviseurs() {
       let collet = [];
@@ -773,7 +1034,6 @@ export default {
       return pages;
     },
 
-
     // Calcule les éléments à afficher en fonction de la page actuelle
     paginatedData() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -782,8 +1042,11 @@ export default {
         startIndex + this.itemsPerPage
       );
     },
+
     totalPages() {
-      return Math.ceil(this.afficherListeDesSuperviseur.length / this.itemsPerPage);
+      return Math.ceil(
+        this.afficherListeDesSuperviseur.length / this.itemsPerPage
+      );
     },
     listeNomResponsable() {
       return this.getterUtilisateur.filter(
@@ -823,7 +1086,8 @@ export default {
 
   methods: {
     ...mapActions([
-      "getListeUtilisateur","getAireSanitaire",
+      "getListeUtilisateur",
+      "getAireSanitaire",
       "getResponsable",
       "getzoneintervention",
       "getAffectationZone",
@@ -833,9 +1097,11 @@ export default {
       "supprimerZoneUtilisateur",
       "modifierZoneUtilisateur",
       "enregistrerZoneAuAgent",
-      "getListeAireSanitaireParSuperviseur",
+      "getListeAireSanitaireParSuperviseur","getListeDistrictParAgent",
       "getListeZoneInterventionParSuperviseur",
       "getListeAgentParSuperviseur",
+      "getAffectationDistrict",
+      "enregistrerDesDistrictParAgent",
     ]),
     changePage(page) {
       if (page > 0 && page <= this.totalPages) {
@@ -847,7 +1113,15 @@ export default {
         (qtreel) => qtreel.utilisateur_id == $id
       );
     },
+    async enregistrerDistrictParAgent() {
+      let ob = {
+        utilisateur_id: this.utilisateur_id,
 
+        DataModule: this.StateModules,
+      };
+      this.enregistrerDesDistrictParAgent(ob);
+      StateModules = [];
+    },
     async enregistrerZoneParAgent() {
       let ob = {
         utilisateur_id: this.utilisateur_id,
@@ -872,7 +1146,7 @@ export default {
         id: this.ObjetModifier.id,
         zone_intervention_id: this.ObjetModifier.zone_intervention_id,
         aire_sanitaire_id: this.ObjetModifier.aire_sanitaire_id,
-        
+
         utilisateur_id: this.ObjetModifier.utilisateur_id,
       };
       this.modifierZoneUtilisateur(ob);
@@ -887,6 +1161,17 @@ export default {
   },
 
   watch: {
+    
+    utilisateur_distict_id: function (value) {
+      let objet = {
+        dist: value,
+      };
+      //this.getListeNatureEconomiqueParActiviteHs(objet);
+      this.getListeDistrictParAgent(objet);
+  
+
+      // }
+    },
     responsable_id: function (value) {
       let objet = {
         respo: value,

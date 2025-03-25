@@ -54,6 +54,7 @@
                       </button>
                       {{ data.libelle }}
                     </td>
+                    <td></td>
                   </tr>
                     <template
                     v-for="data2 in afficheViccinParCategorie(data.id)"
@@ -72,7 +73,7 @@
                         </button>
                         {{ data2.libelle }}
                       </td>
-                 
+                 <td></td>
                    
                     <td class="button_block">
                       <button

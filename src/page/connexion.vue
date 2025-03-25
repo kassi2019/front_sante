@@ -1,6 +1,6 @@
 <template>
   <div class="d-lg-flex half">
-    <div class="contents order-2 order-md-1" style=" border-radius: 10% !important;">
+    <div class="contents order-2 order-md-1">
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7">
@@ -16,7 +16,10 @@
             <p class="mb-4"></p>
             <form action="#" method="post">
               <div class="form-group first">
-                <label for="username" style="font-weight: bold !important"  class="logo-text1"
+                <label
+                  for="username"
+                  style="font-weight: bold !important"
+                  class="logo-text1"
                   >Matricule ou Téléphone</label
                 >
                 <input
@@ -24,11 +27,13 @@
                   class="form-control"
                   placeholder="Entrer le matricule ou téléphone"
                   v-model="numero"
-                   style=" border-radius: 20% !important;"
                 />
               </div>
               <div class="form-group last mb-3">
-                <label for="password" style="font-weight: bold !important" class="logo-text1"
+                <label
+                  for="password"
+                  style="font-weight: bold !important"
+                  class="logo-text1"
                   >Mot de Passe</label
                 >
                 <input
@@ -37,7 +42,6 @@
                   id="password"
                   placeholder="Entrer le mot de passe"
                   v-model="password"
-                  style=" border-radius: 20% !important;"
                 />
               </div>
 
@@ -57,7 +61,12 @@
                 type="submit"
                 value="SE CONNECTER"
                 class="btn btn-block btn-primary"
-                style="font-weight: bold !important; width: 50%; float: right;border-radius: 20% !important;"
+                style="
+                  font-weight: bold !important;
+                  width: 50%;
+                  float: right;
+                  border-radius: 20% !important;
+                "
               />
             </form>
           </div>
@@ -70,17 +79,14 @@
         background-image: url('/assetLogin/images/logo8.jpg');
         width: 60%;
         height: 100%;
-      
-        filter: blur(0px); /* Applique un flou sur l'image */
+        filter: blur(0px);
         background-position: center;
         background-repeat: no-repeat;
-        background-size:auto;
-        box-shadow: 50px 50px 70px 70px #EEEEC6;
-        border-radius: 20% !important;
-        position:initial;
+        background-size: auto;
+        position: initial;
         top: 0;
         left: 0;
-        z-index: -1; /* Assure que l'image se trouve derrière le contenu */
+        z-index: -1;
       "
     ></div>
   </div>
@@ -183,7 +189,7 @@ img {
   font-weight: 700;
   font-size: 16px;
   letter-spacing: 0px;
-  color:#000;
+  color: #000;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
   font-style: italic;

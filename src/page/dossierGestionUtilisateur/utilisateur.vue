@@ -1,6 +1,7 @@
 <template>
   <!-- dashboard inner -->
-  <div><br/><br/><br/>
+  <div>
+    <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
@@ -32,7 +33,6 @@
             </div>
           </div>
           <div class="table_section padding_infor_info">
-           
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>
@@ -41,8 +41,8 @@
                     <th style="width: 15%">Matricule / Numéro</th>
                     <th style="width: 15%">Nom</th>
                     <th style="width: 30%">Prenoms</th>
-                    <th style="width: 15%">Rôle</th>
-                    <th style="width: 15%">Resposable</th>
+                    <th style="width: 30%">Rôle</th>
+                    <!-- <th style="width: 15%">Resposable</th> -->
                     <th style="width: 9% !important; text-align: center">
                       Action
                     </th>
@@ -57,7 +57,7 @@
                     <td>{{ data.noms }}</td>
                     <td>{{ data.prenoms }}</td>
                     <td>{{ data.libelle_role }}</td>
-                    <td>{{ nom_responsable(data.responsable_id) }}</td>
+                    <!-- <td>{{ nom_responsable(data.responsable_id) }}</td> -->
                     <td class="button_block">
                       <button
                         type="button"
@@ -229,13 +229,13 @@
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg example"
-                    v-model="objet.id_roles"
+                    v-model="id_roles"
                   >
                     <option selected></option>
                     <option
                       v-for="data in getterRole"
                       :key="data.id"
-                      :value="data.id"
+                      :value="data.code"
                     >
                       {{ data.libelle }}
                     </option>
@@ -266,9 +266,9 @@
                     />
                   </div>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" v-if="id_roles==2 || id_roles==3">
                   <label for="inputWithIcon" class="form-label"
-                    >Responsale
+                    >{{ libellerole(concateneCodeRole) }}
                     <span
                       style="
                         color: red;
@@ -284,11 +284,11 @@
                   >
                     <option selected></option>
                     <option
-                      v-for="data in getterUtilisateur"
+                      v-for="data in getterResponsables"
                       :key="data.id"
-                      :value="data.id"
+                      :value="data.utilisateur_id"
                     >
-                      {{ data.noms }} {{ data.prenoms }}
+                      {{ data.nom_utilisateur }}
                     </option>
                   </select>
                 </div>
@@ -515,13 +515,12 @@ export default {
   data() {
     return {
       isLoading: false, // Définir isLoading ici
-
+      id_roles: 1,
       objet: {
         password: "",
         noms: "",
         prenoms: "",
         numero: "",
-        id_roles: "",
         responsable_id: "",
       },
       selectItem: null,
@@ -545,13 +544,46 @@ export default {
   created() {
     //this.getModules();
     this.getRoles();
+    this.getResponsable();
     this.getListeUtilisateur();
   },
 
   computed: {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
-    ...mapGetters(["loading", "getterRole", "getterUtilisateur"]),
-    nom_responsable() {
+    ...mapGetters([
+      "loading",
+      "getterRole",
+      "getterUtilisateur",
+      "getterResponsables",
+    ]),
+    concateneCodeRole() {
+     return parseInt(this.id_roles) + 1 
+    },
+    libellerole() {
+      return (id) => {
+        if (id != null && id != "") {
+          let qtereel = this.getterResponsables.find((qtreel) => qtreel.code == id);
+
+          if (qtereel) {
+            return qtereel.libelle_role;
+          }
+          return "";
+        }
+      };
+    },
+    idrole() {
+      return (id) => {
+        if (id != null && id != "") {
+          let qtereel = this.getterRole.find((qtreel) => qtreel.code == id);
+
+          if (qtereel) {
+            return qtereel.id;
+          }
+          return "";
+        }
+      };
+    },
+    id_responsable() {
       return (id) => {
         if (id != null && id != "") {
           let qtereel = this.getterUtilisateur.find(
@@ -559,7 +591,7 @@ export default {
           );
 
           if (qtereel) {
-            return qtereel.noms.concat("  ", qtereel.prenoms);
+            return qtereel.responsable_id;
           }
           return "";
         }
@@ -604,6 +636,7 @@ export default {
       "getRoles",
       "modifierUtilisateur",
       "supprimerUtilisateur",
+      "getResponsable",
     ]),
     changePage(page) {
       if (page > 0 && page <= this.totalPages) {
@@ -616,8 +649,9 @@ export default {
         prenoms: this.objet.prenoms,
         password: this.objet.password,
         numero: this.objet.numero,
-        id_roles: this.objet.id_roles,
+        id_roles: this.idrole(this.id_roles),
         responsable_id: this.objet.responsable_id,
+        respo_superieur_id: this.id_responsable(this.objet.responsable_id),
       };
       this.creationUtilisateur(ob);
       if (
@@ -625,7 +659,7 @@ export default {
         this.objet.prenoms != "" ||
         this.objet.password != "" ||
         this.objet.numero != "" ||
-        this.objet.id_roles != ""
+        this.id_roles != ""
       ) {
         this.objet = {
           noms: "",
@@ -656,6 +690,16 @@ export default {
       this.ObjetModifier = this.getterUtilisateur.find(
         (items) => items.id == id
       );
+    },
+  },
+
+  watch: {
+    id_roles: function (value) {
+      let objet = {
+        role: value,
+      };
+
+      this.getResponsable(objet);
     },
   },
 };

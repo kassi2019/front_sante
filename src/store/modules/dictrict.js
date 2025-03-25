@@ -10,7 +10,7 @@ const role ={
   state: {
  
     districts: [] ,
-    StateAffectationZone: [],
+    StateAffectationDistrict: [],
     stateZoneResponsable: [],
       stateCarteZone:[],
   //   loading: false,// ajout de l'état de chargement
@@ -24,9 +24,9 @@ const role ={
     SET_CARTE_ZONE(state, StateModule) {
     state.stateCarteZone = StateModule;
     },
-// SET_AFFECTATION_ZONE(state, StateModule) {
-//     state.StateAffectationZone = StateModule;
-//     },
+SET_AFFECTATION_DISTRICT(state, StateModule) {
+    state.StateAffectationDistrict = StateModule;
+    },
      SET_DISTRICT(state, District){
        state.districts = District;
     },
@@ -57,7 +57,27 @@ const role ={
   
   actions: {
   
-
+   async getAffectationDistrict({ commit }) {
+       
+          try {
+            // Effacer les sous-préfectures existantes avant de charger de nouvelles
+            commit('SET_AFFECTATION_DISTRICT', []);
+            
+            // Appel à l'API ou à une autre source de données
+                   const responseSp = await apiGuest.get('/district', { headers: authHeader() });
+      
+            const sousPrefectures = responseSp.data.map(sp => ({
+              id: sp.id,
+              label: `${sp.libelle}`,
+            }));
+      
+            commit('SET_AFFECTATION_DISTRICT', sousPrefectures);
+            return sousPrefectures;
+          } catch (error) {
+            console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+            commit('SET_AFFECTATION_DISTRICT', []);
+          }
+      },
     async getDistrict({ commit }) {
     // Activer le loader
     // commit('SET_LOADING', true);
@@ -196,9 +216,9 @@ async supprimerDistrict({ commit,dispatch }, id) {
     getterDistrict(state) {
       return state.districts.sort((a, b) => (a.libelle > b.libelle) ? -1 : 1)
     },
-// getterAffectationzone(state) {
-//       return state.StateAffectationZone.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
-//     },
+getterAffectationDistrict(state) {
+      return state.StateAffectationDistrict.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
 gettersZoneResponsable(state) {
       return state.stateZoneResponsable
     },

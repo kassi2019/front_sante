@@ -258,7 +258,7 @@ async creationUtilisateur({ commit,dispatch }, objet) {
             });
             return;
           }
-  const response = await apiGuest.post('/register', objet);
+  const response = await apiGuest.post('/register', objet, { headers: authHeader() });
          commit('AJOUTER_UTILISATEUR', response.data); // Sauvegarder le produit dans le store
   dispatch('getListeUtilisateur');
 

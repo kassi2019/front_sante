@@ -14,9 +14,13 @@ const ZoneUtilisateur ={
     stateZoneInterventionSup:[],
     stateZoneParUtilisateur: [],
     stateZoneParAgent: [],
-    stateResponsables:[]
+    stateResponsables: [],
+    stateDistrictParAgent:[]
   },
   mutations: {
+     SET_LISTE_DISTRICT_PAR_AGENT(state, StateModule) {
+    state.stateDistrictParAgent = StateModule;
+    },
      SET_LISTE_ZONE_INTERVENTION_SUP(state, StateModule) {
     state.stateZoneInterventionSup = StateModule;
     },
@@ -57,6 +61,33 @@ SET_ZONE_UTILISATEUR(state, StateModule) {
   },
   
   actions: {
+
+
+async getListeDistrictParAgent({ commit }, objet) {
+     try {
+
+         commit('SET_LISTE_DISTRICT_PAR_AGENT', []);
+ 
+         const responseSp = await apiGuest.get('/afficheDistrictParAgent/'+ objet.dist, { 
+             headers: authHeader() 
+         });
+ 
+         const sousPrefectures = responseSp.data.map(sp => ({
+             id: sp.district_id,
+             label: `${sp.libelle_district}`,
+         }));
+ 
+         commit('SET_LISTE_DISTRICT_PAR_AGENT', sousPrefectures);
+         return sousPrefectures;
+     } catch (error) {
+         console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+         commit('SET_LISTE_DISTRICT_PAR_AGENT', []);
+     }
+    },
+
+
+
+
 async supprimerZoneUtilisateur({ commit,dispatch }, id) {
   // Show the confirmation dialog with SweetAlert2
   Swal.fire({
@@ -200,10 +231,10 @@ async modifierZoneUtilisateur({ commit,dispatch }, nouveau) {
     },
  
  
- async getResponsable({ commit }) {
+ async getResponsable({ commit }, objet) {
 
         try {
-            const resultat = await apiGuest.get('/Responsable', { headers: authHeader() });
+            const resultat = await apiGuest.get('/Responsable/'+ objet.role, { headers: authHeader() });
             
             // Mettre à jour les données dans le store
             commit('SET_RESPONSABLE', resultat.data);
@@ -260,9 +291,40 @@ async modifierZoneUtilisateur({ commit,dispatch }, nouveau) {
          console.error("Erreur lors de la récupération des Sous-préfectures:", error);
          commit('SET_LISTE_ZONE_INTERVENTION_SUP', []);
      }
- },
+    },
+       
+       
+       
+       async enregistrerDesDistrictParAgent({ commit,dispatch }, objet) {
+
+        if (!objet.utilisateur_id) {
+            commit('SET_CHAMP_VIDE_TRUE');
+            Swal.fire({
+              icon: 'error',
+              title: 'Champs vides',
+              text: 'Veuillez remplir tous les champs.',
+              confirmButtonText: 'OK',
+            });
+            return;
+          }
+      const response = await apiGuest.post('/enregistrerDistrictParAgent', objet, { headers: authHeader() });
+         commit('AJOUTER_ZONE_UTILISATEUR', response.data); // Sauvegarder le produit dans le store
+ dispatch('getzoneUtilisateur');
+    dispatch('getZoneParUtilisateur');
+          Swal.fire({
+                 position: "top-end",
+                 icon: "success",
+                 title: "Enregistrement réussie",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
+  },
   },
   getters: {
+    
+     getterDistrictParAgent(state) {
+    return state.stateDistrictParAgent;
+    },
  getterZoneUtilisateur(state) {
     return state.stateZoneUtilisateur;
     },
