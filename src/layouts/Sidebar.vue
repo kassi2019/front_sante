@@ -23,7 +23,9 @@
             />
           </div>
           <div class="user_info">
-            <h1>{{ nameUser }}</h1>
+            <h3>{{ nameUser }}</h3>
+            <p style="color: aliceblue;">Rôle : {{ libelleRole(idRole) }}</p>
+            
             <p @click.prevent="logoutUser()" style="cursor: pointer">
               <span class="online_animation"></span> Se déconnecter
             </p>
@@ -41,7 +43,7 @@
 
 <script>
 //import { useStore } from "vuex"; // Importation du store
-import { mapActions } from "vuex";
+import { mapActions,mapGetters } from "vuex";
 import parametre from "../layouts/menu/parametre.vue";
 import cartographique from "../layouts/menu/cartographique.vue";
 import tableauBord from "../layouts/menu/tableauBord.vue";
@@ -62,17 +64,38 @@ export default {
   },
   created() {
     this.id_module = localStorage.getItem("id_module");
+    this.getRoles()
   },
   computed: {
+        ...mapGetters(["getterRole", "loading"]),
+    idRole() {
+      let objLinea = localStorage.getItem("User");
+      let objJson = JSON.parse(objLinea);
+      return objJson.id_roles;
+    },
     nameUser() {
       let objLinea = localStorage.getItem("User");
       let objJson = JSON.parse(objLinea);
       return objJson.noms;
     },
+
+
+       libelleRole() {
+      return (id) => {
+        if (id != null && id != "") {
+          let qtereel = this.getterRole.find((qtreel) => qtreel.id == id);
+
+          if (qtereel) {
+            return qtereel.libelle;
+          }
+          return "";
+        }
+      };
+    },
   },
 
   methods: {
-    ...mapActions(["login", "logoutUser"]),
+    ...mapActions(["login", "logoutUser","getRoles"]),
 
     // Appeler une action pour récupérer l'utilisateur
     async getSuiviSaisisPassif() {

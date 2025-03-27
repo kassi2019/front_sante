@@ -34,6 +34,7 @@
             "
             >{{ nameUser }}  {{ prenomUser }}</p
           >
+          
           <span
             @click.prevent="logoutUser()"
             style="

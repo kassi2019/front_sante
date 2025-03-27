@@ -14,13 +14,13 @@
       <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
           <FormWizard @on-complete="onComplete" color="#457DBB">
-            <h1 style="text-align: center">
-            Nom de Famille : {{ AfficheNomFamille(idChefFamille) }}
-            </h1>
-            <TabContent title="SUIVI EN COURS" icon="fa fa-hourglass-half">
+            <h5 style="text-align: center">
+              Nom du ménage : {{ AfficheNomFamille(idChefFamille) }}
+            </h5>
+            <TabContent title="Bénéficiaire de soins" icon="fa fa-hourglass-half">
               <div class="table_section padding_infor_info">
                 <span style="font-size: 15px; font-weight: bold"
-                  >Traitement en cours</span
+                  >Bénéficiaire de soins</span
                 >
                 <div class="table-responsive-sm">
                   <table class="table">
@@ -31,11 +31,11 @@
                         <th>Nom</th>
                         <th>Prenoms</th>
                         <th>Date_naissance</th>
-                        <th>Lieu_naissance</th>
+
                         <th>Sexe</th>
                         <th>Type Patient</th>
 
-                        <th>numero_cmu</th>
+                        <th>Etat</th>
                         <th style="width: 9% !important; text-align: center">
                           Action
                         </th>
@@ -49,15 +49,62 @@
                         <td>{{ data.nom }}</td>
                         <td>{{ data.prenoms }}</td>
                         <td>{{ data.date_naissance }}</td>
-                        <td>{{ data.lieu_naissance }}</td>
+
                         <td>{{ data.sexe }}</td>
                         <td>
                           {{ AfficheTypePatient(data.type_patient_id) }}
                         </td>
-
-                        <td>{{ data.numero_cmu }}</td>
+                        <td  v-if="data.type_patient_id == 2 && data.etat == 0">
+                        <span
+                          class="badge text-bg-warning"
+                         
+                          >
+                            {{
+                              afficherStatutPatient(
+                                data.etat,
+                                data.type_patient_id
+                              )
+                            }}
+                          </span
+                        ></td>
+                        <td  v-else-if="
+                            data.type_patient_id == 2 && data.etat == 2
+                          ">
+                        <span
+                          class="badge text-bg-success"
+                         
+                          >
+                            {{
+                              afficherStatutPatient(
+                                data.etat,
+                                data.type_patient_id
+                              )
+                            }}
+                          </span
+                        ></td>
+                        <td  v-else-if="data.etat == 1">
+                        <span
+                          class="badge text-bg-danger"
+                         
+                          >
+                            {{
+                              afficherStatutPatient(
+                                data.etat,
+                                data.type_patient_id
+                              )
+                            }}
+                          </span
+                        ></td>
+                        <td v-else></td
+                        >
                         <td class="button_block">
-                          <button type="button" class="btn btn-info">
+                          <button
+                            type="button"
+                            class="btn btn-info"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticEtatPatient"
+                            @click.prevent="AfficheModalModification(data.id)"
+                          >
                             <i class="fa fa-sync-alt" aria-hidden="true"></i>
                           </button>
                           <button
@@ -114,7 +161,7 @@
                 </div>
               </div>
             </TabContent>
-            <TabContent title="SUIVI TERMINE" icon="fa fa-flag-checkered">
+            <!-- <TabContent title="SUIVI TERMINE" icon="fa fa-flag-checkered">
               <div class="table_section padding_infor_info">
                 <span style="font-size: 15px; font-weight: bold"
                   >Traitement en cours</span
@@ -124,7 +171,7 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <!-- <th>Code</th> -->
+                  
                         <th>Nom</th>
                         <th>Prenoms</th>
                         <th>Date_naissance</th>
@@ -145,7 +192,7 @@
                         :key="data.id"
                       >
                         <td>{{ index + 1 }}</td>
-                        <!-- <td>{{ data.code }}</td> -->
+                      
                         <td>{{ data.nom }}</td>
                         <td>{{ data.prenoms }}</td>
                         <td>{{ data.date_naissance }}</td>
@@ -213,7 +260,7 @@
                   </div>
                 </div>
               </div>
-            </TabContent>
+            </TabContent> -->
           </FormWizard>
         </div>
       </div>
@@ -532,6 +579,129 @@
           </div>
         </div>
       </div>
+
+      <div
+        class="modal fade"
+        id="staticEtatPatient"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="staticBackdropLabel"
+                style="text-transform: capitalize !important"
+              >
+                Etat Bénéficiaire de soins
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Etat du Bénéficiaire de soins
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                    >*</span
+                  ></label
+                >
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  v-model="objetPatient.etat"
+                >
+                  <option selected></option>
+                  <option
+                    value="0"
+                    v-if="
+                      (objetPatient.etat == 0 &&
+                        objetPatient.type_patient_id == 2) ||
+                      (objetPatient.etat == 2 &&
+                        objetPatient.type_patient_id == 2) ||
+                      (objetPatient.etat == 1 &&
+                        objetPatient.type_patient_id == 2)
+                    "
+                  >
+                    Grossesse en cours
+                  </option>
+
+                  <option value="1">Décede</option>
+                  <option
+                    value="2"
+                    v-if="
+                      (objetPatient.etat == 0 &&
+                        objetPatient.type_patient_id == 2) ||
+                      (objetPatient.etat == 2 &&
+                        objetPatient.type_patient_id == 2) ||
+                      (objetPatient.etat == 1 &&
+                        objetPatient.type_patient_id == 2)
+                    "
+                  >
+                    Fin de Grossesse
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Date d'effect
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                    >*</span
+                  ></label
+                >
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez Nom"
+                    v-model="objetPatient.date_effect"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Fermer
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                :disabled="loading"
+                @click.prevent="modifierpat()"
+              >
+                Modifier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -554,6 +724,8 @@ export default {
         libelle: "",
       },
       objetPatient: {
+        date_effect: "",
+        etat: "",
         nom: "",
         date_naissance: "",
         sexe: "",
@@ -601,9 +773,7 @@ export default {
     recuperationIdZone() {
       return (id) => {
         if (id != null && id != "") {
-          let qtereel = this.gettermenages.find(
-            (qtreel) => qtreel.id == id
-          );
+          let qtereel = this.gettermenages.find((qtreel) => qtreel.id == id);
 
           if (qtereel) {
             return qtereel.zone_intervention_id;
@@ -612,10 +782,12 @@ export default {
         }
       };
     },
-AfficheTypePatient() {
+    AfficheTypePatient() {
       return (id) => {
         if (id != null && id != "") {
-          const qtereel = this.getterTypePatient.find((qtreel) => qtreel.id == id);
+          const qtereel = this.getterTypePatient.find(
+            (qtreel) => qtreel.id == id
+          );
 
           if (qtereel) {
             return qtereel.libelle;
@@ -630,7 +802,7 @@ AfficheTypePatient() {
           const qtereel = this.gettermenages.find((qtreel) => qtreel.id == id);
 
           if (qtereel) {
-            return qtereel.nom.concat('  ',qtereel.prenoms);
+            return qtereel.nom.concat("  ", qtereel.prenoms);
           }
           return "6";
         }
@@ -679,7 +851,9 @@ AfficheTypePatient() {
       );
     },
     afficheLesPatientEnCours() {
-      return this.getterpatient.filter((data) => data.encours == 0 && data.chef_famille_id==this.idChefFamille);
+      return this.getterpatient.filter(
+        (data) => data.chef_famille_id == this.idChefFamille
+      );
     },
 
     totalPages() {
@@ -696,7 +870,10 @@ AfficheTypePatient() {
       );
     },
     afficheLesPatientTerminer() {
-      return this.getterpatient.filter((data) => data.encours == 1 && data.chef_famille_id==this.idChefFamille);
+      return this.getterpatient.filter(
+        (data) =>
+          data.encours == 1 && data.chef_famille_id == this.idChefFamille
+      );
     },
 
     totalPagesPatient() {
@@ -721,15 +898,13 @@ AfficheTypePatient() {
       "getmenages",
       "getTypePatient",
     ]),
-    afficherStatutPatient($id) {
-      if ($id == 1) {
-        return "Enfants de moins de 5 ans";
-      } else if ($id == 2) {
-        return "femme enceinte";
-      }else if ($id == 2) {
-        return "femme enceinte";
-      }else if ($id == 2) {
-        return "femme enceinte";
+    afficherStatutPatient($id, $id1) {
+      if ($id == 0 && $id1 == 2) {
+        return "Grossesse en cours";
+      } else if ($id == 1) {
+        return "Decede";
+      } else if ($id == 2 && $id1 == 2) {
+        return "Fin de Grossesse";
       } else {
         return "";
       }
@@ -760,7 +935,11 @@ AfficheTypePatient() {
         numero_cmu: this.objetPatient.numero_cmu,
         numero_cni: this.objetPatient.numero_cni,
         chef_famille_id: this.objetPatient.chef_famille_id,
-        zone_intervention_id:this.recuperationIdZone(this.objetPatient.chef_famille_id),
+        etat: this.objetPatient.etat,
+        date_effect: this.objetPatient.date_effect,
+        zone_intervention_id: this.recuperationIdZone(
+          this.objetPatient.chef_famille_id
+        ),
       };
       this.modifierpatient(ob);
       // modal.hide();

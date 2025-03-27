@@ -5,8 +5,23 @@
     <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
-        <div class="page_title">
+        <div
+          class="page_title d-flex justify-content-between align-items-center"
+        >
           <h2>Liste des ménages</h2>
+          <button
+            type="button"
+            class="btn btn-success position-relative"
+            v-if="compteNombrePatient > 0"
+          >
+            vous avez des nouveaux née à enregistrer
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+            >
+              {{ compteNombrePatient }}
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </button>
         </div>
       </div>
     </div>
@@ -46,7 +61,7 @@
                     <th>Longitude(-)</th>
                     <th>Latitude(+)</th>
                     <th>Zone intervention</th>
-
+                    <th>Nbre nouveau née</th>
                     <th style="width: 15% !important; text-align: center">
                       Action
                     </th>
@@ -65,7 +80,19 @@
                     <td>
                       {{ libelleZoneIntervention(data.zone_intervention_id) }}
                     </td>
-
+                    <td
+                      style="text-align: center; cursor: pointer"
+                      v-if="compteNbrePatientParMenege(data.id) > 0"
+                    >
+                      <span class="badge rounded-pill text-bg-danger">{{
+                        compteNbrePatientParMenege(data.id)
+                      }}</span>
+                    </td>
+                    <td style="text-align: center; cursor: pointer" v-else>
+                      <span class="badge rounded-pill text-bg-success">{{
+                        compteNbrePatientParMenege(data.id)
+                      }}</span>
+                    </td>
                     <td class="button_block">
                       <button
                         type="button"
@@ -309,22 +336,26 @@
 
                     <div class="col-md-6">
                       <label for="inputWithIcon" class="form-label"
-                        >Zone Intervention</label
-                      >
-                      <select
-                        class="form-select form-select-lg mb-3"
-                        aria-label=".form-select-lg example"
-                        v-model="objet.zone_intervention_id"
-                      >
-                        <option selected></option>
-                        <option
-                          v-for="data in getterZoneParAgent"
-                          :key="data.zone_intervention_id"
-                          :value="data.zone_intervention_id"
+                        >Zone Intervention
+                        <span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                        ></span
+                      ></label>
+                      <div class="input-group">
+                        <model-list-select
+                          style=""
+                          :list="afficheZoneParAgent"
+                          v-model="objet.zone_intervention_id"
+                          option-value="id"
+                          option-text="groupe"
+                          placeholder="séléctionner"
                         >
-                          {{ data.libelle }}
-                        </option>
-                      </select>
+                        </model-list-select>
+                      </div>
                     </div>
                   </div>
 
@@ -351,7 +382,7 @@
                     
                   </div> -->
                   <div class="mb-3 row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <label for="inputWithIcon" class="form-label"
                         >Nom ménages
                         <span
@@ -375,9 +406,32 @@
                         </model-list-select>
                       </div>
                     </div>
+                    <div class="col-md-6">
+                      <label for="inputWithIcon" class="form-label"
+                        >Nom de la mère (nouveau née)
+                        <span
+                          style="
+                            color: red;
+                            font-weight: 900 !important;
+                            font-size: 15px;
+                          "
+                        ></span
+                      ></label>
+                      <div class="input-group">
+                        <model-list-select
+                          style=""
+                          :list="afficheMereParMenage"
+                          v-model="objetPatient.mere_nouveau_id"
+                          option-value="id"
+                          option-text="groupe"
+                          placeholder="séléctionner le nom du chef"
+                        >
+                        </model-list-select>
+                      </div>
+                    </div>
                     <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
-                        >Nom Patient
+                        >Nom du Bénéficiaire de soins
                         <span
                           style="
                             color: red;
@@ -400,9 +454,9 @@
                         />
                       </div>
                     </div>
-                          <div class="col-md-6">
+                    <div class="col-md-9">
                       <label for="inputWithIcon" class="form-label"
-                        >Prénoms Patient
+                        >Prénoms du Bénéficiaire de soins
                         <span
                           style="
                             color: red;
@@ -427,7 +481,7 @@
                     </div>
                   </div>
                   <div class="mb-3 row">
-               <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
                         >Date debut de grossesse<span
                           style="
@@ -435,9 +489,8 @@
                             font-weight: 900 !important;
                             font-size: 15px;
                           "
-                          ></span
-                        ></label
-                      >
+                        ></span
+                      ></label>
                       <div class="input-group">
                         <span class="input-group-text">
                           <i class="fa fa-book" aria-hidden="true"></i>
@@ -446,11 +499,10 @@
                           type="date"
                           class="form-control"
                           id="inputWithIcon"
-                          
                           v-model="objetPatient.date_debut_grossesse"
                         />
                       </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-3">
                       <label for="inputWithIcon" class="form-label"
                         >Date de naissance<span
@@ -475,7 +527,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                       <label for="inputWithIcon" class="form-label"
                         >Lieu de naissance</label
                       >
@@ -589,7 +641,6 @@
                         :multiple="true"
                         :options="afficheVaccinParTypePatient"
                       />
-             
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -603,7 +654,6 @@
                     <button
                       type="button"
                       class="btn btn-success"
-                   
                       @click.prevent="enregistrepatient()"
                     >
                       Enregistrer Patient
@@ -822,7 +872,7 @@ export default {
     FormWizard,
     TabContent,
     ModelListSelect,
-     Treeselect,
+    Treeselect,
   },
   data() {
     return {
@@ -851,6 +901,7 @@ export default {
         numero_cmu: "",
         chef_famille_id: "",
         numero_cni: "",
+        mere_nouveau_id: "",
       },
       selectItem: null,
       ObjetModifier: {
@@ -878,33 +929,73 @@ export default {
     this.getTypePatient();
     this.getVaccinTreeSelect();
     this.getmenages();
+    this.getpatients();
   },
 
   computed: {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
     ...mapGetters([
       "gettermenages",
+      "getterpatient",
       "getterVaccinTreeSelect",
       "loading",
       "getterZoneParAgent",
       "getterTypePatient",
     ]),
+    MereParMenage() {
+      return this.getterpatient.filter(
+        (data) =>
+          data.mouvement == 0 &&
+          data.type_patient_id == 2 &&
+          data.etat == 2 &&
+          data.chef_famille_id == this.objetPatient.chef_famille_id
+      );
+    },
+    afficheMereParMenage() {
+      let collet = [];
+      this.MereParMenage.filter((item) => {
+        let data = {
+          id: item.id,
+          // code:item.code,
+          groupe: item.nom.concat("  ", item.prenoms),
+        };
+        collet.push(data);
+      });
+      return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
+    },
+    compteNombrePatient() {
+      return this.getterpatient.filter(
+        (data) =>
+          data.mouvement == 0 && data.type_patient_id == 2 && data.etat == 2
+      ).length;
+    },
+    afficheZoneParAgent() {
+      let collet = [];
+      this.getterZoneParAgent.filter((item) => {
+        let data = {
+          id: item.zone_intervention_id,
+          // code:item.code,
+          groupe: item.libelle,
+        };
+        collet.push(data);
+      });
+      return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
+    },
     afficheVaccinParTypePatient() {
-        
       if (this.objetPatient.type_patient_id == 2) {
- 
-        return this.getterVaccinTreeSelect.filter(data=>data.typepatient==this.objetPatient.type_patient_id)
+        return this.getterVaccinTreeSelect.filter(
+          (data) => data.typepatient == this.objetPatient.type_patient_id
+        );
       } else {
-        return this.getterVaccinTreeSelect.filter(data=>data.typepatient!=2)
+        return this.getterVaccinTreeSelect.filter(
+          (data) => data.typepatient != 2
+        );
       }
-      
     },
     recuperationIdZone() {
       return (id) => {
         if (id != null && id != "") {
-          let qtereel = this.gettermenages.find(
-            (qtreel) => qtreel.id == id
-          );
+          let qtereel = this.gettermenages.find((qtreel) => qtreel.id == id);
 
           if (qtereel) {
             return qtereel.zone_intervention_id;
@@ -977,6 +1068,7 @@ export default {
   methods: {
     ...mapActions([
       "getmenages",
+      "getpatients",
       "getVaccinTreeSelect",
       "getTypePatient",
       "enregistrermenages",
@@ -985,11 +1077,19 @@ export default {
       "getZoneParAgent",
       "enregistrerpatient",
     ]),
- 
-    async detailPatient($id) {
+    compteNbrePatientParMenege($id) {
+      return this.getterpatient.filter(
+        (data) =>
+          data.mouvement == 0 &&
+          data.type_patient_id == 2 &&
+          data.chef_famille_id == $id &&
+          data.etat == 2
+      ).length;
+    },
+    async detailPatient(id) {
       this.$router.push({
         name: "detailPatient",
-        params: { id: $id },
+        params: { id: id },
       });
     },
     // Fonction pour changer de page
@@ -1013,8 +1113,10 @@ export default {
         numero_cmu: this.objetPatient.numero_cmu,
         numero_cni: this.objetPatient.numero_cni,
         chef_famille_id: this.objetPatient.chef_famille_id,
-        date_debut_grossesse:this.objetPatient.date_debut_grossesse,
-        zone_intervention_id:this.recuperationIdZone(this.objetPatient.chef_famille_id),
+        mere_nouveau_id: this.objetPatient.mere_nouveau_id,
+        zone_intervention_id: this.recuperationIdZone(
+          this.objetPatient.chef_famille_id
+        ),
         DataModule: this.StateModules,
       };
       this.enregistrerpatient(ob);

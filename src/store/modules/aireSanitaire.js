@@ -6,14 +6,17 @@ import authHeader from '../../services/auth-header';
 
 const role ={
   state: {
- 
+ aireSanitaireParDistricts:[],
         aireSanitaires: [],
       groupeDistricts: [],
     StateAffectationZone: [],
 
   error: null
   },
-    mutations: {
+  mutations: {
+          SET_AIRE_SANITAIRE_PAR_DISTRICT(state, StateModule) {
+    state.aireSanitaireParDistricts = StateModule;
+    },
       SET_GROUPE_DISTRICT(state, StateModule) {
     state.groupeDistricts = StateModule;
     },
@@ -47,6 +50,31 @@ SET_AFFECTATION_ZONE(state, StateModule) {
   },
   
   actions: {
+
+    async getAireSanitaireParDistrict({ commit }, objet) {
+     try {
+
+         commit('SET_AIRE_SANITAIRE_PAR_DISTRICT', []);
+ 
+         const responseSp = await apiGuest.get('/AireSanitaireParDistrict/'+ objet.dist, { 
+             headers: authHeader() 
+         });
+ 
+         const sousPrefectures = responseSp.data.map(sp => ({
+             id: sp.id,
+             label: `${sp.libelle}`,
+         }));
+ 
+         commit('SET_AIRE_SANITAIRE_PAR_DISTRICT', sousPrefectures);
+         return sousPrefectures;
+     } catch (error) {
+         console.error("Erreur lors de la récupération des Sous-préfectures:", error);
+         commit('SET_AIRE_SANITAIRE_PAR_DISTRICT', []);
+     }
+    },
+
+
+
    async getAffectationZone({ commit }) {
        
           try {
@@ -184,6 +212,9 @@ async supprimerAireSanitaire({ commit,dispatch }, id) {
     },
 getterAffectationzone(state) {
       return state.StateAffectationZone.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
+    getteraireSanitaireParDistricts(state) {
+      return state.aireSanitaireParDistricts.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },
 
     // gettersCarteZone(state) {

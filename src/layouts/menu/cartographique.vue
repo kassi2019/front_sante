@@ -19,7 +19,7 @@
       </li> -->
       <li>
         <a href="" @click.prevent="affichePage('menage')"
-          ><i class="fa fa-hand-o-right"></i> <span>Chef de Famille</span></a
+          ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
       </li>
       <li>

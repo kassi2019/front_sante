@@ -158,7 +158,7 @@
                       </button>
                     </div>
                   </div>
-              
+
                   <table class="table">
                     <thead>
                       <tr>
@@ -296,7 +296,7 @@
                       <tr style="background-color: #c4d7ed">
                         <td colspan="2">
                           <i class="fa fa-share"></i>
-                          <span style="font-weight: bolder">Superviseur</span> :
+                          <span style="font-weight: bolder">ASC</span> :
                           <span style="font-size: 15px !important">{{
                             data.nom_utilisateur
                           }}</span>
@@ -505,11 +505,11 @@
                       v-model="responsable_id"
                     >
                       <option
-                        v-for="data in getterResponsables"
+                        v-for="data in afficherListeDesSuperviseur"
                         :key="data.id"
-                        :value="data.responsable_id"
+                        :value="data.utilisateur_id"
                       >
-                        {{ NomResponsable(data.responsable_id) }}
+                        {{ data.nom_utilisateur }}
                       </option>
                     </select>
                   </div>
@@ -656,9 +656,8 @@
                           font-weight: 900 !important;
                           font-size: 15px;
                         "
-                        ></span
-                      ></label
-                    >
+                      ></span
+                    ></label>
                     <div class="input-group">
                       <model-list-select
                         style=""
@@ -686,9 +685,9 @@
                       >Aire sanitaire</label
                     >
                     <treeselect
-                      v-model="StateModules"
+                      v-model="StateModules1"
                       :multiple="true"
-                      :options="getterDistrictParAgent"
+                      :options="getteraireSanitaireParDistricts"
                     />
                   </div>
                   <div class="modal-footer">
@@ -703,7 +702,7 @@
                       type="button"
                       class="btn btn-success"
                       :disabled="loading"
-                      @click.prevent="enregistrerDistrictParAgent()"
+                      @click.prevent="enregistreModule()"
                     >
                       Enregistrer
                     </button>
@@ -915,8 +914,9 @@ export default {
   data() {
     return {
       StateModules: [],
+      StateModules1: [],
       utilisateur_id: null,
-      utilisateur_distict_id:"",
+      utilisateur_distict_id: "",
       isLoading: false, // Définir isLoading ici
       responsable_id: 0,
       aire_sanitaire_id: 0,
@@ -967,7 +967,9 @@ export default {
       "getterUtilisateur",
       "getterAireSanitaireSup",
       "getterZoneInterventionSup",
-      "getterAgentParSuperviseurs","getterDistrictParAgent"
+      "getterAgentParSuperviseurs",
+      "getterDistrictParAgent",
+      "getteraireSanitaireParDistricts",
     ]),
 
     affichesSuperviseurParDistrict() {
@@ -1097,11 +1099,13 @@ export default {
       "supprimerZoneUtilisateur",
       "modifierZoneUtilisateur",
       "enregistrerZoneAuAgent",
-      "getListeAireSanitaireParSuperviseur","getListeDistrictParAgent",
+      "getListeAireSanitaireParSuperviseur",
+      "getListeDistrictParAgent",
       "getListeZoneInterventionParSuperviseur",
       "getListeAgentParSuperviseur",
       "getAffectationDistrict",
       "enregistrerDesDistrictParAgent",
+      "getAireSanitaireParDistrict",
     ]),
     changePage(page) {
       if (page > 0 && page <= this.totalPages) {
@@ -1134,12 +1138,14 @@ export default {
     },
     async enregistreModule() {
       let ob = {
-        utilisateur_id: this.utilisateur_id,
-        DataModule: this.StateModules,
+        utilisateur_id: this.responsable_id,
+        district_id: this.district_id,
+        superviseur_id: this.utilisateur_distict_id,
+        DataModule: this.StateModules1,
       };
       this.enregistrerZoneUtilisateur(ob);
       StateModules = [];
-    },
+    },    
 
     async modifierAffectationModule() {
       let ob = {
@@ -1161,14 +1167,23 @@ export default {
   },
 
   watch: {
-    
     utilisateur_distict_id: function (value) {
       let objet = {
         dist: value,
       };
       //this.getListeNatureEconomiqueParActiviteHs(objet);
       this.getListeDistrictParAgent(objet);
-  
+      this.getAireSanitaireParDistrict(objet);
+
+      // }
+    },
+
+    StateModules: function (value) {
+      let objet = {
+        dist: value,
+      };
+
+      this.getAireSanitaireParDistrict(objet);
 
       // }
     },
