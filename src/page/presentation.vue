@@ -81,7 +81,7 @@
                       class="full socile_icons fb margin_bottom_30"
                       style="border-radius: 90% !important"
                       @click="ParametreGeneraux(4)"
-                      @click.prevent="affichePage('menage')"
+                      @click.prevent="affichePage('inventaireEquipement')"
                       v-if="VoirModuleCommunication == 4"
                     >
                       <div class="social_icon" style="cursor: pointer">
@@ -92,7 +92,7 @@
                           <span
                             class="desigText"
                             @click="ParametreGeneraux(4)"
-                            @click.prevent="affichePage('menage')"
+                            @click.prevent="affichePage('inventaireEquipement')"
                             >{{ afficheibelleModule(4) }}</span
                           >
                         </ul>

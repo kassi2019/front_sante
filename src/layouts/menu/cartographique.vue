@@ -17,6 +17,11 @@
           ><i class="fa fa-hand-o-right"></i> <span>Type de patient</span></a
         >
       </li> -->
+       <li>
+        <a href="" @click.prevent="affichePage('inventaireEquipement')"
+          ><i class="fa fa-hand-o-right"></i> <span>Inventaire d'équipement ASC</span></a
+        >
+      </li>
       <li>
         <a href="" @click.prevent="affichePage('menage')"
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a

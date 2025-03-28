@@ -41,7 +41,7 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>#</th>
+                    
 
                     <th>Libelle</th>
                     <th>Longitude</th>
@@ -53,19 +53,19 @@
                 </thead>
 
                 <tbody v-for="data in paginatedData" :key="data.district_id">
-                  <tr>
-                    <td><button type="button" class="btn btn-warning">District </button></td>
-                    <td>{{ data.libelle_district }} ({{listeAireSanitaire(data.district_id).length}})</td>
+                  <tr style="background-color: #A67E2E;">
+                 
+                    <td style="color: #fff;"><span class="badge badge-dark">District : </span>{{ data.libelle_district }} ({{listeAireSanitaire(data.district_id).length}})</td>
                     <td>{{ data.longitude }}</td>
                     <td>{{ data.latitude }}</td>
                   </tr>
                   <tr
-                    v-for="(data1,index) in listeAireSanitaire(data.district_id)"
+                    v-for="(data1) in listeAireSanitaire(data.district_id)"
                     :key="data1.id"
                   >
-                    <td></td>
+                   
 
-                    <td>{{ index+1 }})      {{ data1.libelle }}</td>
+                    <td>    {{ data1.libelle }}</td>
                     <td>{{ data1.longitude }}</td>
                     <td>{{ data1.latitude }}</td>
                     <td class="button_block">

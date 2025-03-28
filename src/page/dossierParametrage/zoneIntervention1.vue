@@ -53,9 +53,8 @@
                 <tbody v-for="data in gettersdistrictZone" :key="data.id">
                   <tr>
                     <td>
-                      <button type="button" class="btn btn-primary">
-                      <i class="fa fa-hand-o-right" style="color:black"></i>  District
-                      </button>
+                
+                      <span class="badge badge-primary"> <i class="fa fa-hand-o-right" style="color:black"></i>  District</span>
                       {{ data.libelle_district }}
                     </td>
                     <td>{{ data.longitude }}</td>
@@ -69,9 +68,8 @@
                       <!-- <td colspan="2" ></td> -->
 
                       <td >
-                        <button type="button" class="btn btn-warning" style="margin-left: 10% !important">
-                        <i class="fa fa-hand-o-right" style="color:black"></i>  Aire sanitaire
-                        </button>
+                  
+                        <span class="badge badge-warning" style="margin-left: 10% !important;color: black;">  <i class="fa fa-hand-o-right" style="color:black"></i>  Aire sanitaire</span>
                         {{ data1.libelle }}
                       </td>
                       <td>{{ data1.longitude }}</td>
@@ -87,9 +85,8 @@
                       <td></td> -->
 
                       <td>
-                        <button type="button" class="btn btn-success" style="margin-left: 15% !important">
-                         <i class="fa fa-hand-o-right" style="color:black"></i> Zone intervention
-                        </button>
+                     
+                        <span class="badge badge-success" style="margin-left: 15% !important"> <i class="fa fa-hand-o-right" style="color:black"></i> Zone intervention</span>
                         {{ data2.libelle }}
                       </td>
                       <td>{{ data2.longitude }}</td>

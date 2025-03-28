@@ -6,12 +6,12 @@
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Liste des Vaccins</h2>
+          <h2>Liste Equipement</h2>
         </div>
       </div>
     </div>
-
-    <div>
+    <div v-if="loading" class="loader">Chargement...</div>
+    <div v-else>
       <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
           <div
@@ -20,6 +20,8 @@
             <div
               class="heading1 margin_0 d-flex justify-content-between align-items-center"
             >
+              <h2></h2>
+              <!-- Aligner le bouton à droite et ouvrir le modal -->
               <button
                 type="button"
                 class="btn btn-outline-primary ms-auto btn-rounded-shadow"
@@ -38,7 +40,7 @@
                   <tr>
                     <th>#</th>
                     <!-- <th>Code</th> -->
-                    <th>Libelle</th>
+                    <th colspan="">Libelle</th>
 
                     <th style="width: 9% !important; text-align: center">
                       Action
@@ -46,77 +48,44 @@
                   </tr>
                 </thead>
 
-                <tbody v-for="data in typePatient" :key="data.id">
-                  <tr style="background-color: #a67e2e">
-                    <td></td>
-                    <td style="color: #fff">
-                      <span class="badge badge-dark"
-                        >
-                        Type Patient</span
-                      >
-
-                      {{ data.libelle }}
-                    </td>
-                
-                  </tr>
-                  <template
-                    v-for="(data2, index) in afficheViccinParCategorie(data.id)"
-                    :key="data2.id"
-                  >
-                    <tr>
-                      <!-- <td></td>
-                      <td></td> -->
-                      <td>{{ index + 1 }}</td>
-                      <td style="">
-                        <!-- <button
-                          type="button"
-                          class="btn btn-success"
-                          style="margin-left: 15% !important"
-                        >
-                          <i
-                            class="fa fa-hand-o-right"
-                            style="color: black"
-                          ></i>
-                          Vaccin
-                        </button> -->
-                        {{ data2.libelle }}
-                      </td>
-                  
-
-                      <td class="button_block">
-                        <button
-                          type="button"
-                          class="btn cur-p btn-success"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staticBackdropModification"
-                          @click.prevent="AfficheModalModification(data2.id)"
-                        >
-                          <i
-                            class="fa fa-pencil-square-o"
-                            aria-hidden="true"
-                          ></i>
-                        </button>
-                        <button
-                          type="button"
-                          class="btn cur-p btn-danger"
-                          @click.prevent="supprimervaccins(data2.id)"
-                        >
-                          <i class="fa fa-trash"></i>
-                        </button>
-                      </td>
+                <tbody v-for="item in gettertypeequipements" :key="item.id">
+                    <tr style="background-color: #A67E2E;">
+                        <td></td>
+                        <td style="color: #fff;"><span class="badge badge-dark">Type équipement : </span>
+                           {{ item.libelle }}
+                        </td>
                     </tr>
-                  </template>
-                  <!-- <tr v-for="(data, index) in paginatedData" :key="data.id">
-                   
+                  <tr v-for="(data, index) in afficheEquipeParType(item.id)" :key="data.id">
+                     
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ data.libelle }}</td>
 
-                    
-                  </tr> -->
+                    <td class="button_block">
+                      <button
+                        type="button"
+                        class="btn cur-p btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdropModification"
+                        @click.prevent="AfficheModalModification(data.id)"
+                      >
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn cur-p btn-danger"
+                        @click.prevent="supprimerEquipement(data.id)"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
 
+              <!-- Pagination controls -->
               <!-- <div class="pagination">
                 <button
-                  @click="changePage(currentPage - 1)"
+                  @click="changePage(currentPage - 1,data.id)"
                   :disabled="currentPage === 1"
                   class="btn-pagination"
                 >
@@ -164,7 +133,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Enregistrer Vaccin
+                Enregistrer Equipement
               </h5>
               <button
                 type="button"
@@ -174,9 +143,9 @@
               ></button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">
+              <div class="md-3">
                 <label for="inputWithIcon" class="form-label"
-                  >Type Patient
+                  >Type équipement
                   <span
                     style="
                       color: red;
@@ -185,15 +154,17 @@
                     "
                   ></span
                 ></label>
-                <select
-                  class="form-select form-select-lg mb-3"
-                  aria-label=".form-select-lg example"
-                  v-model="objet.type_patient"
-                >
-                  <option selected></option>
-                  <option value="2">Femme enceinte</option>
-                  <option value="3">Enfant</option>
-                </select>
+                <div class="input-group">
+                  <model-list-select
+                    style=""
+                    :list="afficheLibelleTypeEquipement"
+                    v-model="objet.type_equipement_id"
+                    option-value="id"
+                    option-text="groupe"
+                    placeholder="séléctionner le nom du chef"
+                  >
+                  </model-list-select>
+                </div>
               </div>
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">Libelle</label>
@@ -224,7 +195,7 @@
                 type="button"
                 class="btn btn-success"
                 :disabled="loading"
-                @click.prevent="enregistretypePatient()"
+                @click.prevent="enregistreModule()"
               >
                 Enregistrer
               </button>
@@ -251,7 +222,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Modifier Vaccin
+                Modifier équipement
               </h5>
               <button
                 type="button"
@@ -261,9 +232,9 @@
               ></button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">
+                     <div class="md-3">
                 <label for="inputWithIcon" class="form-label"
-                  >Type Patient
+                  >Type équipement
                   <span
                     style="
                       color: red;
@@ -272,15 +243,17 @@
                     "
                   ></span
                 ></label>
-                <select
-                  class="form-select form-select-lg mb-3"
-                  aria-label=".form-select-lg example"
-                  v-model="ObjetModifier.type_patient"
-                >
-                  <option selected></option>
-                  <option value="2">Femme enceinte</option>
-                  <option value="3">Enfant</option>
-                </select>
+                <div class="input-group">
+                  <model-list-select
+                    style=""
+                    :list="afficheLibelleTypeEquipement"
+                    v-model="ObjetModifier.type_equipement_id"
+                    option-value="id"
+                    option-text="groupe"
+                    placeholder="séléctionner le nom du chef"
+                  >
+                  </model-list-select>
+                </div>
               </div>
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">libelle</label>
@@ -311,7 +284,7 @@
                 type="button"
                 class="btn btn-success"
                 :disabled="loading"
-                @click.prevent="modifiervaccinss()"
+                @click.prevent="modifierEquipements()"
               >
                 Modifier
               </button>
@@ -326,37 +299,29 @@
 </template>
 
 <script>
-//import { useStore } from "vuex"; // Importation du store
 import { mapActions, mapGetters } from "vuex";
-// import Loader from "./Loader.vue";
-
-// import "vue-treeselect/dist/vue-treeselect.css";
-// import Treeselect from "vue-treeselect";
+import { ModelListSelect } from "vue-search-select";
 
 export default {
   components: {
-    // Treeselect,  // Enregistrer le composant
+    ModelListSelect,
   },
   data() {
     return {
       isLoading: false, // Définir isLoading ici
 
       objet: {
-        type_patient: "",
         libelle: "",
+        type_equipement_id: "",
       },
       selectItem: null,
       ObjetModifier: {
-        type_patient: "",
+        type_equipement_id: "",
         libelle: "",
       },
       currentPage: 1,
-      itemsPerPage: 10,
-      totalItems: 0,
-      typePatient: [
-        { id: 2, libelle: "Femme enceinte" },
-        { id: 3, libelle: "Enfant" },
-      ],
+      itemsPerPage: 10, // Nombre d'éléments à afficher par page
+      totalItems: 0, // Nombre total d'éléments dans les données
     };
   },
 
@@ -364,33 +329,44 @@ export default {
 
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
-    this.getvaccination();
+    this.gettypeequipements();
+    this.getEquipement();
   },
 
   computed: {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
-    ...mapGetters(["getterVaccin", "loading"]),
+    ...mapGetters(["getterEquipement", "loading", "gettertypeequipements"]),
+    afficheLibelleTypeEquipement() {
+      let collet = [];
+      this.gettertypeequipements.filter((item) => {
+        let data = {
+          id: item.id,
+          // code:item.code,
+          groupe: item.libelle,
+        };
+        collet.push(data);
+      });
+      return collet.sort((a, b) => (a.nom > b.nom ? 1 : -1));
+    },
     visiblePages() {
       let pages = [];
       let startPage = Math.max(1, this.currentPage - 2);
       let endPage = Math.min(this.totalPages, this.currentPage + 2);
-      console.log(endPage);
+
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
       return pages;
     },
-
-    // Calcule les éléments à afficher en fonction de la page actuelle
-    paginatedData() {
+    paginatedData($id) {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      return this.getterVaccin.slice(
+      return this.afficheEquipeParType($id).slice(
         startIndex,
         startIndex + this.itemsPerPage
       );
     },
-    totalPages() {
-      return Math.ceil(this.getterVaccin.length / this.itemsPerPage);
+    totalPages($id) {
+      return Math.ceil(this.afficheEquipeParType($id).length / this.itemsPerPage);
     },
     loading() {
       return this.$store.state.loading;
@@ -398,49 +374,53 @@ export default {
     error() {
       return this.$store.getters.error;
     },
+
+    afficheNiveauModule() {
+      return this.getterEquipement.length + 1;
+    },
   },
 
   methods: {
     ...mapActions([
-      "getvaccination",
-      "enregistrervaccins",
-      "supprimervaccins",
-      "modifiervaccins",
+      "getEquipement",
+      "enregistrerEquipement",
+      "supprimerEquipement",
+      "modifierEquipement",
+      "gettypeequipements",
     ]),
-    afficheViccinParCategorie($id) {
-      return this.getterVaccin.filter((data) => data.type_patient == $id);
-    },
-    changePage(page) {
-      if (page > 0 && page <= this.totalPages) {
+           afficheEquipeParType($id) {
+  return this.getterEquipement.filter(data=>data.type_equipement_id==$id)
+},
+    changePage(page,$id) {
+      if (page >= 1 && page <= this.totalPages($id)) {
         this.currentPage = page;
       }
     },
-    async enregistretypePatient() {
+    async enregistreModule() {
       let ob = {
-        type_patient: this.objet.type_patient,
+        type_equipement_id: this.objet.type_equipement_id,
         libelle: this.objet.libelle,
       };
-      this.enregistrervaccins(ob);
+      this.enregistrerEquipement(ob);
 
-      this.objet = {
-        libelle: "",
-      };
+      this.objet.libelle = "";
     },
 
-    async modifiervaccinss() {
+    async modifierEquipements() {
       let ob = {
         id: this.ObjetModifier.id,
-
-        type_patient: this.ObjetModifier.type_patient,
+        type_equipement_id: this.ObjetModifier.type_equipement_id,
         libelle: this.ObjetModifier.libelle,
       };
-      this.modifiervaccins(ob);
+      this.modifierEquipement(ob);
       // $('#staticBackdrop').modal('hide');
       // modal.hide();
     },
 
     async AfficheModalModification(id) {
-      this.ObjetModifier = this.getterVaccin.find((items) => items.id == id);
+      this.ObjetModifier = this.getterEquipement.find(
+        (items) => items.id == id
+      );
     },
   },
 };

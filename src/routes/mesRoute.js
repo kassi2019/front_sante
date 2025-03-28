@@ -18,8 +18,29 @@ import localisationChefFamille from "../page/dossierParametrage/localisationChef
 import Accueil from "../layouts/TableauBord2.vue"
 import aireSanitaire from "../page/dossierParametrage/aireSanitaire.vue"
 import zoneIntervention from "../page/dossierParametrage/zoneIntervention1.vue"
+import equipement from "../page/dossierParametrage/equipement.vue"
+import typeEquipement from "../page/dossierParametrage/typeEquipement.vue"
+import inventaireEquipement from "../page/dossierParametrage/inventaireEquipement.vue"
 // import accueil from "../page/accueil.vue"
 const gestionutilisateur = [
+   {
+        path: '/inventaireEquipement',
+        name:"inventaireEquipement",
+      component: inventaireEquipement,
+     
+     },
+   {
+        path: '/typeEquipement',
+        name:"typeEquipement",
+      component: typeEquipement,
+     
+     },
+  {
+        path: '/equipement',
+        name:"equipement",
+      component: equipement,
+     
+     },
   {
         path: '/zoneIntervention',
         name:"zoneIntervention",

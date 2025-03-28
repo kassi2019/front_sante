@@ -14,6 +14,9 @@ import patient from './modules/patient';
 import vaccin from './modules/vaccin'; 
 import aireSanitaire from './modules/aireSanitaire'; 
 import zoneIntervention from './modules/zoneIntervention'; 
+import equipement from './modules/equipement'; 
+import typeEquipement from './modules/typeEquipement'; 
+import inventaireEquipement from './modules/inventaireEquipement'; 
 const store = createStore({
   modules: {
     utilisateur, 
@@ -28,7 +31,10 @@ const store = createStore({
     patient,
     vaccin,
     aireSanitaire,
-    zoneIntervention
+    zoneIntervention,
+    equipement,
+    typeEquipement,
+    inventaireEquipement
   },
 });
 
