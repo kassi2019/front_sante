@@ -50,11 +50,11 @@
         >
       </li>
       
-      <li>
+      <!-- <li>
         <a href="" @click.prevent="affichePage('medicament')"
           ><i class="fa fa-hand-o-right"></i> <span>Médicaments</span></a
         >
-      </li>
+      </li> -->
       <li>
         <a href="" @click.prevent="affichePage('vaccin')"
           ><i class="fa fa-hand-o-right"></i> <span>Vaccin</span></a
@@ -75,18 +75,7 @@
       </li> -->
      
       
-      <li>
-        <a href="" @click.prevent="affichePage('typeEquipement')"
-          ><i class="fa fa-hand-o-right"></i>
-          <span>Type Equipement ASC</span></a
-        >
-      </li>
-       <li>
-        <a href="" @click.prevent="affichePage('equipement')"
-          ><i class="fa fa-hand-o-right"></i>
-          <span>Equipement ASC</span></a
-        >
-      </li>
+   
        <li>
         <a href="" @click.prevent="affichePage('ZoneUtilisateur')"
           ><i class="fa fa-hand-o-right"></i>

@@ -53,20 +53,26 @@ const role ={
     }
     },
 
-      
+          async modifierInventaireequipement({ commit,dispatch }, {  status,data1}) {
+   response = await apiGuest.put(`/inventaireequipement/${data1}`, {
+        status: status,
+      }, {
+        headers: authHeader(), // Add authentication headers if required
+      })
+    .then(response => {
+      commit("MODIFIER_INVENTAIRE_EQUIPEMENT", response.data);
+     dispatch('getInventaireEquipement');
+  Swal.fire({
+                 position: "top-end",
+                 icon: "success",
+                 title: "Annulation réussie",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
+    });
+},
       async enregistrerInventaireEquipement({ commit,dispatch }, { equipement_id, status,data ,data1}) {
-  // First, check if the necessary fields are provided
-//   if (!data.libelle) {
-//     commit('SET_CHAMP_VIDE_TRUE');
-//     Swal.fire({
-//       icon: 'error',
-//       title: 'Champs vides',
-//       text: 'Veuillez remplir tous les champs.',
-//       confirmButtonText: 'OK',
-//     });
-//     return;
-//   }
-         console.log(data.id)
+
   try {
     let response;
 
@@ -92,10 +98,7 @@ const role ={
     // Commit the response data to the Vuex store (You can modify this depending on your mutation)
     commit('AJOUTER_INVENTAIRE_EQUIPEMENT', response.data);
       dispatch('getInventaireEquipement');
-    // Dispatch other necessary actions, such as fetching the updated list of equipments
-   
 
-    // Show success message using SweetAlert
     Swal.fire({
       position: 'top-end',
       icon: 'success',
@@ -115,47 +118,13 @@ const role ={
   }
 },
 
-// Vuex action
-// async enregistrerInventaireEquipement({ commit }, { equipement_id, status,data }) {
-  
 
-//   try {
-//     // Send the updated status to the backend using the apiGuest instance
-//       const response = await apiGuest.post('/inventaireequipement', {
-        
-//         equipement_id: equipement_id.id,
-//         status: status,
-//         type_equipement_id: data.id,
-//       }, {
-        
-//       headers: authHeader() 
-//     });
-   
-//     commit('AJOUTER_INVENTAIRE_EQUIPEMENT', response.data);
-//     Swal.fire({
-//       position: 'top-end',
-//       icon: 'success',
-//       title: 'Enregistrement réussie',
-//       showConfirmButton: false,
-//       timer: 1500,
-//     });
-//   } catch (error) {
-//     // Handle error here, e.g., show an alert
-//     console.error('Error saving status', error);
-//     Swal.fire({
-//       icon: 'error',
-//       title: 'Erreur',
-//       text: 'Une erreur est survenue lors de l\'enregistrement.',
-//       confirmButtonText: 'OK',
-//     });
-//   }
-// },
      
-async supprimerEquipement({ commit,dispatch }, id) {
+async supprimerinventaireequipement({ commit,dispatch }, {  data1}) {
   
   Swal.fire({
     title: "Êtes-vous sûr de",
-    text: " vouloir Supprimer cette ligne ?",
+    text: " vouloir Annulation cette ligne ?",
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -163,13 +132,13 @@ async supprimerEquipement({ commit,dispatch }, id) {
     confirmButtonText: 'OUI'
   }).then((result) => {
     if (result.isConfirmed) {
-  apiGuest.delete('/equipement/' + id, { headers: authHeader() })
-     commit('SUPPRIMER_EQUIPEMENT', id)
-     dispatch('getEquipement');
+  apiGuest.delete('/inventaireequipement/' + data1, { headers: authHeader() })
+     commit('SUPPRIMER_INVENTAIRE_EQUIPEMENT', data1)
+     dispatch('getInventaireEquipement');
        Swal.fire({
                  position: "top-end",
                  icon: "success",
-                 title: "Suppression réussie",
+                 title: "Annulation réussie",
                  showConfirmButton: false,
                  timer: 1500
                });
@@ -178,20 +147,7 @@ async supprimerEquipement({ commit,dispatch }, id) {
     },
 
     
-    async modifierEquipement({ commit,dispatch }, nouveau) {
-  apiGuest.put("/equipement/" + nouveau.id, nouveau, { headers: authHeader() })
-    .then(response => {
-      commit("MODIFIER_EQUIPEMENT", response.data);
-      dispatch('getEquipement');
-  Swal.fire({
-                 position: "top-end",
-                 icon: "success",
-                 title: "Modification réussie",
-                 showConfirmButton: false,
-                 timer: 1500
-               });
-    });
-}
+
   },
   getters: {
   

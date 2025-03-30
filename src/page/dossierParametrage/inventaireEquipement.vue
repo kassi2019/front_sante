@@ -41,8 +41,8 @@
                     <th>#</th>
                     <!-- <th>Code</th> -->
                     <th colspan="">Libelle</th>
-                    <th colspan="2" style="text-align: center">
-                      Qu'est-ce que l'équipement est opérationnel ?
+                    <th colspan="5" style="text-align: center">
+                      EQUIPEMENT
                     </th>
                   </tr>
                 </thead>
@@ -50,12 +50,11 @@
                 <tbody v-for="item in gettertypeequipements" :key="item.id">
                   <tr style="background-color: #a67e2e">
                     <td></td>
-                    <td style="color: #fff">
+                    <td style="color: #fff" colspan="6">
                       <span class="badge badge-dark">Type équipement : </span>
                       {{ item.libelle }}
                     </td>
-                    <td></td>
-                    <td></td>
+                   
                   </tr>
                   <tr
                     v-for="(data, index) in afficheEquipeParType(item.id)"
@@ -83,8 +82,16 @@
                           )
                         "
                       />
-                      <label class="form-check-label" for="gridRadios2" style="font-size: 18px;color: #000;font-weight: bolder;">
-                        OUI
+                      <label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                         Reçu
                       </label>
                     </td>
                     <td v-else>
@@ -102,8 +109,16 @@
                             AfficheIdEquipement(data.id, idUser)
                           )
                         "
-                      /><label class="form-check-label" for="gridRadios2" style="font-size: 18px;color: #000;font-weight: bolder;">
-                        OUI
+                      /><label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                         Reçu
                       </label>
                     </td>
                     <td
@@ -124,8 +139,16 @@
                             AfficheIdEquipement(data.id, idUser)
                           )
                         "
-                      /><label class="form-check-label" for="gridRadios2" style="font-size: 18px;color: #000;font-weight: bolder;">
-                        NON
+                      /><label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                        En panne
                       </label>
                     </td>
                     <td v-else>
@@ -143,8 +166,154 @@
                             AfficheIdEquipement(data.id, idUser)
                           )
                         "
-                      /><label class="form-check-label" for="gridRadios2" style="font-size: 18px;color: #000;font-weight: bolder;">
-                        NON
+                      /><label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                        En panne
+                      </label>
+                    </td>
+
+ <td
+                      v-if="AfficheStatusEquipement(data.id, idUser) == 3"
+                      style="background-color: #E2CA1A !important"
+                    >
+                      <!-- Radio button for Non Fonctionnelle -->
+                      <input
+                        type="radio"
+                        :name="'non_fonctionnelle_' + data.id"
+                        :value="3"
+                        v-model="data.status"
+                        @change="
+                          saveStatus(
+                            data,
+                            3,
+                            item.id,
+                            AfficheIdEquipement(data.id, idUser)
+                          )
+                        "
+                      /><label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                        Perdu
+                      </label>
+                    </td>
+                    <td v-else>
+                      <!-- Radio button for Non Fonctionnelle -->
+                      <input
+                        type="radio"
+                        :name="'non_fonctionnelle_' + data.id"
+                        :value="3"
+                        v-model="data.status"
+                        @change="
+                          saveStatus(
+                            data,
+                            3,
+                            item.id,
+                            AfficheIdEquipement(data.id, idUser)
+                          )
+                        "
+                      /><label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                        Perdu
+                      </label>
+                    </td>
+<td
+                      v-if="AfficheStatusEquipement(data.id, idUser) == 4"
+                      style="background-color: #CDDE47 !important"
+                    >
+                      <!-- Radio button for Non Fonctionnelle -->
+                      <input
+                        type="radio"
+                        :name="'non_fonctionnelle_' + data.id"
+                        :value="4"
+                        v-model="data.status"
+                        @change="
+                          saveStatus(
+                            data,
+                            4,
+                            item.id,
+                            AfficheIdEquipement(data.id, idUser)
+                          )
+                        "
+                      /><label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                        Fini
+                      </label>
+                    </td>
+                    <td v-else>
+                      <!-- Radio button for Non Fonctionnelle -->
+                      <input
+                        type="radio"
+                        :name="'non_fonctionnelle_' + data.id"
+                        :value="4"
+                        v-model="data.status"
+                        @change="
+                          saveStatus(
+                            data,
+                            4,
+                            item.id,
+                            AfficheIdEquipement(data.id, idUser)
+                          )
+                        "
+                      /><label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                        Fini
+                      </label>
+                    </td>
+                    <td v-if="AfficheIdEquipement(data.id, idUser)!=0">
+                      <!-- Radio button for Non Fonctionnelle -->
+                      <input
+                        type="radio"
+                        :name="'non_fonctionnelle_' + data.id"
+                        :value="0"
+                        v-model="data.status"
+                        @change="
+                          saveAnnulation(AfficheIdEquipement(data.id, idUser));
+                          this.data.status = false;
+                        "
+                      /><label
+                        class="form-check-label"
+                        for="gridRadios2"
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                        "
+                      >
+                        Annulé
                       </label>
                     </td>
                   </tr>
@@ -184,99 +353,11 @@
         </div>
       </div>
 
-      <!-- modal d ajout -->
-      <div
-        class="modal fade"
-        id="staticBackdrop"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-        tabindex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5
-                class="modal-title"
-                id="staticBackdropLabel"
-                style="text-transform: capitalize !important"
-              >
-                Enregistrer Equipement
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <div class="md-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Type équipement
-                  <span
-                    style="
-                      color: red;
-                      font-weight: 900 !important;
-                      font-size: 15px;
-                    "
-                  ></span
-                ></label>
-                <div class="input-group">
-                  <model-list-select
-                    style=""
-                    :list="afficheLibelleTypeEquipement"
-                    v-model="objet.type_equipement_id"
-                    option-value="id"
-                    option-text="groupe"
-                    placeholder="séléctionner le nom du chef"
-                  >
-                  </model-list-select>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Libelle</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez Libelle"
-                    v-model="objet.libelle"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-dismiss="modal"
-              >
-                Fermer
-              </button>
-              <button
-                type="button"
-                class="btn btn-success"
-                :disabled="loading"
-                @click.prevent="enregistreModule()"
-              >
-                Enregistrer
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- modal de modification -->
       <div
         class="modal fade"
-        id="staticBackdropModification"
+        id="staticBackdrop2"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabindex="-1"
@@ -291,7 +372,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Modifier équipement
+                
               </h5>
               <button
                 type="button"
@@ -301,44 +382,10 @@
               ></button>
             </div>
             <div class="modal-body">
-              <div class="md-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Type équipement
-                  <span
-                    style="
-                      color: red;
-                      font-weight: 900 !important;
-                      font-size: 15px;
-                    "
-                  ></span
-                ></label>
-                <div class="input-group">
-                  <model-list-select
-                    style=""
-                    :list="afficheLibelleTypeEquipement"
-                    v-model="ObjetModifier.type_equipement_id"
-                    option-value="id"
-                    option-text="groupe"
-                    placeholder="séléctionner le nom du chef"
-                  >
-                  </model-list-select>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">libelle</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez libelle"
-                    v-model="ObjetModifier.libelle"
-                  />
-                </div>
-              </div>
+           <h4 style="text-align: center">
+              "VEUILLEZ EFFECTUER L'INVENTAIRE DE VOTRE EQUIPEMENT AVANT D'ENTREPRENDRE TOUTE AUTRE ACTION." SVP
+             
+            </h4>
             </div>
 
             <div class="modal-footer">
@@ -349,19 +396,20 @@
               >
                 Fermer
               </button>
-              <button
-                type="button"
-                class="btn btn-success"
-                :disabled="loading"
-                @click.prevent="modifierEquipements()"
-              >
-                Modifier
-              </button>
+              
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
+
+
+
+
+
+
   </div>
 
   <!-- end dashboard inner -->
@@ -400,7 +448,7 @@ export default {
   created() {
     this.gettypeequipements();
     this.getEquipement();
-    this.getInventaireEquipement();
+    // this.getInventaireEquipement();
   },
 
   computed: {
@@ -501,8 +549,15 @@ export default {
       "gettypeequipements",
       "enregistrerInventaireEquipement",
       "getInventaireEquipement",
+      "modifierInventaireequipement",
+      "supprimerinventaireequipement",
     ]),
-
+    saveAnnulation(data1) {
+      // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
+      this.$store.dispatch("supprimerinventaireequipement", {
+        data1,
+      });
+    },
     saveStatus(equipement_id, status, data, data1) {
       // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
       this.$store.dispatch("enregistrerInventaireEquipement", {

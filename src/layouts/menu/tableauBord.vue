@@ -2,18 +2,35 @@
   <div class="sidebar_blog_2">
     <h4 style="text-align: center">Tableau de Bord</h4>
     <ul class="list-unstyled components">
-      <!-- <li>
-        <a href="" @click.prevent="affichePage('menage')"
-          ><i class="fa fa-hand-o-right"></i> <span>Chef de Famille</span></a
+         <li>
+        <a href="" @click.prevent="affichePage('typeEquipement')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span>Type Equipement ASC</span></a
+        >
+      </li>
+       <li>
+        <a href="" @click.prevent="affichePage('equipement')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span>Equipement ASC</span></a
         >
       </li>
       <li>
-        <a href="" @click.prevent="affichePage('localisationChefFamille')"
+        <a href="" @click.prevent="affichePage('')"
+          ><i class="fa fa-hand-o-right"></i> <span>Liste des équipement ASC</span></a
+        >
+      </li>
+      <li>
+        <a href="" @click.prevent="affichePage('')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Localisation Chef de Famille</span></a
+          <span>Equipement en panne</span></a
+        >
+      </li>
+  <!-- <li>
+        <a href="" @click.prevent="affichePage('')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span>Suivi des stocks </span></a
         >
       </li> -->
-
       <li style="background-color: #007b9a">
         <a href="" @click.prevent="affichePage('presentation')"
           ><i class="fa fa-eye"></i> <span>VOIR LES MODULES</span></a

@@ -9,7 +9,7 @@ const role ={
   state: {
  
     equipements: [] ,
-
+gpeTypeEquipement:[],
   error: null 
   },
   mutations: {
@@ -17,7 +17,9 @@ const role ={
      SET_EQUIPEMENT(state, modules){
        state.equipements = modules;
     },
-
+   SET_GPE_TYPE_EQUIPEMENT(state, modules){
+       state.gpeTypeEquipement = modules;
+    },
  SUPPRIMER_EQUIPEMENT(state, produitId) {
     state.equipements = state.equipements.filter(produit => produit.id !== produitId);
     },
@@ -38,7 +40,19 @@ const role ={
   
   actions: {
   
+   async getGpeEquipement({ commit }) {
 
+    try {
+        const resultat = await apiGuest.get('/afficheTypeEquipement', { headers: authHeader() });
+        
+        // Mettre à jour les données dans le store
+        commit('SET_GPE_TYPE_EQUIPEMENT', resultat.data);
+    } catch (error) {
+      
+    } finally {
+    
+    }
+    },
     async getEquipement({ commit }) {
 
     try {
@@ -68,7 +82,9 @@ const role ={
           }
       const response = await apiGuest.post('/equipement', objet, { headers: authHeader() });
          commit('AJOUTER_EQUIPEMENT', response.data);
-        dispatch('getEquipement');
+       dispatch('getEquipement');
+         dispatch('getGpeEquipement');
+       
           Swal.fire({
                  position: "top-end",
                  icon: "success",
@@ -94,7 +110,8 @@ async supprimerEquipement({ commit,dispatch }, id) {
     if (result.isConfirmed) {
   apiGuest.delete('/equipement/' + id, { headers: authHeader() })
      commit('SUPPRIMER_EQUIPEMENT', id)
-     dispatch('getEquipement');
+      dispatch('getEquipement');
+         dispatch('getGpeEquipement');
        Swal.fire({
                  position: "top-end",
                  icon: "success",
@@ -112,6 +129,7 @@ async supprimerEquipement({ commit,dispatch }, id) {
     .then(response => {
       commit("MODIFIER_EQUIPEMENT", response.data);
       dispatch('getEquipement');
+         dispatch('getGpeEquipement');
   Swal.fire({
                  position: "top-end",
                  icon: "success",
@@ -127,6 +145,9 @@ async supprimerEquipement({ commit,dispatch }, id) {
    
     getterEquipement(state) {
       return state.equipements.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
+      getterGpeTypeEquipement(state) {
+      return state.gpeTypeEquipement.sort((a, b) => (a.libelle_type_equipement < b.libelle_type_equipement) ? -1 : 1)
     },
 
   error(state) {

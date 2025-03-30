@@ -1,5 +1,9 @@
 <template>
-  <div class="sidebar_blog_2">
+
+ 
+
+
+      <div class="sidebar_blog_2">
     <h4 style="text-align: center">Cartographie</h4>
     <ul class="list-unstyled components">
       <!-- <li>
@@ -17,32 +21,37 @@
           ><i class="fa fa-hand-o-right"></i> <span>Type de patient</span></a
         >
       </li> -->
-       <li>
+
+      <li>
         <a href="" @click.prevent="affichePage('inventaireEquipement')"
-          ><i class="fa fa-hand-o-right"></i> <span>Inventaire d'équipement ASC</span></a
+          ><i class="fa fa-hand-o-right"></i>
+          <span>Inventaire d'équipement ASC</span></a
         >
       </li>
-      <li>
+      <li v-if="AfficheIdUtilisateur(idUser) == idUser">
         <a href="" @click.prevent="affichePage('menage')"
+          ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
+        >
+      </li>
+      <li v-else data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+        <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
       </li>
       <li>
         <a href="" @click.prevent="affichePage('localisationChefFamille')"
-          ><i class="fa fa-hand-o-right"></i>
-          <span>Carte des ménages</span></a
+          ><i class="fa fa-hand-o-right"></i> <span>Carte des ménages</span></a
+        >
+      </li>
+      <li>
+        <a href="" @click.prevent="affichePage('localiseZone')"
+          ><i class="fa fa-hand-o-right"></i> <span>Carte districts</span></a
         >
       </li>
       <li>
         <a href="" @click.prevent="affichePage('localiseZone')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Carte  districts</span></a
-        >
-      </li>
-      <li>
-        <a href="" @click.prevent="affichePage('localiseZone')"
-          ><i class="fa fa-hand-o-right"></i>
-          <span>Carte  aires sanitaire</span></a
+          <span>Carte aires sanitaire</span></a
         >
       </li>
       <li>
@@ -57,12 +66,16 @@
         >
       </li>
     </ul>
+
+    
   </div>
+ 
+
 </template>
 
 <script>
 //import { useStore } from "vuex"; // Importation du store
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {},
@@ -79,11 +92,27 @@ export default {
     // this.id_module = localStorage.getItem("id_module");
   },
   computed: {
-    //  nameUser() {
-    //   let objLinea = localStorage.getItem("User");
-    //   let objJson = JSON.parse(objLinea);
-    //   return objJson.noms;
-    // },
+    ...mapGetters(["getterRole", "loading", "getterinventaireequipements"]),
+    idUser() {
+      let objLinea = localStorage.getItem("User");
+      let objJson = JSON.parse(objLinea);
+      return objJson.id;
+    },
+
+    AfficheIdUtilisateur() {
+      return ($id) => {
+        if ($id != null && $id != "") {
+          const qtereel = this.getterinventaireequipements.find(
+            (qtreel) => qtreel.user_id == $id
+          );
+
+          if (qtereel) {
+            return qtereel.user_id;
+          }
+          return "0";
+        }
+      };
+    },
   },
 
   methods: {
@@ -100,6 +129,7 @@ export default {
 </script>
 
 <style scoped>
+
 li:hover {
   background-color: #5f8ca3 !important;
   font-weight: bold !important;

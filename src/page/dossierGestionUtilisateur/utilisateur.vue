@@ -266,7 +266,7 @@
                     />
                   </div>
                 </div>
-                <div class="mb-3" v-if="id_roles==2 || id_roles==3">
+                <div class="mb-3" v-if="id_roles == 2 || id_roles == 3">
                   <label for="inputWithIcon" class="form-label"
                     >{{ libellerole(concateneCodeRole) }}
                     <span
@@ -281,6 +281,33 @@
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg example"
                     v-model="objet.responsable_id"
+                  >
+                    <option selected></option>
+                    <option
+                      v-for="data in getterResponsables"
+                      :key="data.id"
+                      :value="data.utilisateur_id"
+                    >
+                      {{ data.nom_utilisateur }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="mb-3" v-if="id_roles == 2 || id_roles == 3">
+                  <label for="inputWithIcon" class="form-label"
+                    >Responsable des Equipements du ASC
+                    <span
+                      style="
+                        color: red;
+                        font-weight: 900 !important;
+                        font-size: 15px;
+                      "
+                    ></span
+                  ></label>
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg example"
+                    v-model="objet.responsable_equipe_id"
                   >
                     <option selected></option>
                     <option
@@ -445,10 +472,39 @@
                     </option>
                   </select>
                 </div>
-
                 <div class="mb-3">
                   <label for="inputWithIcon" class="form-label"
-                    >Responsale
+                    >Mot de passe
+                    <span
+                      style="
+                        color: red;
+                        font-weight: 900 !important;
+                        font-size: 15px;
+                      "
+                      >*</span
+                    ></label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez password"
+                      v-model="ObjetModifier.password"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="mb-3"
+                  v-if="
+                    ObjetModifier.id_roles == 8 || ObjetModifier.id_roles == 9
+                  "
+                >
+                  <label for="inputWithIcon" class="form-label"
+                    >Superviseur
                     <span
                       style="
                         color: red;
@@ -466,9 +522,36 @@
                     <option
                       v-for="data in getterUtilisateur"
                       :key="data.id"
-                      :value="data.id"
+                      :value="data.utilisateur_id"
                     >
-                      {{ data.noms }} {{ data.prenoms }}
+                      {{ data.noms }}   {{ data.prenoms }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="mb-3" v-if="ObjetModifier.id_roles == 8">
+                  <label for="inputWithIcon" class="form-label"
+                    >Responsable de Equipement
+                    <span
+                      style="
+                        color: red;
+                        font-weight: 900 !important;
+                        font-size: 15px;
+                      "
+                    ></span
+                  ></label>
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg example"
+                    v-model="ObjetModifier.responsable_equipe_id"
+                  >
+                    <option selected></option>
+                    <option
+                      v-for="data in getterUtilisateur"
+                      :key="data.id"
+                      :value="data.utilisateur_id"
+                    >
+                      {{ data.noms }}     {{ data.prenoms }}
                     </option>
                   </select>
                 </div>
@@ -521,7 +604,9 @@ export default {
         noms: "",
         prenoms: "",
         numero: "",
+        respo_superieur_id: "",
         responsable_id: "",
+        responsable_equipe_id: "",
       },
       selectItem: null,
       ObjetModifier: {
@@ -530,7 +615,9 @@ export default {
         prenoms: "",
         numero: "",
         id_roles: "",
+        respo_superieur_id: "",
         responsable_id: "",
+        responsable_equipe_id: "",
       },
       currentPage: 1,
       itemsPerPage: 10,
@@ -556,13 +643,18 @@ export default {
       "getterUtilisateur",
       "getterResponsables",
     ]),
+    concateneCodeRolemodifier() {
+      return parseInt(this.ObjetModifier.id_roles) + 1;
+    },
     concateneCodeRole() {
-     return parseInt(this.id_roles) + 1 
+      return parseInt(this.id_roles) + 1;
     },
     libellerole() {
       return (id) => {
         if (id != null && id != "") {
-          let qtereel = this.getterResponsables.find((qtreel) => qtreel.code == id);
+          let qtereel = this.getterResponsables.find(
+            (qtreel) => qtreel.code == id
+          );
 
           if (qtereel) {
             return qtereel.libelle_role;
@@ -651,6 +743,7 @@ export default {
         numero: this.objet.numero,
         id_roles: this.idrole(this.id_roles),
         responsable_id: this.objet.responsable_id,
+        responsable_equipe_id: this.objet.responsable_equipe_id,
         respo_superieur_id: this.id_responsable(this.objet.responsable_id),
       };
       this.creationUtilisateur(ob);
@@ -680,6 +773,7 @@ export default {
         numero: this.ObjetModifier.numero,
         id_roles: this.ObjetModifier.id_roles,
         responsable_id: this.ObjetModifier.responsable_id,
+        responsable_equipe_id: this.ObjetModifier.responsable_equipe_id,
       };
       this.modifierUtilisateur(ob);
       // $('#staticBackdrop').modal('hide');

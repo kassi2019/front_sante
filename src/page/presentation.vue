@@ -275,16 +275,17 @@
                       class="full socile_icons fb margin_bottom_30"
                       style="border-radius: 90% !important"
                       @click="ParametreGeneraux(6)"
-                      @click.prevent="affichePage('TableauBord')"
+                     
                       v-if="VoirModuleactivitesTb == 6"
                     >
                       <div class="social_icon" style="cursor: pointer">
                         <i class="fa fa-life-bouy"></i>
                       </div>
+                       <!-- @click.prevent="affichePage('TableauBord')" -->
                       <div
                         class="social_cont"
                         @click="ParametreGeneraux(6)"
-                        @click.prevent="affichePage('TableauBord')"
+                       
                       >
                         <ul>
                           <span class="desigText">{{

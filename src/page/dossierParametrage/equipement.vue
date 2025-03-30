@@ -41,24 +41,28 @@
                     <th>#</th>
                     <!-- <th>Code</th> -->
                     <th colspan="">Libelle</th>
-
+                    <th colspan="">Quantité</th>
                     <th style="width: 9% !important; text-align: center">
                       Action
                     </th>
                   </tr>
                 </thead>
 
-                <tbody v-for="item in gettertypeequipements" :key="item.id">
-                    <tr style="background-color: #A67E2E;">
-                        <td></td>
-                        <td style="color: #fff;"><span class="badge badge-dark">Type équipement : </span>
-                           {{ item.libelle }}
-                        </td>
-                    </tr>
-                  <tr v-for="(data, index) in afficheEquipeParType(item.id)" :key="data.id">
-                     
+                <tbody v-for="item in getterGpeTypeEquipement" :key="item.type_equipement_id">
+                  <tr style="background-color: #a67e2e">
+                   
+                    <td style="color: #fff" colspan="4">
+                      <span class="badge badge-dark">Type équipement : </span>
+                      {{ item.libelle_type_equipement }}
+                    </td>
+                  </tr>
+                  <tr
+                    v-for="(data, index) in afficheEquipeParType(item.type_equipement_id)"
+                    :key="data.id"
+                  >
                     <td>{{ index + 1 }}</td>
                     <td>{{ data.libelle }}</td>
+                    <td>{{ data.quantite }}</td>
 
                     <td class="button_block">
                       <button
@@ -161,7 +165,7 @@
                     v-model="objet.type_equipement_id"
                     option-value="id"
                     option-text="groupe"
-                    placeholder="séléctionner le nom du chef"
+                    placeholder="séléctionner"
                   >
                   </model-list-select>
                 </div>
@@ -181,6 +185,22 @@
                   />
                 </div>
               </div>
+   <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">quantite</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez quantite"
+                    v-model="objet.quantite"
+                  />
+                </div>
+              </div>
+              
             </div>
 
             <div class="modal-footer">
@@ -232,7 +252,7 @@
               ></button>
             </div>
             <div class="modal-body">
-                     <div class="md-3">
+              <div class="md-3">
                 <label for="inputWithIcon" class="form-label"
                   >Type équipement
                   <span
@@ -267,6 +287,21 @@
                     id="inputWithIcon"
                     placeholder="Entrez libelle"
                     v-model="ObjetModifier.libelle"
+                  />
+                </div>
+              </div>
+                 <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">quantite</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez quantite"
+                    v-model="ObjetModifier.quantite"
                   />
                 </div>
               </div>
@@ -313,11 +348,13 @@ export default {
       objet: {
         libelle: "",
         type_equipement_id: "",
+        quantite:""
       },
       selectItem: null,
       ObjetModifier: {
         type_equipement_id: "",
         libelle: "",
+        quantite:""
       },
       currentPage: 1,
       itemsPerPage: 10, // Nombre d'éléments à afficher par page
@@ -330,12 +367,13 @@ export default {
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
     this.gettypeequipements();
+    this.getGpeEquipement()
     this.getEquipement();
   },
 
   computed: {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
-    ...mapGetters(["getterEquipement", "loading", "gettertypeequipements"]),
+    ...mapGetters(["getterEquipement", "loading", "gettertypeequipements",'getterGpeTypeEquipement']),
     afficheLibelleTypeEquipement() {
       let collet = [];
       this.gettertypeequipements.filter((item) => {
@@ -366,7 +404,9 @@ export default {
       );
     },
     totalPages($id) {
-      return Math.ceil(this.afficheEquipeParType($id).length / this.itemsPerPage);
+      return Math.ceil(
+        this.afficheEquipeParType($id).length / this.itemsPerPage
+      );
     },
     loading() {
       return this.$store.state.loading;
@@ -382,16 +422,18 @@ export default {
 
   methods: {
     ...mapActions([
-      "getEquipement",
+      "getEquipement","getGpeEquipement",
       "enregistrerEquipement",
       "supprimerEquipement",
       "modifierEquipement",
       "gettypeequipements",
     ]),
-           afficheEquipeParType($id) {
-  return this.getterEquipement.filter(data=>data.type_equipement_id==$id)
-},
-    changePage(page,$id) {
+    afficheEquipeParType($id) {
+      return this.getterEquipement.filter(
+        (data) => data.type_equipement_id == $id
+      );
+    },
+    changePage(page, $id) {
       if (page >= 1 && page <= this.totalPages($id)) {
         this.currentPage = page;
       }
@@ -400,10 +442,12 @@ export default {
       let ob = {
         type_equipement_id: this.objet.type_equipement_id,
         libelle: this.objet.libelle,
+        quantite: this.objet.quantite,
       };
       this.enregistrerEquipement(ob);
 
       this.objet.libelle = "";
+      this.objet.quantite = "";
     },
 
     async modifierEquipements() {
@@ -411,6 +455,7 @@ export default {
         id: this.ObjetModifier.id,
         type_equipement_id: this.ObjetModifier.type_equipement_id,
         libelle: this.ObjetModifier.libelle,
+        quantite: this.ObjetModifier.quantite,
       };
       this.modifierEquipement(ob);
       // $('#staticBackdrop').modal('hide');

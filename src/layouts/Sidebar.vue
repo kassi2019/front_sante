@@ -24,7 +24,7 @@
           </div>
           <div class="user_info">
             <h3>{{ nameUser }}</h3>
-            <p style="color: aliceblue;">Rôle : {{ libelleRole(idRole) }}</p>
+            <p style="color: aliceblue;">{{ libelleRole(idRole) }}</p>
             
             <p @click.prevent="logoutUser()" style="cursor: pointer">
               <span class="online_animation"></span> Se déconnecter
@@ -65,9 +65,10 @@ export default {
   created() {
     this.id_module = localStorage.getItem("id_module");
     this.getRoles()
+    this.getInventaireEquipement();
   },
   computed: {
-        ...mapGetters(["getterRole", "loading"]),
+        ...mapGetters(["getterRole", "loading","getterinventaireequipements"]),
     idRole() {
       let objLinea = localStorage.getItem("User");
       let objJson = JSON.parse(objLinea);
@@ -95,7 +96,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["login", "logoutUser","getRoles"]),
+    ...mapActions(["login", "logoutUser","getRoles",'getInventaireEquipement']),
 
     // Appeler une action pour récupérer l'utilisateur
     async getSuiviSaisisPassif() {
