@@ -15,16 +15,17 @@
         >
       </li>
       <li>
-        <a href="" @click.prevent="affichePage('')"
-          ><i class="fa fa-hand-o-right"></i> <span>Liste des équipement ASC</span></a
+        <a href="" @click.prevent="affichePage('AffectationEquipement')"
+          ><i class="fa fa-hand-o-right"></i> <span>Affectation des équipements</span></a
         >
       </li>
+      <!-- 
       <li>
         <a href="" @click.prevent="affichePage('')"
           ><i class="fa fa-hand-o-right"></i>
           <span>Equipement en panne</span></a
         >
-      </li>
+      </li> -->
   <!-- <li>
         <a href="" @click.prevent="affichePage('')"
           ><i class="fa fa-hand-o-right"></i>

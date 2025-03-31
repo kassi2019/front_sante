@@ -18,11 +18,18 @@ import localisationChefFamille from "../page/dossierParametrage/localisationChef
 import Accueil from "../layouts/TableauBord2.vue"
 import aireSanitaire from "../page/dossierParametrage/aireSanitaire.vue"
 import zoneIntervention from "../page/dossierParametrage/zoneIntervention1.vue"
-import equipement from "../page/dossierParametrage/equipement.vue"
-import typeEquipement from "../page/dossierParametrage/typeEquipement.vue"
-import inventaireEquipement from "../page/dossierParametrage/inventaireEquipement.vue"
+import equipement from "../page/GestionStock/equipement.vue"
+import typeEquipement from "../page/GestionStock/typeEquipement.vue"
+import inventaireEquipement from "../page/GestionStock/inventaireEquipement.vue"
+import AffectationEquipement from "../page/GestionStock/AffectationEquipement.vue"
 // import accueil from "../page/accueil.vue"
 const gestionutilisateur = [
+  {
+        path: '/AffectationEquipement',
+        name:"AffectationEquipement",
+      component: AffectationEquipement,
+     
+     },
    {
         path: '/inventaireEquipement',
         name:"inventaireEquipement",

@@ -138,6 +138,23 @@ async supprimerEquipement({ commit,dispatch }, id) {
                  timer: 1500
                });
     });
+    },
+    
+
+        async modifierRenouvellement({ commit,dispatch }, nouveau) {
+  apiGuest.put("/updateRenouvellement/" + nouveau.id, nouveau, { headers: authHeader() })
+    .then(response => {
+      commit("MODIFIER_EQUIPEMENT", response.data);
+      dispatch('getEquipement');
+         dispatch('getGpeEquipement');
+  Swal.fire({
+                 position: "top-end",
+                 icon: "success",
+                 title: "Modification réussie",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
+    });
 }
   },
   getters: {

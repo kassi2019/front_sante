@@ -36,7 +36,7 @@
 
     <parametre v-if="id_module == 1"></parametre>
     <cartographique v-if="id_module == 4"></cartographique>
-    <tableauBord v-if="id_module == 6"></tableauBord>
+    <gestionStock v-if="id_module == 6"></gestionStock>
   </nav>
   <!-- end sidebar -->
 </template>
@@ -46,12 +46,12 @@
 import { mapActions,mapGetters } from "vuex";
 import parametre from "../layouts/menu/parametre.vue";
 import cartographique from "../layouts/menu/cartographique.vue";
-import tableauBord from "../layouts/menu/tableauBord.vue";
+import gestionStock from "./menu/gestionStock.vue";
 export default {
   components: {
     parametre,
     cartographique,
-    tableauBord,
+    gestionStock,
   },
   name: "Counter",
 

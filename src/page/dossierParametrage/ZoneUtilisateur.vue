@@ -551,7 +551,7 @@
 
                   <div class="md-3">
                     <label for="inputWithIcon" class="form-label"
-                      >Utilisateur
+                      >Agent de santé communautaire
                       <span
                         style="
                           color: red;
