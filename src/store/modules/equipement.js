@@ -7,7 +7,8 @@ import router from '../../routes';
  
 const role ={
   state: {
- 
+    affectationEquipements: [],
+    agentequipe: [] ,
     equipements: [] ,
 gpeTypeEquipement:[],
   error: null 
@@ -35,7 +36,26 @@ gpeTypeEquipement:[],
         }
         return response
     })
-}
+    },
+  MODIFIER_AFFECTATION_EQUIPEMENT (state, elementModif){
+    state.affectationEquipements = state.affectationEquipements.map(response => {
+
+        if (response.id == elementModif.id) {
+            response = { ...elementModif }
+        }
+        return response
+    })
+    },
+  AJOUTER_AFFECTATION_EQUIPEMENT  (state, elementAjouter){
+    state.affectationEquipements.unshift(elementAjouter)
+    },
+  SET_AFFECTATION_EQUIPEMENT(state, modules){
+       state.affectationEquipements = modules;
+    },
+
+     SET_AGENT_AFFECTE(state, modules){
+       state.agentequipe = modules;
+    },
   },
   
   actions: {
@@ -67,6 +87,71 @@ gpeTypeEquipement:[],
     }
     },
 
+    
+
+async getEquipementAffecte({ commit }) {
+
+    try {
+        const resultat = await apiGuest.get('/listeEquipementAffecte', { headers: authHeader() });
+        
+        // Mettre à jour les données dans le store
+        commit('SET_AFFECTATION_EQUIPEMENT', resultat.data);
+    } catch (error) {
+      
+    } finally {
+    
+    }
+    },
+async getAgentAffecte({ commit }) {
+
+    try {
+        const resultat = await apiGuest.get('/groupeAgentAffecte', { headers: authHeader() });
+        
+        // Mettre à jour les données dans le store
+        commit('SET_AGENT_AFFECTE', resultat.data);
+    } catch (error) {
+      
+    } finally {
+    
+    }
+    },
+    async enregistrerAffectationEquipement({ commit, dispatch }, objet) {
+  if (!objet.quantite_affecte && !objet.equipement_id) {
+    commit('SET_CHAMP_VIDE_TRUE');
+    Swal.fire({
+      icon: 'error',
+      title: 'Champs vides',
+      text: 'Veuillez remplir tous les champs.',
+      confirmButtonText: 'OK',
+    });
+    return;
+  }
+
+  try {
+    const response = await apiGuest.post('/Affectationequipement', objet, { headers: authHeader() });
+    commit('AJOUTER_AFFECTATION_EQUIPEMENT', response.data);
+    await dispatch('getEquipement'); // appel de l'action getEquipement dans le module equipement
+
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Enregistrement réussi",
+      showConfirmButton: false,
+      timer: 1500
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: 'Une erreur est survenue lors de l\'enregistrement.',
+      confirmButtonText: 'OK',
+    });
+    console.error(error); // Affiche l'erreur dans la console pour déboguer
+  }
+    },
+    
+
+    
      async enregistrerEquipement({ commit,dispatch }, objet) {
 
         if (!objet.libelle) {
@@ -155,7 +240,93 @@ async supprimerEquipement({ commit,dispatch }, id) {
                  timer: 1500
                });
     });
-}
+    },
+        
+        
+        
+        
+        
+        
+        
+        async enregistrerInventaireEquipementAgent({ commit,dispatch }, { status,data}) {
+        
+          try {
+            let response;
+        
+            // Check if the equipment already has a status, and if so, update it
+            
+              // If the status exists, perform an update
+              response = await apiGuest.put(`/Affectationequipement/${data}`, {
+                status: status,
+              }, {
+                headers: authHeader(), // Add authentication headers if required
+              });
+            
+        
+            // Commit the response data to the Vuex store (You can modify this depending on your mutation)
+            commit('MODIFIER_AFFECTATION_EQUIPEMENT', response.data);
+              dispatch('getEquipementAffecte');
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Equipement validé',
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          } catch (error) {
+            // Handle error here, e.g., show an alert
+            console.error('Error saving status', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l\'enregistrement.',
+              confirmButtonText: 'OK',
+            });
+          }
+    },
+        
+        
+        
+        
+        
+        async enregistrerInventaireEquipementAgentAnnule({ commit,dispatch }, { status,data}) {
+        
+          try {
+            let response;
+        
+            // Check if the equipment already has a status, and if so, update it
+            
+              // If the status exists, perform an update
+              response = await apiGuest.put(`/Affectationequipement/${data}`, {
+                status: status,
+              }, {
+                headers: authHeader(), // Add authentication headers if required
+              });
+            
+        
+            // Commit the response data to the Vuex store (You can modify this depending on your mutation)
+            commit('MODIFIER_AFFECTATION_EQUIPEMENT', response.data);
+              dispatch('getEquipementAffecte');
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Equipement Annulé',
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          } catch (error) {
+            // Handle error here, e.g., show an alert
+            console.error('Error saving status', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l\'enregistrement.',
+              confirmButtonText: 'OK',
+            });
+          }
+        },
   },
   getters: {
   
@@ -166,10 +337,18 @@ async supprimerEquipement({ commit,dispatch }, id) {
       getterGpeTypeEquipement(state) {
       return state.gpeTypeEquipement.sort((a, b) => (a.libelle_type_equipement < b.libelle_type_equipement) ? -1 : 1)
     },
-
-  error(state) {
-    return state.error;
-  }
+ getteraffectationEquipements(state) {
+      return state.affectationEquipements.sort((a, b) => (a.libelle_equipement < b.libelle_equipement) ? -1 : 1)
+    },
+      
+      getteragentEquipement(state) {
+      return state.agentequipe.sort((a, b) => (a.nom_agent < b.nom_agent) ? -1 : 1)
+    }, 
+     
+   
+  // error(state) {
+  //   return state.error;
+  // }
   }
 };
 export default role;

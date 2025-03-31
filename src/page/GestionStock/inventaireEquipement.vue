@@ -2,11 +2,12 @@
   <!-- dashboard inner -->
 
   <div>
+    {{ afficheMessageAlertSiQteAffecteEstSupDispo }}
     <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Inventaire d'Equipement ASC</h2>
+          <h2>Inventaire d'équipement de ASC</h2>
         </div>
       </div>
     </div>
@@ -17,21 +18,21 @@
           <div
             class="full graph_head d-flex justify-content-end align-items-start"
           >
-            <!-- <div
+            <div
               class="heading1 margin_0 d-flex justify-content-between align-items-center"
             >
               <h2></h2>
-              
-              <button
+              <!-- Aligner le bouton à droite et ouvrir le modal -->
+              <!-- <button
                 type="button"
                 class="btn btn-outline-primary ms-auto btn-rounded-shadow"
                 data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop"
+                data-bs-target="#staticBackdroprenouvel"
               >
                 <i class="fa fa-plus"></i>
                 AJOUTER
-              </button>
-            </div> -->
+              </button> -->
+            </div>
           </div>
           <div class="table_section padding_infor_info">
             <div class="table-responsive-sm">
@@ -41,31 +42,51 @@
                     <th>#</th>
                     <!-- <th>Code</th> -->
                     <th colspan="">Libelle</th>
-                    <th colspan="5" style="text-align: center">
-                      EQUIPEMENT
+                    <th colspan="3">Validation des equipement</th>
+                    
+                  
+                    <th colspan="" style="text-align: center">
+                      Quantité Restant
+                    </th>
+                    <th colspan="" style="text-align: center">
+                      Quantité utilisé
+                    </th>
+                    
+                    <th colspan="" style="text-align: center">
+                      Quantité saisie
+                    </th>
+                    <th style="width: 9% !important; text-align: center">
+                      Action
                     </th>
                   </tr>
                 </thead>
-
-                <tbody v-for="item in gettertypeequipements" :key="item.id">
+                <tbody
+                  v-for="item in getteragentEquipement"
+                  :key="item.agent_id"
+                >
                   <tr style="background-color: #a67e2e">
-                    <td></td>
-                    <td style="color: #fff" colspan="6">
-                      <span class="badge badge-dark">Type équipement : </span>
-                      {{ item.libelle }}
+                    <td style="color: #fff" colspan="10">
+                      <span class="badge badge-dark" style="font-size: 14px"
+                        >ASC :
+                      </span>
+                      <span style="font-size: 25px">{{ item.nom_agent }}</span>
                     </td>
-                   
                   </tr>
+
                   <tr
-                    v-for="(data, index) in afficheEquipeParType(item.id)"
+                    v-for="(data, index) in afficheEquipeParType(item.agent_id)"
                     :key="data.id"
                   >
                     <td>{{ index + 1 }}</td>
-                    <td>{{ data.libelle }}</td>
-
+                    <td>
+                      <span class="badge badge-dark" style="font-size: 14px"
+                        >Equipement </span
+                      >{{ data.libelle_equipement }}
+                    </td>
+                  
                     <td
                       style="background-color: #417324 !important"
-                      v-if="AfficheStatusEquipement(data.id, idUser) == 1"
+                      v-if="AfficheStatusEquipement(data.id, item.agent_id) == 1"
                     >
                       <!-- Radio button for Fonctionnelle -->
                       <input
@@ -73,14 +94,7 @@
                         :name="'fonctionnelle_' + data.id"
                         :value="1"
                         v-model="data.status"
-                        @change="
-                          saveStatus(
-                            data,
-                            1,
-                            item.id,
-                            AfficheIdEquipement(data.id, idUser)
-                          )
-                        "
+                        @change="saveStatus(data.id, 1)"
                       />
                       <label
                         class="form-check-label"
@@ -91,7 +105,7 @@
                           font-weight: bolder;
                         "
                       >
-                         Reçu
+                        Reçu
                       </label>
                     </td>
                     <td v-else>
@@ -101,14 +115,7 @@
                         :name="'fonctionnelle_' + data.id"
                         :value="1"
                         v-model="data.status"
-                        @change="
-                          saveStatus(
-                            data,
-                            1,
-                            item.id,
-                            AfficheIdEquipement(data.id, idUser)
-                          )
-                        "
+                        @change="saveStatus(data.id, 1)"
                       /><label
                         class="form-check-label"
                         for="gridRadios2"
@@ -118,182 +125,10 @@
                           font-weight: bolder;
                         "
                       >
-                         Reçu
+                        Reçu
                       </label>
                     </td>
-                    <td
-                      v-if="AfficheStatusEquipement(data.id, idUser) == 2"
-                      style="background-color: #901811 !important"
-                    >
-                      <!-- Radio button for Non Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'non_fonctionnelle_' + data.id"
-                        :value="2"
-                        v-model="data.status"
-                        @change="
-                          saveStatus(
-                            data,
-                            2,
-                            item.id,
-                            AfficheIdEquipement(data.id, idUser)
-                          )
-                        "
-                      /><label
-                        class="form-check-label"
-                        for="gridRadios2"
-                        style="
-                          font-size: 18px;
-                          color: #000;
-                          font-weight: bolder;
-                        "
-                      >
-                        En panne
-                      </label>
-                    </td>
-                    <td v-else>
-                      <!-- Radio button for Non Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'non_fonctionnelle_' + data.id"
-                        :value="2"
-                        v-model="data.status"
-                        @change="
-                          saveStatus(
-                            data,
-                            2,
-                            item.id,
-                            AfficheIdEquipement(data.id, idUser)
-                          )
-                        "
-                      /><label
-                        class="form-check-label"
-                        for="gridRadios2"
-                        style="
-                          font-size: 18px;
-                          color: #000;
-                          font-weight: bolder;
-                        "
-                      >
-                        En panne
-                      </label>
-                    </td>
-
- <td
-                      v-if="AfficheStatusEquipement(data.id, idUser) == 3"
-                      style="background-color: #E2CA1A !important"
-                    >
-                      <!-- Radio button for Non Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'non_fonctionnelle_' + data.id"
-                        :value="3"
-                        v-model="data.status"
-                        @change="
-                          saveStatus(
-                            data,
-                            3,
-                            item.id,
-                            AfficheIdEquipement(data.id, idUser)
-                          )
-                        "
-                      /><label
-                        class="form-check-label"
-                        for="gridRadios2"
-                        style="
-                          font-size: 18px;
-                          color: #000;
-                          font-weight: bolder;
-                        "
-                      >
-                        Perdu
-                      </label>
-                    </td>
-                    <td v-else>
-                      <!-- Radio button for Non Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'non_fonctionnelle_' + data.id"
-                        :value="3"
-                        v-model="data.status"
-                        @change="
-                          saveStatus(
-                            data,
-                            3,
-                            item.id,
-                            AfficheIdEquipement(data.id, idUser)
-                          )
-                        "
-                      /><label
-                        class="form-check-label"
-                        for="gridRadios2"
-                        style="
-                          font-size: 18px;
-                          color: #000;
-                          font-weight: bolder;
-                        "
-                      >
-                        Perdu
-                      </label>
-                    </td>
-<td
-                      v-if="AfficheStatusEquipement(data.id, idUser) == 4"
-                      style="background-color: #CDDE47 !important"
-                    >
-                      <!-- Radio button for Non Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'non_fonctionnelle_' + data.id"
-                        :value="4"
-                        v-model="data.status"
-                        @change="
-                          saveStatus(
-                            data,
-                            4,
-                            item.id,
-                            AfficheIdEquipement(data.id, idUser)
-                          )
-                        "
-                      /><label
-                        class="form-check-label"
-                        for="gridRadios2"
-                        style="
-                          font-size: 18px;
-                          color: #000;
-                          font-weight: bolder;
-                        "
-                      >
-                        Fini
-                      </label>
-                    </td>
-                    <td v-else>
-                      <!-- Radio button for Non Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'non_fonctionnelle_' + data.id"
-                        :value="4"
-                        v-model="data.status"
-                        @change="
-                          saveStatus(
-                            data,
-                            4,
-                            item.id,
-                            AfficheIdEquipement(data.id, idUser)
-                          )
-                        "
-                      /><label
-                        class="form-check-label"
-                        for="gridRadios2"
-                        style="
-                          font-size: 18px;
-                          color: #000;
-                          font-weight: bolder;
-                        "
-                      >
-                        Fini
-                      </label>
-                    </td>
-                    <td v-if="AfficheIdEquipement(data.id, idUser)!=0">
+                     <td v-if="AfficheIdEquipement(data.id, item.agent_id)!=0">
                       <!-- Radio button for Non Fonctionnelle -->
                       <input
                         type="radio"
@@ -301,7 +136,7 @@
                         :value="0"
                         v-model="data.status"
                         @change="
-                          saveAnnulation(AfficheIdEquipement(data.id, idUser));
+                          saveStatusAnnuler(data.id, 0);
                           this.data.status = false;
                         "
                       /><label
@@ -316,46 +151,360 @@
                         Annulé
                       </label>
                     </td>
+                    <td></td>
+                   
+                    <td v-if="data.status==1" style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                          text-align: center;
+                        ">
+                      {{ data.quantite_affecte || 0 }}
+                    </td>
+                   
+                    <td v-if="data.status==1" style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                          text-align: center;
+                        ">
+                      {{ data.quantite_utilise || 0 }}
+                    </td>
+                   
+                    <td v-if="data.status==1">
+                      <input
+                    type="number"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez quantite"
+                    v-model="ObjetModifier.quantite"
+                  />
+                    </td>
+                    
+                    <td class="button_block" v-if="data.status==1">
+                      <button
+                        type="button"
+                        class="btn cur-p btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdropModification"
+                        @click.prevent="AfficheModalModification(data.id)"
+                      >
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      </button>
+                      
+                    </td>
                   </tr>
                 </tbody>
               </table>
-
-              <!-- Pagination controls -->
-              <!-- <div class="pagination">
-                <button
-                  @click="changePage(currentPage - 1,data.id)"
-                  :disabled="currentPage === 1"
-                  class="btn-pagination"
-                >
-                  « Précédent
-                </button>
-
-                <button
-                  v-for="page in visiblePages"
-                  :key="page"
-                  @click="changePage(page)"
-                  :class="{ active: currentPage === page }"
-                  class="btn-pagination"
-                >
-                  {{ page }}
-                </button>
-
-                <button
-                  @click="changePage(currentPage + 1)"
-                  :disabled="currentPage === totalPages"
-                  class="btn-pagination"
-                >
-                  Suivant »
-                </button>
-              </div> -->
             </div>
           </div>
         </div>
       </div>
 
+      <!-- modal d ajout -->
+
+      <div
+        class="modal fade"
+        id="staticBackdroprenouvel"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="staticBackdropLabel"
+                style="text-transform: capitalize !important"
+              >
+                Affectation équipement
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="md-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Type équipement
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                  ></span
+                ></label>
+                <div class="input-group">
+                  <model-list-select
+                    style=""
+                    :list="afficheLibelleTypeEquipement"
+                    v-model="objetrenoule.type_equipement_id"
+                    option-value="id"
+                    option-text="groupe"
+                    placeholder="séléctionner"
+                  >
+                  </model-list-select>
+                </div>
+              </div>
+              <div class="md-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Equipement
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                    >*</span
+                  ></label
+                >
+                <div class="input-group">
+                  <model-list-select
+                    style=""
+                    :list="afficherEquipementEnfonctionType"
+                    v-model="objetrenoule.equipement_id"
+                    option-value="id"
+                    option-text="groupe"
+                    placeholder="séléctionner"
+                  >
+                  </model-list-select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Quantite actuelle (A)</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    style="font-weight: bolder"
+                    :value="
+                      AfficheQuantiteDisponible(objetrenoule.equipement_id)
+                    "
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Quantité à affecté (B)</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez quantite"
+                    v-model="objetrenoule.quantite_affecte"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Quantité Disponible (C=A-B)</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="inputWithIcon"
+                    :value="afficheQuantiteGlobal"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Nom Superviseur
+                </label>
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  v-model="responsable_id"
+                >
+                  <option
+                    v-for="data in afficherListeDesSuperviseur"
+                    :key="data.id"
+                    :value="data.utilisateur_id"
+                  >
+                    {{ data.nom_utilisateur }}
+                  </option>
+                </select>
+              </div>
+              <div class="md-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Agent de santé communautaire
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                  ></span
+                ></label>
+                <div class="input-group">
+                  <model-list-select
+                    style=""
+                    :list="afficheAgentParSuperviseurs"
+                    v-model="utilisateur_id"
+                    option-value="id"
+                    option-text="groupe"
+                    placeholder="séléctionner"
+                  >
+                  </model-list-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Fermer
+              </button>
+              <button
+                v-if="0 <= afficheQuantiteGlobal"
+                type="button"
+                class="btn btn-success"
+                :disabled="loading"
+                @click.prevent="ajouterAffectationEquipement()"
+              >
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- modal de modification -->
       <div
+        class="modal fade"
+        id="staticBackdropModification"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="staticBackdropLabel"
+                style="text-transform: capitalize !important"
+              >
+                Modifier équipement
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="md-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Type équipement
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                  ></span
+                ></label>
+                <div class="input-group">
+                  <model-list-select
+                    style=""
+                    :list="afficheLibelleTypeEquipement"
+                    v-model="ObjetModifier.type_equipement_id"
+                    option-value="id"
+                    option-text="groupe"
+                    placeholder="séléctionner le nom du chef"
+                  >
+                  </model-list-select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">libelle</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez libelle"
+                    v-model="ObjetModifier.libelle"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">quantite</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez quantite"
+                    v-model="ObjetModifier.quantite"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Fermer
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                :disabled="loading"
+                @click.prevent="modifierEquipements()"
+              >
+                Modifier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+ <div
         class="modal fade"
         id="staticBackdrop2"
         data-bs-backdrop="static"
@@ -401,12 +550,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-
-
-
-
 
 
 
@@ -418,7 +561,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { ModelListSelect } from "vue-search-select";
-
+import Swal from "sweetalert2";
 export default {
   components: {
     ModelListSelect,
@@ -426,15 +569,25 @@ export default {
   data() {
     return {
       isLoading: false, // Définir isLoading ici
-
+      responsable_id: "",
+      utilisateur_id: "",
+      objetrenoule: {
+        equipement_id: "",
+        type_equipement_id: 0,
+        quantite_affecte: 0,
+        superviseur_id: "",
+        agent_id: "",
+      },
       objet: {
         libelle: "",
         type_equipement_id: "",
+        quantite: "",
       },
       selectItem: null,
       ObjetModifier: {
         type_equipement_id: "",
         libelle: "",
+        quantite: "",
       },
       currentPage: 1,
       itemsPerPage: 10, // Nombre d'éléments à afficher par page
@@ -447,8 +600,10 @@ export default {
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
     this.gettypeequipements();
+    this.getAgentAffecte();
+    this.getEquipementAffecte();
     this.getEquipement();
-    // this.getInventaireEquipement();
+    this.getzoneUtilisateur();
   },
 
   computed: {
@@ -457,33 +612,21 @@ export default {
       "getterEquipement",
       "loading",
       "gettertypeequipements",
-      "getterinventaireequipements",
+      "getterGpeTypeEquipement",
+      "getterAgentParSuperviseurs",
+      "getterZoneUtilisateur",
+      "getteragentEquipement",
+      "getteraffectationEquipements",
     ]),
-
-    AfficheStatusEquipement() {
+    AfficheIdEquipement() {
       return ($id, $id1) => {
         if ($id != null && $id != "" && $id1 != null && $id1 != "") {
-          const qtereel = this.getterinventaireequipements.find(
-            (qtreel) => qtreel.equipement_id == $id && qtreel.user_id == $id1
+          const qtereel = this.getteraffectationEquipements.find(
+            (qtreel) => qtreel.id == $id && qtreel.agent_id == $id1
           );
 
           if (qtereel) {
             return qtereel.status;
-          }
-          return "0";
-        }
-      };
-    },
-
-    AfficheIdEquipement() {
-      return ($id, $id1) => {
-        if ($id != null && $id != "" && $id1 != null && $id1 != "") {
-          const qtereel = this.getterinventaireequipements.find(
-            (qtreel) => qtreel.equipement_id == $id && qtreel.user_id == $id1
-          );
-
-          if (qtereel) {
-            return qtereel.id;
           }
           return "0";
         }
@@ -494,6 +637,104 @@ export default {
       let objJson = JSON.parse(objLinea);
       return objJson.id;
     },
+    AfficheStatusEquipement() {
+      return ($id, $id1) => {
+        if ($id != null && $id != "" && $id1 != null && $id1 != "") {
+          const qtereel = this.getteraffectationEquipements.find(
+            (qtreel) => qtreel.id == $id && qtreel.agent_id == $id1
+          );
+
+          if (qtereel) {
+            return qtereel.status;
+          }
+          return "0";
+        }
+      };
+    },
+    afficheMessageAlertSiQteAffecteEstSupDispo() {
+      const quantiteDisponible = this.AfficheQuantiteDisponible(
+        this.objetrenoule.equipement_id
+      );
+      const quantiteAffecte = this.objetrenoule.quantite_affecte;
+
+      // Vérification si la quantité affectée est supérieure à la quantité disponible
+      if (quantiteAffecte > quantiteDisponible) {
+        Swal.fire({
+          position: "top-end",
+          title: "Quantité insuffisante",
+          icon: "error",
+          text: `La quantité affectée de ${quantiteAffecte} dépasse la quantité disponible de ${quantiteDisponible}.`,
+        });
+      }
+    },
+    afficherListeDesSuperviseur() {
+      return this.getterZoneUtilisateur.filter((data) => data.code_role == 3);
+    },
+    afficheAgentParSuperviseurs() {
+      let collet = [];
+      this.getterAgentParSuperviseurs.filter((item) => {
+        let data = {
+          id: item.id,
+          // code:item.code,
+          groupe: item.label,
+        };
+        collet.push(data);
+      });
+      return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
+    },
+    afficheQuantiteGlobal() {
+      return (
+        parseFloat(
+          this.AfficheQuantiteDisponible(this.objetrenoule.equipement_id)
+        ) - parseFloat(this.objetrenoule.quantite_affecte)
+      );
+    },
+
+    AfficheLibelleEquipement() {
+      return ($id) => {
+        if ($id != null && $id != "") {
+          const qtereel = this.getterEquipement.find(
+            (qtreel) => qtreel.id == $id
+          );
+
+          if (qtereel) {
+            return qtereel.libelle;
+          }
+          return 0;
+        }
+      };
+    },
+    AfficheQuantiteDisponible() {
+      return ($id) => {
+        if ($id != null && $id != "") {
+          const qtereel = this.getterEquipement.find(
+            (qtreel) => qtreel.id == $id
+          );
+
+          if (qtereel) {
+            return qtereel.quantite;
+          }
+          return 0;
+        }
+      };
+    },
+    afficherEquipementEnfonctionType() {
+      let collet = [];
+
+      this.getterEquipement.filter((item) => {
+        if (item.type_equipement_id === this.objetrenoule.type_equipement_id) {
+          let data = {
+            id: item.id,
+            groupe: item.libelle,
+          };
+          collet.push(data);
+        }
+      });
+
+      // Trie les résultats par 'groupe' (anciennement 'libelle')
+      return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
+    },
+
     afficheLibelleTypeEquipement() {
       let collet = [];
       this.gettertypeequipements.filter((item) => {
@@ -504,7 +745,7 @@ export default {
         };
         collet.push(data);
       });
-      return collet.sort((a, b) => (a.nom > b.nom ? 1 : -1));
+      return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
     },
     visiblePages() {
       let pages = [];
@@ -543,33 +784,36 @@ export default {
   methods: {
     ...mapActions([
       "getEquipement",
+      "getGpeEquipement",
       "enregistrerEquipement",
       "supprimerEquipement",
       "modifierEquipement",
       "gettypeequipements",
-      "enregistrerInventaireEquipement",
-      "getInventaireEquipement",
-      "modifierInventaireequipement",
-      "supprimerinventaireequipement",
+      "modifierRenouvellement",
+      "getzoneUtilisateur",
+      "getListeAgentParSuperviseur",
+      "enregistrerAffectationEquipement",
+      "getAgentAffecte",
+      "getEquipementAffecte",
+      "enregistrerInventaireEquipementAgent","enregistrerInventaireEquipementAgentAnnule"
     ]),
-    saveAnnulation(data1) {
+    saveStatusAnnuler(data, status) {
       // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
-      this.$store.dispatch("supprimerinventaireequipement", {
-        data1,
+      this.$store.dispatch("enregistrerInventaireEquipementAgentAnnule", {
+        data,
+        status,
       });
     },
-    saveStatus(equipement_id, status, data, data1) {
+    saveStatus(data, status) {
       // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
-      this.$store.dispatch("enregistrerInventaireEquipement", {
-        equipement_id,
-        status,
+      this.$store.dispatch("enregistrerInventaireEquipementAgent", {
         data,
-        data1,
+        status,
       });
     },
     afficheEquipeParType($id) {
-      return this.getterEquipement.filter(
-        (data) => data.type_equipement_id == $id
+      return this.getteraffectationEquipements.filter(
+        (data) => data.agent_id == $id
       );
     },
     changePage(page, $id) {
@@ -581,10 +825,12 @@ export default {
       let ob = {
         type_equipement_id: this.objet.type_equipement_id,
         libelle: this.objet.libelle,
+        quantite: this.objet.quantite,
       };
       this.enregistrerEquipement(ob);
 
       this.objet.libelle = "";
+      this.objet.quantite = "";
     },
 
     async modifierEquipements() {
@@ -592,16 +838,44 @@ export default {
         id: this.ObjetModifier.id,
         type_equipement_id: this.ObjetModifier.type_equipement_id,
         libelle: this.ObjetModifier.libelle,
+        quantite: this.ObjetModifier.quantite,
       };
       this.modifierEquipement(ob);
       // $('#staticBackdrop').modal('hide');
       // modal.hide();
     },
 
+    async ajouterAffectationEquipement() {
+      let ob = {
+        //  id: this.objetrenoule.equipement_id,
+        type_equipement_id: this.objetrenoule.type_equipement_id,
+        equipement_id: this.objetrenoule.equipement_id,
+        quantite_dispo: this.afficheQuantiteGlobal,
+        quantite_affecte: this.objetrenoule.quantite_affecte,
+        superviseur_id: this.responsable_id,
+        agent_id: this.utilisateur_id,
+      };
+      this.enregistrerAffectationEquipement(ob);
+      this.objetrenoule.quantite_affecte = 0;
+      this.objetrenoule.equipement_id = "";
+      // $('#staticBackdrop').modal('hide');
+      // modal.hide();
+    },
     async AfficheModalModification(id) {
       this.ObjetModifier = this.getterEquipement.find(
         (items) => items.id == id
       );
+    },
+  },
+  watch: {
+    responsable_id: function (value) {
+      let objet = {
+        respo: value,
+      };
+
+      this.getListeAgentParSuperviseur(objet);
+
+      // }
     },
   },
 };
@@ -640,6 +914,21 @@ export default {
 }
 .btn-rounded-shadow:hover {
   background-color: #007b9a;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Ombre plus marquée au survol */
+}
+.btn-rounded-shadow1 {
+  background-color: #b8a712; /* Bleu */
+  color: white;
+  padding: 10px 10px;
+  border: 2px solid #b8a712;
+  border-radius: 25px; /* Bordures arrondies */
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile */
+  transition: all 0.3s ease;
+}
+.btn-rounded-shadow1:hover {
+  background-color: #b8a712;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Ombre plus marquée au survol */
 }
 th {

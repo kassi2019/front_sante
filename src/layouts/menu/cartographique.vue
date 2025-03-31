@@ -28,7 +28,12 @@
           <span>Inventaire d'équipement ASC</span></a
         >
       </li>
-      <li v-if="AfficheIdUtilisateur(idUser) == idUser">
+      <li v-if="AfficheIdUtilisateur(idUser) == idUser && idrole!=7">
+        <a href="" @click.prevent="affichePage('menage')"
+          ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
+        >
+      </li>
+      <li v-if="idrole==7">
         <a href="" @click.prevent="affichePage('menage')"
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
@@ -92,22 +97,26 @@ export default {
     // this.id_module = localStorage.getItem("id_module");
   },
   computed: {
-    ...mapGetters(["getterRole", "loading", "getterinventaireequipements"]),
+    ...mapGetters(["getterRole", "loading", "getteraffectationEquipements"]),
     idUser() {
       let objLinea = localStorage.getItem("User");
       let objJson = JSON.parse(objLinea);
       return objJson.id;
     },
-
+ idrole() {
+      let objLinea = localStorage.getItem("User");
+      let objJson = JSON.parse(objLinea);
+      return objJson.id_roles;
+    },
     AfficheIdUtilisateur() {
       return ($id) => {
         if ($id != null && $id != "") {
-          const qtereel = this.getterinventaireequipements.find(
-            (qtreel) => qtreel.user_id == $id
+          const qtereel = this.getteraffectationEquipements.find(
+            (qtreel) => qtreel.agent_id == $id && qtreel.status==1
           );
 
           if (qtereel) {
-            return qtereel.user_id;
+            return qtereel.agent_id;
           }
           return "0";
         }

@@ -2,6 +2,7 @@
   <!-- dashboard inner -->
 
   <div>
+    {{ afficheMessageAlertSiQteAffecteEstSupDispo }}
     <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
@@ -31,7 +32,6 @@
                 <i class="fa fa-plus"></i>
                 AJOUTER
               </button>
-             
             </div>
           </div>
           <div class="table_section padding_infor_info">
@@ -48,26 +48,25 @@
                     </th>
                   </tr>
                 </thead>
-
                 <tbody
-                  v-for="item in getterGpeTypeEquipement"
-                  :key="item.type_equipement_id"
+                  v-for="item in getteragentEquipement"
+                  :key="item.agent_id"
                 >
                   <tr style="background-color: #a67e2e">
                     <td style="color: #fff" colspan="4">
-                      <span class="badge badge-dark">Type équipement : </span>
-                      {{ item.libelle_type_equipement }}
+                      <span class="badge badge-dark" style="font-size: 14px;">Nom et Prénoms ASC : </span>
+                      <span style="font-size: 25px;">{{ item.nom_agent }}</span>  
                     </td>
                   </tr>
                   <tr
                     v-for="(data, index) in afficheEquipeParType(
-                      item.type_equipement_id
+                      item.agent_id
                     )"
                     :key="data.id"
                   >
                     <td>{{ index + 1 }}</td>
-                    <td>{{ data.libelle }}</td>
-                    <td>{{ data.quantite }}</td>
+                    <td><span class="badge badge-dark" style="font-size: 14px;">Equipement </span>{{ data.libelle_equipement }}</td>
+                    <td>{{ data.quantite_affecte }}</td>
 
                     <td class="button_block">
                       <button
@@ -90,14 +89,12 @@
                   </tr>
                 </tbody>
               </table>
-
             </div>
           </div>
         </div>
       </div>
 
       <!-- modal d ajout -->
-     
 
       <div
         class="modal fade"
@@ -158,8 +155,9 @@
                       font-weight: 900 !important;
                       font-size: 15px;
                     "
-                  ></span
-                ></label>
+                    >*</span
+                  ></label
+                >
                 <div class="input-group">
                   <model-list-select
                     style=""
@@ -192,6 +190,7 @@
                   />
                 </div>
               </div>
+
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label"
                   >Quantité à affecté (B)</label
@@ -205,7 +204,7 @@
                     class="form-control"
                     id="inputWithIcon"
                     placeholder="Entrez quantite"
-                    v-model="objetrenoule.quantitesaisir"
+                    v-model="objetrenoule.quantite_affecte"
                   />
                 </div>
               </div>
@@ -227,47 +226,46 @@
                 </div>
               </div>
               <div class="mb-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Nom Superviseur
-                    </label>
-                    <select
-                      class="form-select form-select-lg mb-3"
-                      aria-label=".form-select-lg example"
-                      v-model="responsable_id"
-                    >
-                      <option
-                        v-for="data in afficherListeDesSuperviseur"
-                        :key="data.id"
-                        :value="data.utilisateur_id"
-                      >
-                        {{ data.nom_utilisateur }}
-                      </option>
-                    </select>
-                  </div>
-            <div class="md-3">
-                    <label for="inputWithIcon" class="form-label"
-                      >Agent de santé communautaire
-                      <span
-                        style="
-                          color: red;
-                          font-weight: 900 !important;
-                          font-size: 15px;
-                        "
-                        >*</span
-                      ></label
-                    >
-                    <div class="input-group">
-                      <model-list-select
-                        style=""
-                        :list="afficheAgentParSuperviseurs"
-                        v-model="utilisateur_id"
-                        option-value="id"
-                        option-text="groupe"
-                        placeholder="séléctionner"
-                      >
-                      </model-list-select>
-                    </div>
-                  </div>
+                <label for="inputWithIcon" class="form-label"
+                  >Nom Superviseur
+                </label>
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  v-model="responsable_id"
+                >
+                  <option
+                    v-for="data in afficherListeDesSuperviseur"
+                    :key="data.id"
+                    :value="data.utilisateur_id"
+                  >
+                    {{ data.nom_utilisateur }}
+                  </option>
+                </select>
+              </div>
+              <div class="md-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Agent de santé communautaire
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                  ></span
+                ></label>
+                <div class="input-group">
+                  <model-list-select
+                    style=""
+                    :list="afficheAgentParSuperviseurs"
+                    v-model="utilisateur_id"
+                    option-value="id"
+                    option-text="groupe"
+                    placeholder="séléctionner"
+                  >
+                  </model-list-select>
+                </div>
+              </div>
             </div>
 
             <div class="modal-footer">
@@ -279,10 +277,11 @@
                 Fermer
               </button>
               <button
+              v-if="0<=afficheQuantiteGlobal"
                 type="button"
                 class="btn btn-success"
                 :disabled="loading"
-                @click.prevent="modifierEquipementRenouveler()"
+                @click.prevent="ajouterAffectationEquipement()"
               >
                 Enregistrer
               </button>
@@ -403,20 +402,22 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { ModelListSelect } from "vue-search-select";
-
+import Swal from "sweetalert2";
 export default {
   components: {
     ModelListSelect,
   },
   data() {
     return {
-        isLoading: false, // Définir isLoading ici
-        responsable_id: "",
-      utilisateur_id:"",
+      isLoading: false, // Définir isLoading ici
+      responsable_id: "",
+      utilisateur_id: "",
       objetrenoule: {
         equipement_id: "",
-        type_equipement_id: "",
-        quantitesaisir: 0,
+        type_equipement_id: 0,
+        quantite_affecte: 0,
+        superviseur_id: "",
+        agent_id: "",
       },
       objet: {
         libelle: "",
@@ -440,9 +441,10 @@ export default {
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
     this.gettypeequipements();
-    this.getGpeEquipement();
-      this.getEquipement();
-     this.getzoneUtilisateur();
+    this.getAgentAffecte();
+    this.getEquipementAffecte();
+    this.getEquipement();
+    this.getzoneUtilisateur();
   },
 
   computed: {
@@ -451,12 +453,30 @@ export default {
       "getterEquipement",
       "loading",
       "gettertypeequipements",
-      "getterGpeTypeEquipement","getterAgentParSuperviseurs","getterZoneUtilisateur"
+      "getterGpeTypeEquipement",
+      "getterAgentParSuperviseurs",
+      "getterZoneUtilisateur","getteragentEquipement","getteraffectationEquipements",
     ]),
-        afficherListeDesSuperviseur() {
+    afficheMessageAlertSiQteAffecteEstSupDispo() {
+      const quantiteDisponible = this.AfficheQuantiteDisponible(
+        this.objetrenoule.equipement_id
+      );
+      const quantiteAffecte = this.objetrenoule.quantite_affecte;
+
+      // Vérification si la quantité affectée est supérieure à la quantité disponible
+      if (quantiteAffecte > quantiteDisponible) {
+        Swal.fire({
+          position: "top-end",
+          title: "Quantité insuffisante",
+          icon: "error",
+          text: `La quantité affectée de ${quantiteAffecte} dépasse la quantité disponible de ${quantiteDisponible}.`,
+        });
+      }
+    },
+    afficherListeDesSuperviseur() {
       return this.getterZoneUtilisateur.filter((data) => data.code_role == 3);
     },
- afficheAgentParSuperviseurs() {
+    afficheAgentParSuperviseurs() {
       let collet = [];
       this.getterAgentParSuperviseurs.filter((item) => {
         let data = {
@@ -472,7 +492,7 @@ export default {
       return (
         parseFloat(
           this.AfficheQuantiteDisponible(this.objetrenoule.equipement_id)
-        ) - parseFloat(this.objetrenoule.quantitesaisir)
+        ) - parseFloat(this.objetrenoule.quantite_affecte)
       );
     },
 
@@ -575,12 +595,15 @@ export default {
       "supprimerEquipement",
       "modifierEquipement",
       "gettypeequipements",
-      "modifierRenouvellement","getzoneUtilisateur",'getListeAgentParSuperviseur'
+      "modifierRenouvellement",
+      "getzoneUtilisateur",
+      "getListeAgentParSuperviseur",
+      "enregistrerAffectationEquipement","getAgentAffecte","getEquipementAffecte"
     ]),
-   
+
     afficheEquipeParType($id) {
-      return this.getterEquipement.filter(
-        (data) => data.type_equipement_id == $id
+      return this.getteraffectationEquipements.filter(
+        (data) => data.agent_id == $id
       );
     },
     changePage(page, $id) {
@@ -612,16 +635,19 @@ export default {
       // modal.hide();
     },
 
-    async modifierEquipementRenouveler() {
+    async ajouterAffectationEquipement() {
       let ob = {
-        id: this.objetrenoule.equipement_id,
+        //  id: this.objetrenoule.equipement_id,
         type_equipement_id: this.objetrenoule.type_equipement_id,
-        libelle: this.AfficheLibelleEquipement(this.objetrenoule.equipement_id),
-        quantite: this.afficheQuantiteGlobal,
-        quantitesaisir: this.objetrenoule.quantitesaisir,
+        equipement_id: this.objetrenoule.equipement_id,
+        quantite_dispo: this.afficheQuantiteGlobal,
+        quantite_affecte: this.objetrenoule.quantite_affecte,
+        superviseur_id: this.responsable_id,
+        agent_id: this.utilisateur_id,
       };
-      this.modifierRenouvellement(ob);
-      this.objetrenoule.quantitesaisir = 0;
+      this.enregistrerAffectationEquipement(ob);
+      this.objetrenoule.quantite_affecte = 0;
+      this.objetrenoule.equipement_id = "";
       // $('#staticBackdrop').modal('hide');
       // modal.hide();
     },
@@ -630,9 +656,9 @@ export default {
         (items) => items.id == id
       );
     },
-    },
-    watch: {
-          responsable_id: function (value) {
+  },
+  watch: {
+    responsable_id: function (value) {
       let objet = {
         respo: value,
       };
@@ -640,8 +666,8 @@ export default {
       this.getListeAgentParSuperviseur(objet);
 
       // }
-    }, 
-    }
+    },
+  },
 };
 </script>
 
