@@ -209,6 +209,44 @@ async supprimerDistrict({ commit,dispatch }, id) {
           commit('SET_CARTE_ZONE', []);
         }
     },
+            
+            
+            
+            
+            
+            
+            
+                async importationDistrict({ commit,dispatch }, objet) {
+                    
+                      try {
+                       
+                    
+                        // Check if the equipment already has a status, and if so, update it
+                        
+                          // If the status exists, perform an update
+                             const response = await apiGuest.post('/district', objet, { headers: authHeader() });
+                        // Commit the response data to the Vuex store (You can modify this depending on your mutation)
+                        commit('AJOUTER_DISTRICT', response.data);
+                           dispatch('getDistrict');
+            
+                        Swal.fire({
+                          position: 'top-end',
+                          icon: 'success',
+                          title: 'Equipement Annulé',
+                          showConfirmButton: false,
+                          timer: 2000,
+                        });
+                      } catch (error) {
+                        // Handle error here, e.g., show an alert
+                        console.error('Error saving status', error);
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Erreur',
+                          text: 'Une erreur est survenue lors de l\'enregistrement.',
+                          confirmButtonText: 'OK',
+                        });
+                      }
+                },
   },
   getters: {
   

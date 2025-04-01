@@ -33,7 +33,7 @@
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
       </li>
-      <li v-if="idrole==7">
+     <li v-else-if="idrole==7">
         <a href="" @click.prevent="affichePage('menage')"
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
@@ -43,6 +43,7 @@
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
       </li>
+       
       <!-- <li>
         <a href="" @click.prevent="affichePage('localisationChefFamille')"
           ><i class="fa fa-hand-o-right"></i> <span>Carte des ménages</span></a

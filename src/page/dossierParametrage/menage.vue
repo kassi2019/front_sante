@@ -299,7 +299,7 @@
                   </div>
 
                   <div class="mb-3 row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
                         >Longitude(-)</label
                       >
@@ -313,10 +313,11 @@
                           id="inputWithIcon"
                           placeholder="Entrez longitude"
                           v-model="objet.longitude"
+                          
                         />
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                       <label for="inputWithIcon" class="form-label"
                         >Latitude(+)</label
                       >
@@ -330,11 +331,22 @@
                           id="inputWithIcon"
                           placeholder="Entrez latitude"
                           v-model="objet.latitude"
+                          
                         />
                       </div>
                     </div>
+                     <div class="col-md-4">
+                     <br/>
+                       <button
+                      type="button"
+                      class="btn btn-success"
+                      @click="getGeolocation"
+                    >
+                      Obtenir mes coordonnées
+                    </button>
+                    </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <label for="inputWithIcon" class="form-label"
                         >Zone Intervention
                         <span
@@ -1077,6 +1089,36 @@ export default {
       "getZoneParAgent",
       "enregistrerpatient",
     ]),
+    setCoordinates(position) {
+      this.objet.latitude = position.coords.latitude;
+      this.objet.longitude = position.coords.longitude;
+    },
+        getGeolocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          this.setCoordinates,
+          this.handleError
+        );
+      } else {
+        this.error = 'La géolocalisation n\'est pas supportée par ce navigateur.';
+      }
+    },
+      handleError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          this.error = 'L\'utilisateur a refusé la demande de géolocalisation.';
+          break;
+        case error.POSITION_UNAVAILABLE:
+          this.error = 'Les informations de géolocalisation sont indisponibles.';
+          break;
+        case error.TIMEOUT:
+          this.error = 'La demande de géolocalisation a expiré.';
+          break;
+        default:
+          this.error = 'Une erreur inconnue est survenue.';
+          break;
+      }
+    },
     compteNbrePatientParMenege($id) {
       return this.getterpatient.filter(
         (data) =>

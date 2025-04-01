@@ -152,6 +152,7 @@
                     id="inputWithIcon"
                     placeholder="Entrez Libelle"
                     v-model="objet.libelle"
+                 
                   />
                 </div>
               </div>
@@ -391,6 +392,34 @@ export default {
       "supprimerDistrict",
       "modifierDistrict",
     ]),
+
+
+
+    //     async getCoordinatesFromDistrict() {
+    //   // Si le champ est vide, on ne fait rien
+    //   if (!this.objet.libelle) return;
+
+    //   const apiKey = 'VOTRE_CLE_API'; // Remplacez par votre clé API d'OpenCage
+    //   const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+    //     this.objet.libelle
+    //   )}&key=${apiKey}&language=fr&pretty=1`;
+
+    //   try {
+    //     const response = await fetch(url);
+    //     const data = await response.json();
+
+    //     if (data.results.length > 0) {
+    //       const result = data.results[0];
+    //       this.objet.latitude = result.geometry.lat;
+    //       this.objet.longitude = result.geometry.lng;
+    //       this.error = ''; // Effacer l'erreur précédente si la géolocalisation réussie
+    //     } else {
+    //       this.error = 'Aucun résultat trouvé pour ce district.';
+    //     }
+    //   } catch (err) {
+    //     this.error = 'Erreur lors de la récupération des coordonnées.';
+    //   }
+    // },
     // Fonction pour changer de page
     changePage(page) {
       if (page > 0 && page <= this.totalPages) {
