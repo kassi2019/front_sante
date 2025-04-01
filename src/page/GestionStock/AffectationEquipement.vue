@@ -52,9 +52,9 @@
                   v-for="item in getteragentEquipement"
                   :key="item.agent_id"
                 >
-                  <tr style="background-color: #a67e2e">
-                    <td style="color: #fff" colspan="4">
-                      <span class="badge badge-dark" style="font-size: 14px;">Nom et Prénoms ASC : </span>
+                  <tr style="background-color: #c4d7ed">
+                    <td style="color: #000" colspan="4">
+                      <span class="badge badge-dark" style="font-size: 14px;">ASC : </span>
                       <span style="font-size: 25px;">{{ item.nom_agent }}</span>  
                     </td>
                   </tr>

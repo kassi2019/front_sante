@@ -2,7 +2,6 @@
   <!-- dashboard inner -->
 
   <div>
-   
     <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
@@ -63,8 +62,8 @@
                   v-for="item in getteragentEquipement"
                   :key="item.agent_id"
                 >
-                  <tr style="background-color: #a67e2e">
-                    <td style="color: #fff" colspan="10">
+                  <tr style="background-color: #c4d7ed">
+                    <td style="color: #000" colspan="10">
                       <span class="badge badge-dark" style="font-size: 14px"
                         >ASC :
                       </span>
@@ -129,7 +128,12 @@
                         Reçu
                       </label>
                     </td>
-                    <td v-if="AfficheIdEquipement(data.id, item.agent_id) != 0">
+                    <td
+                      v-if="
+                        AfficheIdEquipement(data.id, item.agent_id) != 0 &&
+                        data.quantite_utilise == 0
+                      "
+                    >
                       <!-- Radio button for Non Fonctionnelle -->
                       <input
                         type="radio"
@@ -152,8 +156,8 @@
                         Annulé
                       </label>
                     </td>
+                    <td v-else></td>
                     <td></td>
-
                     <td
                       v-if="data.status == 1"
                       style="
@@ -184,28 +188,45 @@
                         class="form-control"
                         id="inputWithIcon"
                         placeholder="Entrez quantite"
-                        v-model="quantite_saisir"
+                       v-model="quantitesSaisies[data.id]"
                       />
                     </td>
 
                     <td class="button_block" v-if="data.status == 1">
                       <button
-                      v-if="quantite_saisir<=data.quantite_affecte"
+                        v-if="
+                          quantitesSaisies[data.id] <= data.quantite_affecte &&
+                          data.quantite_affecte != 0
+                        "
                         type="button"
                         class="btn cur-p btn-success"
                         @click.prevent="
                           miseJourEquipementAffectes(
                             data.id,
-                            quantite_saisir,
+                            quantitesSaisies[data.id],
                             data.equipement_id,
                             data.agent_id
                           )
                         "
                       >
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Valider
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i
+                        >Valider
+                      </button>
+                       <button
+                     v-if="data.quantite_affecte==0"
+                        type="button"
+                        class="btn cur-p btn-danger"
+                     
+                      >
+                       Stock saturé
                       </button>
                     </td>
-                     {{ afficheMessageAlertSiQteAffecteEstSupDispo(data.quantite_affecte,quantite_saisir) }}
+                    {{
+                      afficheMessageAlertSiQteAffecteEstSupDispo(
+                        data.quantite_affecte,
+                        quantitesSaisies[data.id]
+                      )
+                    }}
                   </tr>
                 </tbody>
               </table>
@@ -576,7 +597,7 @@ export default {
       isLoading: false, // Définir isLoading ici
       responsable_id: "",
       utilisateur_id: "",
-      quantite_saisir: 0,
+quantitesSaisies: {},
       objetrenoule: {
         equipement_id: "",
         type_equipement_id: 0,
@@ -594,6 +615,7 @@ export default {
         type_equipement_id: "",
         libelle: "",
         quantite: "",
+        quantite_saisir: 0,
       },
       currentPage: 1,
       itemsPerPage: 10, // Nombre d'éléments à afficher par page
@@ -791,7 +813,7 @@ export default {
       "miseJourEquipementAffecte",
     ]),
 
-        afficheMessageAlertSiQteAffecteEstSupDispo(id1,id) {
+    afficheMessageAlertSiQteAffecteEstSupDispo(id1, id) {
       const quantiteDisponible = id1;
       const quantiteAffecte = id;
 
@@ -841,6 +863,7 @@ export default {
       this.objet.quantite = "";
     },
     async miseJourEquipementAffectes(id, id3, id4, id5) {
+   
       let ob = {
         id: id,
         quantite_saisir: id3,
@@ -848,7 +871,7 @@ export default {
         agent_id: id5,
       };
       this.miseJourEquipementAffecte(ob);
-      this.quantite_saisir=0
+     this.quantitesSaisies= {}
       // $('#staticBackdrop').modal('hide');
       // modal.hide();
     },
