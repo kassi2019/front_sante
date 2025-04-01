@@ -326,7 +326,24 @@ async supprimerEquipement({ commit,dispatch }, id) {
               confirmButtonText: 'OK',
             });
           }
-        },
+    },
+        
+        
+        
+            async miseJourEquipementAffecte({ commit,dispatch }, nouveau) {
+  apiGuest.put("/AffectationEquipementDispo/" + nouveau.id, nouveau, { headers: authHeader() })
+    .then(response => {
+      commit("MODIFIER_AFFECTATION_EQUIPEMENT", response.data);
+       dispatch('getEquipementAffecte');
+  Swal.fire({
+                 position: "top-end",
+                 icon: "success",
+                 title: "Modification réussie",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
+    });
+    },
   },
   getters: {
   

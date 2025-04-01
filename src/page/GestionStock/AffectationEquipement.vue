@@ -622,6 +622,7 @@ export default {
       this.objet.libelle = "";
       this.objet.quantite = "";
     },
+    
 
     async modifierEquipements() {
       let ob = {

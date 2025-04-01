@@ -2,7 +2,7 @@
   <!-- dashboard inner -->
 
   <div>
-    {{ afficheMessageAlertSiQteAffecteEstSupDispo }}
+   
     <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
@@ -43,15 +43,14 @@
                     <!-- <th>Code</th> -->
                     <th colspan="">Libelle</th>
                     <th colspan="3">Validation des equipement</th>
-                    
-                  
+
                     <th colspan="" style="text-align: center">
-                      Quantité Restant
+                      Quantité disponible
                     </th>
                     <th colspan="" style="text-align: center">
-                      Quantité utilisé
+                      Quantité utilisée
                     </th>
-                    
+
                     <th colspan="" style="text-align: center">
                       Quantité saisie
                     </th>
@@ -83,10 +82,12 @@
                         >Equipement </span
                       >{{ data.libelle_equipement }}
                     </td>
-                  
+
                     <td
                       style="background-color: #417324 !important"
-                      v-if="AfficheStatusEquipement(data.id, item.agent_id) == 1"
+                      v-if="
+                        AfficheStatusEquipement(data.id, item.agent_id) == 1
+                      "
                     >
                       <!-- Radio button for Fonctionnelle -->
                       <input
@@ -128,7 +129,7 @@
                         Reçu
                       </label>
                     </td>
-                     <td v-if="AfficheIdEquipement(data.id, item.agent_id)!=0">
+                    <td v-if="AfficheIdEquipement(data.id, item.agent_id) != 0">
                       <!-- Radio button for Non Fonctionnelle -->
                       <input
                         type="radio"
@@ -152,47 +153,59 @@
                       </label>
                     </td>
                     <td></td>
-                   
-                    <td v-if="data.status==1" style="
-                          font-size: 18px;
-                          color: #000;
-                          font-weight: bolder;
-                          text-align: center;
-                        ">
+
+                    <td
+                      v-if="data.status == 1"
+                      style="
+                        font-size: 18px;
+                        color: #000;
+                        font-weight: bolder;
+                        text-align: center;
+                      "
+                    >
                       {{ data.quantite_affecte || 0 }}
                     </td>
-                   
-                    <td v-if="data.status==1" style="
-                          font-size: 18px;
-                          color: #000;
-                          font-weight: bolder;
-                          text-align: center;
-                        ">
+
+                    <td
+                      v-if="data.status == 1"
+                      style="
+                        font-size: 18px;
+                        color: #000;
+                        font-weight: bolder;
+                        text-align: center;
+                      "
+                    >
                       {{ data.quantite_utilise || 0 }}
                     </td>
-                   
-                    <td v-if="data.status==1">
+
+                    <td v-if="data.status == 1">
                       <input
-                    type="number"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez quantite"
-                    v-model="ObjetModifier.quantite"
-                  />
+                        type="number"
+                        class="form-control"
+                        id="inputWithIcon"
+                        placeholder="Entrez quantite"
+                        v-model="quantite_saisir"
+                      />
                     </td>
-                    
-                    <td class="button_block" v-if="data.status==1">
+
+                    <td class="button_block" v-if="data.status == 1">
                       <button
+                      v-if="quantite_saisir<=data.quantite_affecte"
                         type="button"
                         class="btn cur-p btn-success"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdropModification"
-                        @click.prevent="AfficheModalModification(data.id)"
+                        @click.prevent="
+                          miseJourEquipementAffectes(
+                            data.id,
+                            quantite_saisir,
+                            data.equipement_id,
+                            data.agent_id
+                          )
+                        "
                       >
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Valider
                       </button>
-                      
                     </td>
+                     {{ afficheMessageAlertSiQteAffecteEstSupDispo(data.quantite_affecte,quantite_saisir) }}
                   </tr>
                 </tbody>
               </table>
@@ -502,57 +515,49 @@
       </div>
     </div>
 
-
-
- <div
-        class="modal fade"
-        id="staticBackdrop2"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-        tabindex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5
-                class="modal-title"
-                id="staticBackdropLabel"
-                style="text-transform: capitalize !important"
-              >
-                
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-           <h4 style="text-align: center">
-              "VEUILLEZ EFFECTUER L'INVENTAIRE DE VOTRE EQUIPEMENT AVANT D'ENTREPRENDRE TOUTE AUTRE ACTION." SVP
-             
+    <div
+      class="modal fade"
+      id="staticBackdrop2"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="staticBackdropLabel"
+              style="text-transform: capitalize !important"
+            ></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h4 style="text-align: center">
+              "VEUILLEZ EFFECTUER L'INVENTAIRE DE VOTRE EQUIPEMENT AVANT
+              D'ENTREPRENDRE TOUTE AUTRE ACTION." SVP
             </h4>
-            </div>
+          </div>
 
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-dismiss="modal"
-              >
-                Fermer
-              </button>
-              
-            </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Fermer
+            </button>
           </div>
         </div>
       </div>
-
-
-
+    </div>
   </div>
 
   <!-- end dashboard inner -->
@@ -571,6 +576,7 @@ export default {
       isLoading: false, // Définir isLoading ici
       responsable_id: "",
       utilisateur_id: "",
+      quantite_saisir: 0,
       objetrenoule: {
         equipement_id: "",
         type_equipement_id: 0,
@@ -651,22 +657,7 @@ export default {
         }
       };
     },
-    afficheMessageAlertSiQteAffecteEstSupDispo() {
-      const quantiteDisponible = this.AfficheQuantiteDisponible(
-        this.objetrenoule.equipement_id
-      );
-      const quantiteAffecte = this.objetrenoule.quantite_affecte;
 
-      // Vérification si la quantité affectée est supérieure à la quantité disponible
-      if (quantiteAffecte > quantiteDisponible) {
-        Swal.fire({
-          position: "top-end",
-          title: "Quantité insuffisante",
-          icon: "error",
-          text: `La quantité affectée de ${quantiteAffecte} dépasse la quantité disponible de ${quantiteDisponible}.`,
-        });
-      }
-    },
     afficherListeDesSuperviseur() {
       return this.getterZoneUtilisateur.filter((data) => data.code_role == 3);
     },
@@ -795,8 +786,25 @@ export default {
       "enregistrerAffectationEquipement",
       "getAgentAffecte",
       "getEquipementAffecte",
-      "enregistrerInventaireEquipementAgent","enregistrerInventaireEquipementAgentAnnule"
+      "enregistrerInventaireEquipementAgent",
+      "enregistrerInventaireEquipementAgentAnnule",
+      "miseJourEquipementAffecte",
     ]),
+
+        afficheMessageAlertSiQteAffecteEstSupDispo(id1,id) {
+      const quantiteDisponible = id1;
+      const quantiteAffecte = id;
+
+      // Vérification si la quantité affectée est supérieure à la quantité disponible
+      if (quantiteAffecte > quantiteDisponible) {
+        Swal.fire({
+          position: "top-end",
+          title: "Quantité insuffisante",
+          icon: "error",
+          text: `La Quantité saisie de ${quantiteAffecte} dépasse la quantité disponible de ${quantiteDisponible}.`,
+        });
+      }
+    },
     saveStatusAnnuler(data, status) {
       // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
       this.$store.dispatch("enregistrerInventaireEquipementAgentAnnule", {
@@ -832,7 +840,18 @@ export default {
       this.objet.libelle = "";
       this.objet.quantite = "";
     },
-
+    async miseJourEquipementAffectes(id, id3, id4, id5) {
+      let ob = {
+        id: id,
+        quantite_saisir: id3,
+        equipement_id: id4,
+        agent_id: id5,
+      };
+      this.miseJourEquipementAffecte(ob);
+      this.quantite_saisir=0
+      // $('#staticBackdrop').modal('hide');
+      // modal.hide();
+    },
     async modifierEquipements() {
       let ob = {
         id: this.ObjetModifier.id,
