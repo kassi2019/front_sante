@@ -2,6 +2,7 @@
   <!-- dashboard inner -->
 
   <div>
+    
     <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
@@ -35,25 +36,20 @@
           </div>
           <div class="table_section padding_infor_info">
             <div class="table-responsive-sm">
-              <table class="table">
+              <table class="table table">
                 <thead>
                   <tr>
                     <th>#</th>
                     <!-- <th>Code</th> -->
                     <th colspan="">Libelle</th>
-                    <th colspan="3">Validation des equipement</th>
+                    <th colspan="3">Validation</th>
+                    <th colspan="" class="text-center">Quantité Affecté</th>
+                    <th colspan="" class="text-center">Quantité Réçu ASC (A)</th>
+                    <th colspan="" class="text-center">Quantité utilisée (B)</th>
+                    <th colspan="" class="text-center">Quantité disponible (C=A-B)</th>
 
-                    <th colspan="" style="text-align: center">
-                      Quantité disponible
-                    </th>
-                    <th colspan="" style="text-align: center">
-                      Quantité utilisée
-                    </th>
-
-                    <th colspan="" style="text-align: center">
-                      Quantité saisie
-                    </th>
-                    <th style="width: 9% !important; text-align: center">
+                    <th colspan="2" class="text-center"></th>
+                    <th style="width: 9% !important" class="text-center">
                       Action
                     </th>
                   </tr>
@@ -63,7 +59,7 @@
                   :key="item.agent_id"
                 >
                   <tr style="background-color: #c4d7ed">
-                    <td style="color: #000" colspan="10">
+                    <td style="color: #000" colspan="12">
                       <span class="badge badge-dark" style="font-size: 14px"
                         >ASC :
                       </span>
@@ -71,163 +67,232 @@
                     </td>
                   </tr>
 
-                  <tr
+                  <template
                     v-for="(data, index) in afficheEquipeParType(item.agent_id)"
-                    :key="data.id"
+                    :key="data.id_table"
                   >
-                    <td>{{ index + 1 }}</td>
-                    <td>
-                      <span class="badge badge-dark" style="font-size: 14px"
-                        >Equipement </span
-                      >{{ data.libelle_equipement }}
-                    </td>
+                 
+                    <tr>
+                      <td>{{ index + 1 }}</td>
+                      <td>
+                        <span class="badge badge-dark" style="font-size: 14px"
+                          >QUANTITE GLOBAL  : </span
+                        >{{ data.libelle_equipement }}
+                      </td>
 
-                    <td
-                      style="background-color: #417324 !important"
-                      v-if="
-                        AfficheStatusEquipement(data.id, item.agent_id) == 1
-                      "
-                    >
-                      <!-- Radio button for Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'fonctionnelle_' + data.id"
-                        :value="1"
-                        v-model="data.status"
-                        @change="saveStatus(data.id, 1)"
-                      />
-                      <label
-                        class="form-check-label"
-                        for="gridRadios2"
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td
                         style="
                           font-size: 18px;
                           color: #000;
                           font-weight: bolder;
+                          text-align: center;
                         "
                       >
-                        Reçu
-                      </label>
-                    </td>
-                    <td v-else>
-                      <!-- Radio button for Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'fonctionnelle_' + data.id"
-                        :value="1"
-                        v-model="data.status"
-                        @change="saveStatus(data.id, 1)"
-                      /><label
-                        class="form-check-label"
-                        for="gridRadios2"
+                        {{ afficheTotalQteInitial(data.equipement_id,item.agent_id) || 0 }}
+                      </td>
+                      <td
                         style="
                           font-size: 18px;
                           color: #000;
                           font-weight: bolder;
+                          text-align: center;
                         "
                       >
-                        Reçu
-                      </label>
-                    </td>
-                    <td
-                      v-if="
-                        AfficheIdEquipement(data.id, item.agent_id) != 0 &&
-                        data.quantite_utilise == 0
-                      "
-                    >
-                      <!-- Radio button for Non Fonctionnelle -->
-                      <input
-                        type="radio"
-                        :name="'non_fonctionnelle_' + data.id"
-                        :value="0"
-                        v-model="data.status"
-                        @change="
-                          saveStatusAnnuler(data.id, 0);
-                          this.data.status = false;
-                        "
-                      /><label
-                        class="form-check-label"
-                        for="gridRadios2"
+                        {{ afficheTotalQteRecu(data.equipement_id,item.agent_id) || 0 }}
+                      </td>
+
+                      <td
                         style="
                           font-size: 18px;
                           color: #000;
                           font-weight: bolder;
+                          text-align: center;
                         "
                       >
-                        Annulé
-                      </label>
-                    </td>
-                    <td v-else></td>
-                    <td></td>
-                    <td
-                      v-if="data.status == 1"
-                      style="
-                        font-size: 18px;
-                        color: #000;
-                        font-weight: bolder;
-                        text-align: center;
-                      "
-                    >
-                      {{ data.quantite_affecte || 0 }}
-                    </td>
-
-                    <td
-                      v-if="data.status == 1"
-                      style="
-                        font-size: 18px;
-                        color: #000;
-                        font-weight: bolder;
-                        text-align: center;
-                      "
-                    >
-                      {{ data.quantite_utilise || 0 }}
-                    </td>
-
-                    <td v-if="data.status == 1">
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="inputWithIcon"
-                        placeholder="Entrez quantite"
-                       v-model="quantitesSaisies[data.id]"
-                      />
-                    </td>
-
-                    <td class="button_block" v-if="data.status == 1">
-                      <button
-                        v-if="
-                          quantitesSaisies[data.id] <= data.quantite_affecte &&
-                          data.quantite_affecte != 0
-                        "
-                        type="button"
-                        class="btn cur-p btn-success"
-                        @click.prevent="
-                          miseJourEquipementAffectes(
-                            data.id,
-                            quantitesSaisies[data.id],
-                            data.equipement_id,
-                            data.agent_id
-                          )
+                        {{ data.quantite_utilise || 0 }}
+                      </td>
+                      <td
+                        style="
+                          font-size: 18px;
+                          color: #000;
+                          font-weight: bolder;
+                          text-align: center;
                         "
                       >
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i
-                        >Valider
-                      </button>
-                       <button
-                     v-if="data.quantite_affecte==0"
-                        type="button"
-                        class="btn cur-p btn-danger"
-                     
+                        {{
+                          parseFloat(afficheTotalQteRecu(data.equipement_id,item.agent_id)) -
+                            parseFloat(data.quantite_utilise) || 0
+                        }}
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td class="button_block">
+                        <!-- <button
+                          v-if="
+                            quantitesSaisies[data.id] <=
+                              data.quantite_affecte &&
+                            data.quantite_affecte != 0
+                          "
+                          type="button"
+                          class="btn cur-p btn-success"
+                          @click.prevent="
+                            miseJourEquipementAffectes(
+                              data.id,
+                              quantitesSaisies[data.id],
+                              data.equipement_id,
+                              data.agent_id
+                            )
+                          "
+                        >
+                          <i
+                            class="fa fa-pencil-square-o"
+                            aria-hidden="true"
+                          ></i
+                          >Valider
+                        </button>
+                        <button
+                          v-if="data.quantite_affecte == 0"
+                          type="button"
+                          class="btn cur-p btn-danger"
+                        >
+                          Stock saturé
+                        </button> -->
+                        <button
+                          @click.prevent="
+                            afficheDernierNiveau(data.id_table)
+                          "
+                          type="button"
+                          class="btn cur-p btn-warning"
+                        >
+                         Voir Détail
+                        </button>
+                      </td>
+                      {{
+                        afficheMessageAlertSiQteAffecteEstSupDispo(
+                          data.quantite_affecte,
+                          quantitesSaisies[data.id]
+                        )
+                      }}
+                    </tr>
+
+                    <template v-if="ouvrir == data.id_table">
+                      <tr
+                        v-for="data2 in afficheDetailEquipement(
+                          item.agent_id,
+                          data.equipement_id
+                        )"
+                        :key="data2.id"
                       >
-                       Stock saturé
-                      </button>
-                    </td>
-                    {{
-                      afficheMessageAlertSiQteAffecteEstSupDispo(
-                        data.quantite_affecte,
-                        quantitesSaisies[data.id]
-                      )
-                    }}
-                  </tr>
+                        <td></td>
+                         
+                        <td>
+                          <span class="badge badge-info" style="font-size: 14px"
+                            >Détail </span
+                          >{{ data.libelle_equipement }}
+                        </td>
+
+                        <td>
+                          <!-- Radio button for Fonctionnelle -->
+                          <input
+                            type="radio"
+                            :name="'fonctionnelle_' + data2.id"
+                            :value="1"
+                            v-model="data2.status"
+                            @change="saveStatus(data2.id, 1)"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="gridRadios2"
+                            style="
+                              font-size: 18px;
+                              color: #000;
+                              font-weight: bolder;
+                            "
+                          >
+                            Reçu
+                          </label>
+                        </td>
+
+                        <td>
+                          <!-- Radio button for Non Fonctionnelle -->
+                          <input
+                            type="radio"
+                            :name="'non_fonctionnelle_' + data2.id"
+                            :value="0"
+                            v-model="data2.status"
+                            @change="saveStatusAnnuler(data2.id, 0)"
+                          /><label
+                            class="form-check-label"
+                            for="gridRadios2"
+                            style="
+                              font-size: 18px;
+                              color: #000;
+                              font-weight: bolder;
+                            "
+                          >
+                            Annulé
+                          </label>
+                        </td>
+
+                        <td></td>
+                        <td
+                          style="
+                            font-size: 18px;
+                            color: #000;
+                            font-weight: bolder;
+                            text-align: center;
+                          "
+                        >
+                          {{ data2.qte_affecte_initial || 0 }}
+                        </td>
+                        <td
+                          style="
+                            font-size: 18px;
+                            color: #000;
+                            font-weight: bolder;
+                            text-align: center;
+                          "
+                        >
+                          {{ data2.quantite_recu || 0 }}
+                        </td>
+                        <td></td>
+                        <td colspan="4">
+                          <div class="d-flex align-items-center gap-2">
+                            <input
+                              type="number"
+                              class="form-control me-2"
+                              placeholder="Confirmation Qte reçue"
+                              style="max-width: 200px"
+                              v-model="quantitesSaisies[data2.id]"
+                            />
+                            <button
+                              type="button"
+                              class="btn btn-success"
+                              @click.prevent="
+                                validationQuantiteBtn(
+                                  data2.id,
+                                  quantitesSaisies[data2.id]
+                                )
+                              "
+                            >
+                              Valider
+                            </button>
+                            <button type="button" class="btn btn-danger"    
+                             @click.prevent="
+                                AnnulationStockBtn(
+                                  data2.id
+                                )
+                              " >
+                              Annuler
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </template>
+                  </template>
                 </tbody>
               </table>
             </div>
@@ -561,7 +626,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <h4 style="text-align: center">
+            <h4 class="text-center">
               "VEUILLEZ EFFECTUER L'INVENTAIRE DE VOTRE EQUIPEMENT AVANT
               D'ENTREPRENDRE TOUTE AUTRE ACTION." SVP
             </h4>
@@ -597,7 +662,7 @@ export default {
       isLoading: false, // Définir isLoading ici
       responsable_id: "",
       utilisateur_id: "",
-quantitesSaisies: {},
+      quantitesSaisies: {},
       objetrenoule: {
         equipement_id: "",
         type_equipement_id: 0,
@@ -617,6 +682,7 @@ quantitesSaisies: {},
         quantite: "",
         quantite_saisir: 0,
       },
+      ouvrir: 7,
       currentPage: 1,
       itemsPerPage: 10, // Nombre d'éléments à afficher par page
       totalItems: 0, // Nombre total d'éléments dans les données
@@ -632,6 +698,7 @@ quantitesSaisies: {},
     this.getEquipementAffecte();
     this.getEquipement();
     this.getzoneUtilisateur();
+    this.getHistoAffectationEquipement();
   },
 
   computed: {
@@ -645,11 +712,12 @@ quantitesSaisies: {},
       "getterZoneUtilisateur",
       "getteragentEquipement",
       "getteraffectationEquipements",
+      "getterHistoAffectationEquipements",
     ]),
     AfficheIdEquipement() {
       return ($id, $id1) => {
         if ($id != null && $id != "" && $id1 != null && $id1 != "") {
-          const qtereel = this.getteraffectationEquipements.find(
+          const qtereel = this.getterHistoAffectationEquipements.find(
             (qtreel) => qtreel.id == $id && qtreel.agent_id == $id1
           );
 
@@ -668,7 +736,7 @@ quantitesSaisies: {},
     AfficheStatusEquipement() {
       return ($id, $id1) => {
         if ($id != null && $id != "" && $id1 != null && $id1 != "") {
-          const qtereel = this.getteraffectationEquipements.find(
+          const qtereel = this.getterHistoAffectationEquipements.find(
             (qtreel) => qtreel.id == $id && qtreel.agent_id == $id1
           );
 
@@ -808,11 +876,20 @@ quantitesSaisies: {},
       "enregistrerAffectationEquipement",
       "getAgentAffecte",
       "getEquipementAffecte",
-      "enregistrerInventaireEquipementAgent",
-      "enregistrerInventaireEquipementAgentAnnule",
+      "enregistrerhistoInventaireEquipementAgent",
+      "enregistrerhistoInventaireEquipementAgentAnnule",
       "miseJourEquipementAffecte",
+      "getHistoAffectationEquipement",
+      "validationQuantite","AnnulationStock"
     ]),
 
+    afficheDernierNiveau(id) {
+      if (this.ouvrir == 7) {
+        return (this.ouvrir = id);
+      } else {
+        return (this.ouvrir = 7);
+      }
+    },
     afficheMessageAlertSiQteAffecteEstSupDispo(id1, id) {
       const quantiteDisponible = id1;
       const quantiteAffecte = id;
@@ -829,14 +906,29 @@ quantitesSaisies: {},
     },
     saveStatusAnnuler(data, status) {
       // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
-      this.$store.dispatch("enregistrerInventaireEquipementAgentAnnule", {
+      this.$store.dispatch("enregistrerhistoInventaireEquipementAgentAnnule", {
         data,
         status,
       });
     },
+    validationQuantiteBtn(dataId, dataQuantite) {
+      // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
+      this.$store.dispatch("validationQuantite", {
+        dataId,
+        dataQuantite,
+      });
+    },
+
+   AnnulationStockBtn(dataId) {
+      // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
+      this.$store.dispatch("AnnulationStock", {
+       dataId,
+      });
+    },
+    
     saveStatus(data, status) {
       // Dispatch the Vuex action 'enregistrerEquipementStatus' with the appropriate data
-      this.$store.dispatch("enregistrerInventaireEquipementAgent", {
+      this.$store.dispatch("enregistrerhistoInventaireEquipementAgent", {
         data,
         status,
       });
@@ -846,6 +938,31 @@ quantitesSaisies: {},
         (data) => data.agent_id == $id
       );
     },
+
+    afficheTotalQteInitial($id,$id1) {
+      return this.getterHistoAffectationEquipements
+        .filter((data) => (data.equipement_id == $id && data.agent_id == $id1 ))
+        .reduce(
+          (prec, cur) => parseFloat(prec) + parseFloat(cur.qte_affecte_initial),
+          0
+        )
+        .toFixed(0);
+    },
+afficheTotalQteRecu($id,$id1) {
+      return this.getterHistoAffectationEquipements
+        .filter((data) => (data.equipement_id == $id && data.agent_id == $id1 ))
+        .reduce(
+          (prec, cur) => parseFloat(prec) + parseFloat(cur.quantite_recu),
+          0
+        )
+        .toFixed(0);
+    },
+    afficheDetailEquipement($id, $id1) {
+      return this.getterHistoAffectationEquipements.filter(
+        (data) => data.agent_id == $id && data.equipement_id == $id1
+      );
+    },
+
     changePage(page, $id) {
       if (page >= 1 && page <= this.totalPages($id)) {
         this.currentPage = page;
@@ -863,7 +980,6 @@ quantitesSaisies: {},
       this.objet.quantite = "";
     },
     async miseJourEquipementAffectes(id, id3, id4, id5) {
-   
       let ob = {
         id: id,
         quantite_saisir: id3,
@@ -871,7 +987,7 @@ quantitesSaisies: {},
         agent_id: id5,
       };
       this.miseJourEquipementAffecte(ob);
-     this.quantitesSaisies= {}
+      this.quantitesSaisies = {};
       // $('#staticBackdrop').modal('hide');
       // modal.hide();
     },

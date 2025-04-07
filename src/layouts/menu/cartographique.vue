@@ -1,9 +1,5 @@
 <template>
-
- 
-
-
-      <div class="sidebar_blog_2">
+  <div class="sidebar_blog_2">
     <h4 style="text-align: center">Cartographie</h4>
     <ul class="list-unstyled components">
       <!-- <li>
@@ -28,12 +24,13 @@
           <span>Inventaire d'équipement ASC</span></a
         >
       </li>
-      <li v-if="AfficheIdUtilisateur(idUser) == idUser && idrole!=7">
+
+      <li v-if="AfficheIdUtilisateur(idUser) == idUser && idrole != 7">
         <a href="" @click.prevent="affichePage('menage')"
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
       </li>
-     <li v-else-if="idrole==7">
+      <li v-else-if="idrole == 7">
         <a href="" @click.prevent="affichePage('menage')"
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
@@ -43,7 +40,7 @@
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
       </li>
-       
+
       <!-- <li>
         <a href="" @click.prevent="affichePage('localisationChefFamille')"
           ><i class="fa fa-hand-o-right"></i> <span>Carte des ménages</span></a
@@ -72,11 +69,7 @@
         >
       </li>
     </ul>
-
-    
   </div>
- 
-
 </template>
 
 <script>
@@ -98,13 +91,17 @@ export default {
     // this.id_module = localStorage.getItem("id_module");
   },
   computed: {
-    ...mapGetters(["getterRole", "loading", "getteraffectationEquipements"]),
+    ...mapGetters([
+      "getterRole",
+      "loading",
+      "getterHistoAffectationEquipements",
+    ]),
     idUser() {
       let objLinea = localStorage.getItem("User");
       let objJson = JSON.parse(objLinea);
       return objJson.id;
     },
- idrole() {
+    idrole() {
       let objLinea = localStorage.getItem("User");
       let objJson = JSON.parse(objLinea);
       return objJson.id_roles;
@@ -112,8 +109,8 @@ export default {
     AfficheIdUtilisateur() {
       return ($id) => {
         if ($id != null && $id != "") {
-          const qtereel = this.getteraffectationEquipements.find(
-            (qtreel) => qtreel.agent_id == $id && qtreel.status==1
+          const qtereel = this.getterHistoAffectationEquipements.find(
+            (qtreel) => qtreel.agent_id == $id && qtreel.status == 1
           );
 
           if (qtereel) {
@@ -139,7 +136,6 @@ export default {
 </script>
 
 <style scoped>
-
 li:hover {
   background-color: #5f8ca3 !important;
   font-weight: bold !important;

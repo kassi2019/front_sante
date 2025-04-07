@@ -1,12 +1,8 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <transition
-        name="fade"
-        mode="out-in"
-        
-      >
-      <div><router-view></router-view></div>
+      <transition name="fade" mode="out-in">
+        <div><router-view></router-view></div>
       </transition>
     </component>
   </div>
@@ -22,22 +18,26 @@ export default {
   },
   name: "App",
   data() {
-    return {
-    
-    };
+    return {};
   },
-  methods: {
-  
-  },
+  methods: {},
 };
 </script>
 
-<style  scoped>
-fade-enter-active, .fade-leave-active {
+<style>
+fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s ease;
 }
 
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0;
 }
+table,
+th,
+td {
+  border: 1px solid #000; /* couleur noire */
+  border-collapse: collapse;
+}
+
 </style>

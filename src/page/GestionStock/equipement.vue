@@ -49,8 +49,9 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <!-- <th>Code</th> -->
+                    <th>Code</th>
                     <th colspan="">Libelle</th>
+                     <th colspan="">Unite comptage</th>
                     <th colspan="">Quantité</th>
                     <th style="width: 9% !important; text-align: center">
                       Action
@@ -63,7 +64,7 @@
                   :key="item.type_equipement_id"
                 >
                   <tr style="background-color: #a67e2e">
-                    <td style="color: #fff" colspan="4">
+                    <td style="color: #fff" colspan="6">
                       <span class="badge badge-dark">Type équipement : </span>
                       {{ item.libelle_type_equipement }}
                     </td>
@@ -75,8 +76,11 @@
                     :key="data.id"
                   >
                     <td>{{ index + 1 }}</td>
+                    <td>{{ data.code }}</td>
                     <td>{{ data.libelle }}</td>
-                    <td>{{ data.quantite }}</td>
+                    <td>{{ data.unite_comptage }}</td>
+                    
+                    <td class="text-center">{{ data.quantite }}</td>
 
                     <td class="button_block">
                       <button
@@ -184,6 +188,21 @@
                   </model-list-select>
                 </div>
               </div>
+               <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">code</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez code"
+                    v-model="objet.code"
+                  />
+                </div>
+              </div>
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">Libelle</label>
                 <div class="input-group">
@@ -199,6 +218,22 @@
                   />
                 </div>
               </div>
+                  <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">Unite comptage</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez Libelle"
+                    v-model="objet.unite_comptage"
+                  />
+                </div>
+              </div>
+              
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">quantite</label>
                 <div class="input-group">
@@ -438,6 +473,22 @@
                   </model-list-select>
                 </div>
               </div>
+                   <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">Code</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez code"
+                    v-model="ObjetModifier.code"
+                  />
+                </div>
+              </div>
+              
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">libelle</label>
                 <div class="input-group">
@@ -450,6 +501,21 @@
                     id="inputWithIcon"
                     placeholder="Entrez libelle"
                     v-model="ObjetModifier.libelle"
+                  />
+                </div>
+              </div>
+                   <div class="mb-3">
+                <label for="inputWithIcon" class="form-label">Unite comptage</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrez unite_comptage"
+                    v-model="ObjetModifier.unite_comptage"
                   />
                 </div>
               </div>
@@ -516,12 +582,16 @@ export default {
         libelle: "",
         type_equipement_id: "",
         quantite: "",
+        code: "",
+         unite_comptage:""
       },
       selectItem: null,
       ObjetModifier: {
         type_equipement_id: "",
         libelle: "",
         quantite: "",
+        code: "",
+        unite_comptage:""
       },
       currentPage: 1,
       itemsPerPage: 10, // Nombre d'éléments à afficher par page
@@ -670,12 +740,16 @@ export default {
       let ob = {
         type_equipement_id: this.objet.type_equipement_id,
         libelle: this.objet.libelle,
+         code:this.objet.code,
         quantite: this.objet.quantite,
+        unite_comptage: this.objet.unite_comptage,
       };
       this.enregistrerEquipement(ob);
 
       this.objet.libelle = "";
       this.objet.quantite = "";
+      this.objet.code = "";
+        this.objet.unite_comptage = "";
     },
 
     async modifierEquipements() {
@@ -683,6 +757,8 @@ export default {
         id: this.ObjetModifier.id,
         type_equipement_id: this.ObjetModifier.type_equipement_id,
         libelle: this.ObjetModifier.libelle,
+        code: this.ObjetModifier.code,
+        unite_comptage: this.ObjetModifier.unite_comptage,
         quantite: this.ObjetModifier.quantite,
       };
       this.modifierEquipement(ob);

@@ -4,17 +4,31 @@ import Swal from 'sweetalert2';
 import authHeader from '../../services/auth-header';
 import router from '../../routes';
 
- 
 const role ={
   state: {
     affectationEquipements: [],
+    HistoAffectationEquipements: [],
     agentequipe: [] ,
     equipements: [] ,
 gpeTypeEquipement:[],
   error: null 
   },
   mutations: {
+ SET_HISTO_AFFECTATION_EQUIPEMENT(state, modules){
+       state.HistoAffectationEquipements = modules;
+    },
+     AJOUTER_HISTO_EQUIPEMENT  (state, elementAjouter){
+    state.HistoAffectationEquipements.unshift(elementAjouter)
+    },
+      MODIFIER_HISTO_AFFECTATION_EQUIPEMENT (state, elementModif){
+    state.HistoAffectationEquipements = state.HistoAffectationEquipements.map(response => {
 
+        if (response.id == elementModif.id) {
+            response = { ...elementModif }
+        }
+        return response
+    })
+    },
      SET_EQUIPEMENT(state, modules){
        state.equipements = modules;
     },
@@ -59,7 +73,7 @@ gpeTypeEquipement:[],
   },
   
   actions: {
-  
+
    async getGpeEquipement({ commit }) {
 
     try {
@@ -73,6 +87,20 @@ gpeTypeEquipement:[],
     
     }
     },
+async getHistoAffectationEquipement({ commit }) {
+
+    try {
+        const resultat = await apiGuest.get('/listehistoAffectation', { headers: authHeader() });
+        
+        // Mettre à jour les données dans le store
+        commit('SET_HISTO_AFFECTATION_EQUIPEMENT', resultat.data);
+    } catch (error) {
+      
+    } finally {
+    
+    }
+    },
+    
     async getEquipement({ commit }) {
 
     try {
@@ -131,6 +159,8 @@ async getAgentAffecte({ commit }) {
     const response = await apiGuest.post('/Affectationequipement', objet, { headers: authHeader() });
     commit('AJOUTER_AFFECTATION_EQUIPEMENT', response.data);
     await dispatch('getEquipement'); // appel de l'action getEquipement dans le module equipement
+    await dispatch('getAgentAffecte');
+    await dispatch('getEquipementAffecte');
 
     Swal.fire({
       position: "top-end",
@@ -344,6 +374,188 @@ async supprimerEquipement({ commit,dispatch }, id) {
                });
     });
     },
+            
+            
+            
+                  async enregistrerhistoInventaireEquipementAgent({ commit,dispatch }, { status,data}) {
+        
+          try {
+            let response;
+        
+            // Check if the equipment already has a status, and if so, update it
+            
+              // If the status exists, perform an update
+              response = await apiGuest.put(`/updateHistoAffectationEquipement/${data}`, {
+                status: status,
+              }, {
+                headers: authHeader(), // Add authentication headers if required
+              });
+            
+        
+            // Commit the response data to the Vuex store (You can modify this depending on your mutation)
+            commit('MODIFIER_HISTO_AFFECTATION_EQUIPEMENT', response.data);
+              dispatch('getHistoAffectationEquipement');
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Equipement validé',
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          } catch (error) {
+            // Handle error here, e.g., show an alert
+            console.error('Error saving status', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l\'enregistrement.',
+              confirmButtonText: 'OK',
+            });
+          }
+    },
+                  
+                  
+                          async enregistrerhistoInventaireEquipementAgentAnnule({ commit,dispatch }, { status,data}) {
+        
+          try {
+            let response;
+        
+            // Check if the equipment already has a status, and if so, update it
+            
+              // If the status exists, perform an update
+              response = await apiGuest.put(`/updateHistoAffectationEquipement/${data}`, {
+                status: status,
+              }, {
+                headers: authHeader(), // Add authentication headers if required
+              });
+            
+        
+            // Commit the response data to the Vuex store (You can modify this depending on your mutation)
+            commit('MODIFIER_HISTO_AFFECTATION_EQUIPEMENT', response.data);
+              dispatch('getHistoAffectationEquipement');
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Equipement Annulé',
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          } catch (error) {
+            // Handle error here, e.g., show an alert
+            console.error('Error saving status', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l\'enregistrement.',
+              confirmButtonText: 'OK',
+            });
+          }
+    },
+                          
+                          
+    //                       async validationQuantite({ commit,dispatch }, objet) {
+
+    //   const response = await apiGuest.post('/verificationStockParAgent', objet, { headers: authHeader() });
+    //      commit('AJOUTER_EQUIPEMENT', response.data);
+    //    dispatch('getEquipement');
+    //      dispatch('getGpeEquipement');
+       
+    //       Swal.fire({
+    //              position: "top-end",
+    //              icon: "success",
+    //              title: "Enregistrement réussie",
+    //              showConfirmButton: false,
+    //              timer: 1500
+    //            });
+    //    //}.catch();
+    // },
+                          
+                          
+                          
+                          
+                          
+async validationQuantite({ commit,dispatch }, { dataId,dataQuantite}) {
+        
+          try {
+            let response;
+        
+            // Check if the equipment already has a status, and if so, update it
+            
+              // If the status exists, perform an update
+              response = await apiGuest.post(`/verificationStockParAgent`, {
+                id: dataId,
+                
+                quantite_recu: dataQuantite,
+              }, {
+                headers: authHeader(), // Add authentication headers if required
+              });
+            
+        
+            // Commit the response data to the Vuex store (You can modify this depending on your mutation)
+            commit('AJOUTER_HISTO_EQUIPEMENT', response.data);
+            dispatch('getHistoAffectationEquipement');
+            dispatch('getEquipementAffecte');
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Equipement Valide',
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          } catch (error) {
+            // Handle error here, e.g., show an alert
+            console.error('Error saving status', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l\'enregistrement.',
+              confirmButtonText: 'OK',
+            });
+          }
+    },
+
+async AnnulationStock({ commit,dispatch }, { dataId}) {
+        
+          try {
+            let response;
+        
+            // Check if the equipment already has a status, and if so, update it
+            
+              // If the status exists, perform an update
+              response = await apiGuest.post(`/AnnulationStockParAgent`, {
+                id: dataId
+              }, {
+                headers: authHeader(), // Add authentication headers if required
+              });
+            
+        
+            // Commit the response data to the Vuex store (You can modify this depending on your mutation)
+            commit('AJOUTER_HISTO_EQUIPEMENT', response.data);
+              dispatch('getHistoAffectationEquipement');
+dispatch('getEquipementAffecte');
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Equipement Valide',
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          } catch (error) {
+            // Handle error here, e.g., show an alert
+            console.error('Error saving status', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l\'enregistrement.',
+              confirmButtonText: 'OK',
+            });
+          }
+    },
+
+    
   },
   getters: {
   
@@ -361,7 +573,9 @@ async supprimerEquipement({ commit,dispatch }, id) {
       getteragentEquipement(state) {
       return state.agentequipe.sort((a, b) => (a.nom_agent < b.nom_agent) ? -1 : 1)
     }, 
-     
+    getterHistoAffectationEquipements(state) {
+      return state.HistoAffectationEquipements
+    },  
    
   // error(state) {
   //   return state.error;

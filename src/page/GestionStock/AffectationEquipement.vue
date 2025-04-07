@@ -64,9 +64,10 @@
                     )"
                     :key="data.id"
                   >
+                
                     <td>{{ index + 1 }}</td>
                     <td><span class="badge badge-dark" style="font-size: 14px;">Equipement </span>{{ data.libelle_equipement }}</td>
-                    <td>{{ data.quantite_affecte }}</td>
+                    <td class="text-center">{{ data.quantite_affecte }}</td>
 
                     <td class="button_block">
                       <button
