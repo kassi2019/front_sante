@@ -2,7 +2,7 @@
   <!-- dashboard inner -->
 
   <div>
-    {{ afficheMessageAlertSiQteAffecteEstSupDispo }}
+    <!-- {{ afficheMessageAlertSiQteAffecteEstSupDispo }} -->
     <br /><br /><br />
     <div class="row column_title">
       <div class="col-md-12">
@@ -54,23 +54,26 @@
                 >
                   <tr style="background-color: #c4d7ed">
                     <td style="color: #000" colspan="4">
-                      <span class="badge badge-dark" style="font-size: 14px;">ASC : </span>
-                      <span style="font-size: 25px;">{{ item.nom_agent }}</span>  
+                      <span class="badge badge-dark" style="font-size: 14px"
+                        >ASC :
+                      </span>
+                      <span style="font-size: 25px">{{ item.nom_agent }}</span>
                     </td>
                   </tr>
                   <tr
-                    v-for="(data, index) in afficheEquipeParType(
-                      item.agent_id
-                    )"
+                    v-for="(data, index) in afficheEquipeParType(item.agent_id)"
                     :key="data.id"
                   >
-                
                     <td>{{ index + 1 }}</td>
-                    <td><span class="badge badge-dark" style="font-size: 14px;">Equipement </span>{{ data.libelle_equipement }}</td>
+                    <td>
+                      <span class="badge badge-dark" style="font-size: 14px"
+                        >Equipement </span
+                      >{{ data.libelle_equipement }}
+                    </td>
                     <td class="text-center">{{ data.quantite_affecte }}</td>
 
                     <td class="button_block">
-                      <button
+                      <!-- <button
                         type="button"
                         class="btn cur-p btn-success"
                         data-bs-toggle="modal"
@@ -78,14 +81,14 @@
                         @click.prevent="AfficheModalModification(data.id)"
                       >
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      </button>
-                      <button
+                      </button> -->
+                      <!-- <button
                         type="button"
                         class="btn cur-p btn-danger"
                         @click.prevent="supprimerEquipement(data.id)"
                       >
                         <i class="fa fa-trash"></i>
-                      </button>
+                      </button> -->
                     </td>
                   </tr>
                 </tbody>
@@ -171,29 +174,71 @@
                   </model-list-select>
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Quantite actuelle (A)</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    style="font-weight: bolder"
-                    :value="
-                      AfficheQuantiteDisponible(objetrenoule.equipement_id)
-                    "
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Numéro de lot
+                    <span
+                      style="
+                        color: red;
+                        font-weight: 900 !important;
+                        font-size: 15px;
+                      "
+                    ></span
+                  ></label>
+                  <div class="input-group">
+                    <model-list-select
+                      style=""
+                      :list="afficherNumeroLot"
+                      v-model="objetrenoule.numerolot"
+                      option-value="groupe"
+                      option-text="groupe"
+                      placeholder="séléctionner"
+                    >
+                    </model-list-select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Date d'expiration</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="inputWithIcon"
+                      :value="AfficheDateExpiration(objetrenoule.equipement_id,objetrenoule.numerolot)"
                     disabled
-                  />
+                    />
+                  </div>
                 </div>
               </div>
-
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
+              <div class="mb-3 row">
+                <div class="col-md-4">
+                      <label for="inputWithIcon" class="form-label"
+                    >Quantite actuelle (A)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      style="font-weight: bolder"
+                      :value="
+                        AfficheQuantiteDisponible(objetrenoule.equipement_id)
+                      "
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputWithIcon" class="form-label"
                   >Quantité à affecté (B)</label
                 >
                 <div class="input-group">
@@ -208,9 +253,9 @@
                     v-model="objetrenoule.quantite_affecte"
                   />
                 </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
+                </div>
+                   <div class="col-md-4">
+                    <label for="inputWithIcon" class="form-label"
                   >Quantité Disponible (C=A-B)</label
                 >
                 <div class="input-group">
@@ -225,9 +270,11 @@
                     disabled
                   />
                 </div>
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
+    <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
                   >Nom Superviseur
                 </label>
                 <select
@@ -243,9 +290,9 @@
                     {{ data.nom_utilisateur }}
                   </option>
                 </select>
-              </div>
-              <div class="md-3">
-                <label for="inputWithIcon" class="form-label"
+                </div>
+                <div class="col-md-6">
+                    <label for="inputWithIcon" class="form-label"
                   >Agent de santé communautaire
                   <span
                     style="
@@ -266,9 +313,9 @@
                   >
                   </model-list-select>
                 </div>
+                </div>
               </div>
             </div>
-
             <div class="modal-footer">
               <button
                 type="button"
@@ -278,7 +325,7 @@
                 Fermer
               </button>
               <button
-              v-if="0<=afficheQuantiteGlobal"
+                v-if="0 <= afficheQuantiteGlobal"
                 type="button"
                 class="btn btn-success"
                 :disabled="loading"
@@ -419,6 +466,7 @@ export default {
         quantite_affecte: 0,
         superviseur_id: "",
         agent_id: "",
+        numerolot:""
       },
       objet: {
         libelle: "",
@@ -456,7 +504,9 @@ export default {
       "gettertypeequipements",
       "getterGpeTypeEquipement",
       "getterAgentParSuperviseurs",
-      "getterZoneUtilisateur","getteragentEquipement","getteraffectationEquipements",
+      "getterZoneUtilisateur",
+      "getteragentEquipement",
+      "getteraffectationEquipements",
     ]),
     afficheMessageAlertSiQteAffecteEstSupDispo() {
       const quantiteDisponible = this.AfficheQuantiteDisponible(
@@ -525,6 +575,21 @@ export default {
         }
       };
     },
+  AfficheDateExpiration() {
+      return ($id,$id2) => {
+        if ($id != null && $id != "" || $id2 != null && $id2 != "") {
+          const qtereel = this.getterEquipement.find(
+            (qtreel) => qtreel.id == $id && qtreel.numero_lot == $id2
+          );
+
+          if (qtereel) {
+            return qtereel.date_peremption;
+          }
+          return 0;
+        }
+      };
+    },
+    
     afficherEquipementEnfonctionType() {
       let collet = [];
 
@@ -542,6 +607,22 @@ export default {
       return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
     },
 
+  afficherNumeroLot() {
+      let collet = [];
+
+      this.getterEquipement.filter((item) => {
+        if (item.id === this.objetrenoule.equipement_id) {
+          let data = {
+            id: item.id,
+            groupe: item.numero_lot,
+          };
+          collet.push(data);
+        }
+      });
+
+      // Trie les résultats par 'groupe' (anciennement 'libelle')
+      return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
+    },
     afficheLibelleTypeEquipement() {
       let collet = [];
       this.gettertypeequipements.filter((item) => {
@@ -599,7 +680,9 @@ export default {
       "modifierRenouvellement",
       "getzoneUtilisateur",
       "getListeAgentParSuperviseur",
-      "enregistrerAffectationEquipement","getAgentAffecte","getEquipementAffecte"
+      "enregistrerAffectationEquipement",
+      "getAgentAffecte",
+      "getEquipementAffecte",
     ]),
 
     afficheEquipeParType($id) {
@@ -623,7 +706,6 @@ export default {
       this.objet.libelle = "";
       this.objet.quantite = "";
     },
-    
 
     async modifierEquipements() {
       let ob = {
@@ -646,10 +728,13 @@ export default {
         quantite_affecte: this.objetrenoule.quantite_affecte,
         superviseur_id: this.responsable_id,
         agent_id: this.utilisateur_id,
+        numerolot: this.objetrenoule.numerolot,
+        date_expiration: this.AfficheDateExpiration(this.objetrenoule.equipement_id,this.objetrenoule.numerolot),
       };
       this.enregistrerAffectationEquipement(ob);
       this.objetrenoule.quantite_affecte = 0;
       this.objetrenoule.equipement_id = "";
+      this.objetrenoule.numerolot = "";
       // $('#staticBackdrop').modal('hide');
       // modal.hide();
     },

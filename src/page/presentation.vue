@@ -14,13 +14,9 @@
                 <div class="row column_title">
                   <div class="col-md-12">
                     <div class="page_title">
-                      <h2 style="text-align: left">
-                        <strong style="font-size: 20px !important"
-                          >ASC Santé</strong
-                        >
-                        :
-                        <span style="font-size: 20px !important"
-                          >Agents de Santé Communautaire</span
+                      <h2 style="text-align: left" class="logo-text marquee">
+                        <strong style="font-size: 30px !important"
+                          >Votre santé, notre priorité, Bienvenue sur Pro-Santé.</strong
                         >
                       </h2>
                     </div>
@@ -42,7 +38,7 @@
                       </div>
                       <div class="social_cont" @click="ParametreGeneraux(1)">
                         <ul>
-                          <span class="desigText">{{
+                          <span class="desigText1 logo-text1">{{
                             afficheibelleModule(1)
                           }}</span>
                         </ul>
@@ -65,7 +61,7 @@
                         data-bs-target="#staticBackdrop"
                       >
                         <ul>
-                          <span class="desigText">{{
+                          <span class="desigText1 logo-text1">{{
                             afficheibelleModule(1)
                           }}</span>
                         </ul>
@@ -90,7 +86,7 @@
                       <div class="social_cont">
                         <ul>
                           <span
-                            class="desigText"
+                            class="desigText1 logo-text1"
                             @click="ParametreGeneraux(4)"
                             @click.prevent="affichePage('inventaireEquipement')"
                             >{{ afficheibelleModule(4) }}</span
@@ -112,7 +108,7 @@
                       <div class="social_cont">
                         <ul>
                           <span
-                            class="desigText"
+                            class="desigText1 logo-text1"
                             data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop"
                             >{{ afficheibelleModule(4) }}</span
@@ -135,7 +131,7 @@
                       </div>
                       <div class="social_cont" @click="ParametreGeneraux(2)">
                         <ul>
-                          <span class="desigText">{{
+                          <span class="desigText1 logo-text1">{{
                             afficheibelleModule(2)
                           }}</span>
                         </ul>
@@ -158,7 +154,7 @@
                         data-bs-target="#staticBackdrop"
                       >
                         <ul>
-                          <span class="desigText">{{
+                          <span class="desigText1 logo-text1">{{
                             afficheibelleModule(2)
                           }}</span>
                         </ul>
@@ -191,7 +187,7 @@
                       <div class="social_cont">
                         <ul>
                           <span
-                            class="desigText"
+                            class="desigText1 logo-text1"
                             @click="ParametreGeneraux(5)"
                             >{{ afficheibelleModule(5) }}</span
                           >
@@ -212,7 +208,7 @@
                       <div class="social_cont">
                         <ul>
                           <span
-                            class="desigText"
+                            class="desigText1 logo-text1"
                             data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop"
                             >{{ afficheibelleModule(5) }}</span
@@ -237,7 +233,7 @@
                       </div>
                       <div class="social_cont" @click="ParametreGeneraux(3)">
                         <ul>
-                          <span class="desigText">{{
+                          <span class="desigText1 logo-text1">{{
                             afficheibelleModule(3)
                           }}</span>
                         </ul>
@@ -260,7 +256,7 @@
                         data-bs-target="#staticBackdrop"
                       >
                         <ul>
-                          <span class="desigText">{{
+                          <span class="desigText1 logo-text1">{{
                             afficheibelleModule(3)
                           }}</span>
                         </ul>
@@ -275,20 +271,15 @@
                       class="full socile_icons fb margin_bottom_30"
                       style="border-radius: 90% !important"
                       @click="ParametreGeneraux(6)"
-                     
                       v-if="VoirModuleactivitesTb == 6"
                     >
                       <div class="social_icon" style="cursor: pointer">
                         <i class="fa fa-life-bouy"></i>
                       </div>
-                       <!-- @click.prevent="affichePage('TableauBord')" -->
-                      <div
-                        class="social_cont"
-                        @click="ParametreGeneraux(6)"
-                       
-                      >
+                      <!-- @click.prevent="affichePage('TableauBord')" -->
+                      <div class="social_cont" @click="ParametreGeneraux(6)">
                         <ul>
-                          <span class="desigText">{{
+                          <span class="desigText1 logo-text1">{{
                             afficheibelleModule(6)
                           }}</span>
                         </ul>
@@ -311,7 +302,7 @@
                         data-bs-target="#staticBackdrop"
                       >
                         <ul>
-                          <span class="desigText">{{
+                          <span class="desigText1 logo-text1">{{
                             afficheibelleModule(6)
                           }}</span>
                         </ul>
@@ -572,22 +563,54 @@ export default {
         name: route_name,
       });
     },
-    // async handleLogin() {
-    //       this.isLoggingIn = true;
-    //       try {
-    //         await this.login({ numero: this.numero, password: this.password });
-    //         this.$router.push('/presentation');  // Rediriger après connexion réussie
-    //       } catch (error) {
-    //         this.loginError = 'Invalid credentials';
-    //       } finally {
-    //         this.isLoggingIn = false;
-    //       }
-    //     },
+
   },
 };
 </script>
 
 <style scoped>
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.marquee strong {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 15s linear infinite;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.logo-text1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #005797;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-style: italic;
+  text-align: center !important;
+}
+.logo-text {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #005797;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-style: italic;
+  text-align: center !important;
+}
 .desigText {
   font-size: 30px;
   font-weight: bolder;
@@ -600,7 +623,7 @@ export default {
   background-color: #5F8CA3 ;
 }  */
 .desigText1 {
-  font-size: 31px;
+  font-size: 20px;
   font-weight: bolder;
   color: black;
   font-family: "Artisan Paris";

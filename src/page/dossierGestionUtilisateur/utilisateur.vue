@@ -529,32 +529,7 @@
                   </select>
                 </div>
 
-                <div class="mb-3" v-if="ObjetModifier.id_roles == 8">
-                  <label for="inputWithIcon" class="form-label"
-                    >Responsable de Equipement
-                    <span
-                      style="
-                        color: red;
-                        font-weight: 900 !important;
-                        font-size: 15px;
-                      "
-                    ></span
-                  ></label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg example"
-                    v-model="ObjetModifier.responsable_equipe_id"
-                  >
-                    <option selected></option>
-                    <option
-                      v-for="data in getterUtilisateur"
-                      :key="data.id"
-                      :value="data.utilisateur_id"
-                    >
-                      {{ data.noms }}     {{ data.prenoms }}
-                    </option>
-                  </select>
-                </div>
+                
               </div>
 
               <div class="modal-footer">

@@ -5,14 +5,14 @@
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7">
             <h2 style="text-align: center" class="logo-text">
-              <strong>TéraSanté</strong>
+              <strong>Pro-Santé</strong>
             </h2>
-            <h6
+            <!-- <h6
               style="text-align: center; font-size: 20px !important"
               class="logo-text"
             >
-              "Terrain" et "Santé"
-            </h6>
+              "Pro" et "Santé"
+            </h6> -->
             <p class="mb-4"></p>
             <form action="#" method="post">
               <div class="form-group first">

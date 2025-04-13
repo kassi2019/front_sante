@@ -27,6 +27,7 @@
                 class="btn btn-outline-primary ms-auto btn-rounded-shadow"
                 data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop"
+                v-if="codeRole(idRole)!=3"
               >
                 <i class="fa fa-plus"></i>
                 NOUVEAU EQUIPEMENT
@@ -36,12 +37,14 @@
                 class="btn btn-warning ms-auto btn-rounded-shadow1"
                 data-bs-toggle="modal"
                 data-bs-target="#staticBackdroprenouvel"
+                 v-if="codeRole(idRole)!=3"
               >
                 <i class="fa fa-plus"></i>
 
-                RENOUVELER LE STOCK
+                MISE A JOUR DU STOCK
               </button>
             </div>
+           
           </div>
           <div class="table_section padding_infor_info">
             <div class="table-responsive-sm">
@@ -50,10 +53,12 @@
                   <tr>
                     <th>#</th>
                     <th>Code</th>
+                    <th>Numéro du lot</th>
                     <th colspan="">Libelle</th>
-                     <th colspan="">Unite comptage</th>
+                    <th colspan="">Unite comptage</th>
                     <th colspan="">Quantité</th>
-                    <th style="width: 9% !important; text-align: center">
+                    <th colspan="">date d'expiration</th>
+                    <th style="width: 9% !important; text-align: center"  v-if="codeRole(idRole)!=3">
                       Action
                     </th>
                   </tr>
@@ -63,8 +68,11 @@
                   v-for="item in getterGpeTypeEquipement"
                   :key="item.type_equipement_id"
                 >
-                  <tr style="background-color: #a67e2e">
-                    <td style="color: #fff" colspan="6">
+                  <tr>
+                    <td
+                      style="color: #fff; background-color: #a67e2e"
+                      colspan="8"
+                    >
                       <span class="badge badge-dark">Type équipement : </span>
                       {{ item.libelle_type_equipement }}
                     </td>
@@ -77,12 +85,13 @@
                   >
                     <td>{{ index + 1 }}</td>
                     <td>{{ data.code }}</td>
+                    <td>{{ data.numero_lot }}</td>
                     <td>{{ data.libelle }}</td>
                     <td>{{ data.unite_comptage }}</td>
-                    
-                    <td class="text-center">{{ data.quantite }}</td>
 
-                    <td class="button_block">
+                    <td class="text-center">{{ data.quantite }}</td>
+                    <td class="text-center">{{ data.date_peremption }}</td>
+                    <td class="button_block"  v-if="codeRole(idRole)!=3">
                       <button
                         type="button"
                         class="btn cur-p btn-success"
@@ -103,35 +112,6 @@
                   </tr>
                 </tbody>
               </table>
-
-              <!-- Pagination controls -->
-              <!-- <div class="pagination">
-                <button
-                  @click="changePage(currentPage - 1,data.id)"
-                  :disabled="currentPage === 1"
-                  class="btn-pagination"
-                >
-                  « Précédent
-                </button>
-
-                <button
-                  v-for="page in visiblePages"
-                  :key="page"
-                  @click="changePage(page)"
-                  :class="{ active: currentPage === page }"
-                  class="btn-pagination"
-                >
-                  {{ page }}
-                </button>
-
-                <button
-                  @click="changePage(currentPage + 1)"
-                  :disabled="currentPage === totalPages"
-                  class="btn-pagination"
-                >
-                  Suivant »
-                </button>
-              </div> -->
             </div>
           </div>
         </div>
@@ -188,21 +168,41 @@
                   </model-list-select>
                 </div>
               </div>
-               <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">code</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez code"
-                    v-model="objet.code"
-                  />
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label">code</label>
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez code"
+                      v-model="objet.code"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Numéro du lot</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez numero lot"
+                      v-model="objet.numero_lot"
+                    />
+                  </div>
                 </div>
               </div>
+
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">Libelle</label>
                 <div class="input-group">
@@ -218,35 +218,54 @@
                   />
                 </div>
               </div>
-                  <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Unite comptage</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez Libelle"
-                    v-model="objet.unite_comptage"
-                  />
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Unite comptage</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez Libelle"
+                      v-model="objet.unite_comptage"
+                    />
+                  </div>
                 </div>
-              </div>
-              
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">quantite</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez quantite"
-                    v-model="objet.quantite"
-                  />
+                <div class="col-md-3">
+                  <label for="inputWithIcon" class="form-label">Quantite</label>
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez quantite"
+                      v-model="objet.quantite"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="inputWithIcon" class="form-label"
+                    >Date d'expiration</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="inputWithIcon"
+                      v-model="objet.date_peremption"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -289,7 +308,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Rénouveler le stock
+                Mise à jour du stock
               </h5>
               <button
                 type="button"
@@ -301,7 +320,7 @@
             <div class="modal-body">
               <div class="md-3">
                 <label for="inputWithIcon" class="form-label"
-                  >Type équipement
+                  >Type équipement{{ objetrenoule.type_equipement_id }}
                   <span
                     style="
                       color: red;
@@ -345,58 +364,95 @@
                   </model-list-select>
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Quantite disponible (A)</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    style="font-weight: bolder"
-                    :value="
-                      AfficheQuantiteDisponible(objetrenoule.equipement_id)
-                    "
-                    disabled
-                  />
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Numéro du lot</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez numero lot"
+                      v-model="objetrenoule.numero_lot"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Date d'expiration</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="inputWithIcon"
+                      v-model="objetrenoule.date_peremption"
+                    />
+                  </div>
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Quantité réapprovisionnée (B)</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez quantite"
-                    v-model="objetrenoule.quantitesaisir"
-                  />
+              <div class="mb-3 row">
+                <div class="col-md-4">
+                  <label for="inputWithIcon" class="form-label"
+                    >Quantite disponible (A)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      style="font-weight: bolder"
+                      :value="
+                        AfficheQuantiteDisponible(objetrenoule.equipement_id)
+                      "
+                      disabled
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label for="inputWithIcon" class="form-label"
-                  >Quantité globale (C=A+B)</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="inputWithIcon"
-                    :value="afficheQuantiteGlobal"
-                    disabled
-                  />
+                <div class="col-md-4">
+                  <label for="inputWithIcon" class="form-label"
+                    >Quantité réapprovisionnée (B)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez quantite"
+                      v-model="objetrenoule.quantitesaisir"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label for="inputWithIcon" class="form-label"
+                    >Quantité globale (C=A+B)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="inputWithIcon"
+                      :value="afficheQuantiteGlobal"
+                      disabled
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -473,22 +529,41 @@
                   </model-list-select>
                 </div>
               </div>
-                   <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Code</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez code"
-                    v-model="ObjetModifier.code"
-                  />
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label">Code</label>
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez code"
+                      v-model="ObjetModifier.code"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="inputWithIcon" class="form-label"
+                    >Numéro de lot</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez code"
+                      v-model="ObjetModifier.numero_lot"
+                    />
+                  </div>
                 </div>
               </div>
-              
+
               <div class="mb-3">
                 <label for="inputWithIcon" class="form-label">libelle</label>
                 <div class="input-group">
@@ -504,8 +579,10 @@
                   />
                 </div>
               </div>
-                   <div class="mb-3">
-                <label for="inputWithIcon" class="form-label">Unite comptage</label>
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Unite comptage</label
+                >
                 <div class="input-group">
                   <span class="input-group-text"
                     ><i class="fa fa-book" aria-hidden="true"></i
@@ -531,6 +608,22 @@
                     id="inputWithIcon"
                     placeholder="Entrez quantite"
                     v-model="ObjetModifier.quantite"
+                  />
+                </div>
+              </div>
+              <div class="md-3">
+                <label for="inputWithIcon" class="form-label"
+                  >date d'expiration</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-book" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="inputWithIcon"
+                    v-model="ObjetModifier.date_peremption"
                   />
                 </div>
               </div>
@@ -583,7 +676,9 @@ export default {
         type_equipement_id: "",
         quantite: "",
         code: "",
-         unite_comptage:""
+        unite_comptage: "",
+        numero_lot: "",
+        date_peremption: "",
       },
       selectItem: null,
       ObjetModifier: {
@@ -591,7 +686,9 @@ export default {
         libelle: "",
         quantite: "",
         code: "",
-        unite_comptage:""
+        unite_comptage: "",
+        numero_lot: "",
+        date_peremption: "",
       },
       currentPage: 1,
       itemsPerPage: 10, // Nombre d'éléments à afficher par page
@@ -605,7 +702,9 @@ export default {
   created() {
     this.gettypeequipements();
     this.getGpeEquipement();
+    this.getGroupeEquipement();
     this.getEquipement();
+    this.getRoles();
   },
 
   computed: {
@@ -614,9 +713,25 @@ export default {
       "getterEquipement",
       "loading",
       "gettertypeequipements",
-      "getterGpeTypeEquipement",
+      "getterGpeTypeEquipement","getterGroupeEquipement","getterRole"
     ]),
+       codeRole() {
+      return (id) => {
+        if (id != null && id != "") {
+          let qtereel = this.getterRole.find((qtreel) => qtreel.id == id);
 
+          if (qtereel) {
+            return qtereel.code;
+          }
+          return "";
+        }
+      };
+    },
+ idRole() {
+      let objLinea = localStorage.getItem("User");
+      let objJson = JSON.parse(objLinea);
+      return objJson.id_roles;
+    },
     afficheQuantiteGlobal() {
       return (
         parseFloat(
@@ -639,6 +754,35 @@ export default {
         }
       };
     },
+    AfficheCodeEquipement() {
+      return ($id) => {
+        if ($id != null && $id != "") {
+          const qtereel = this.getterEquipement.find(
+            (qtreel) => qtreel.id == $id
+          );
+
+          if (qtereel) {
+            return qtereel.code;
+          }
+          return 0;
+        }
+      };
+    },
+    AfficheuniteComptageEquipement() {
+      return ($id) => {
+        if ($id != null && $id != "") {
+          const qtereel = this.getterEquipement.find(
+            (qtreel) => qtreel.id == $id
+          );
+
+          if (qtereel) {
+            return qtereel.unite_comptage;
+          }
+          return 0;
+        }
+      };
+    },
+
     AfficheQuantiteDisponible() {
       return ($id) => {
         if ($id != null && $id != "") {
@@ -656,7 +800,7 @@ export default {
     afficherEquipementEnfonctionType() {
       let collet = [];
 
-      this.getterEquipement.filter((item) => {
+      this.getterGroupeEquipement.filter((item) => {
         if (item.type_equipement_id === this.objetrenoule.type_equipement_id) {
           let data = {
             id: item.id,
@@ -724,7 +868,7 @@ export default {
       "supprimerEquipement",
       "modifierEquipement",
       "gettypeequipements",
-      "modifierRenouvellement",
+      "modifierRenouvellement","getGroupeEquipement","getRoles",
     ]),
     afficheEquipeParType($id) {
       return this.getterEquipement.filter(
@@ -740,16 +884,20 @@ export default {
       let ob = {
         type_equipement_id: this.objet.type_equipement_id,
         libelle: this.objet.libelle,
-         code:this.objet.code,
+        code: this.objet.code,
         quantite: this.objet.quantite,
         unite_comptage: this.objet.unite_comptage,
+        numero_lot: this.objet.numero_lot,
+        date_peremption: this.objet.date_peremption,
       };
       this.enregistrerEquipement(ob);
 
       this.objet.libelle = "";
       this.objet.quantite = "";
       this.objet.code = "";
-        this.objet.unite_comptage = "";
+      this.objet.unite_comptage = "";
+      this.objet.date_peremption = "";
+      this.objet.numero_lot = "";
     },
 
     async modifierEquipements() {
@@ -760,6 +908,8 @@ export default {
         code: this.ObjetModifier.code,
         unite_comptage: this.ObjetModifier.unite_comptage,
         quantite: this.ObjetModifier.quantite,
+        numero_lot: this.ObjetModifier.numero_lot,
+        date_peremption: this.ObjetModifier.date_peremption,
       };
       this.modifierEquipement(ob);
       // $('#staticBackdrop').modal('hide');
@@ -768,13 +918,19 @@ export default {
 
     async modifierEquipementRenouveler() {
       let ob = {
-        id: this.objetrenoule.equipement_id,
+        // id: this.objetrenoule.equipement_id,
         type_equipement_id: this.objetrenoule.type_equipement_id,
         libelle: this.AfficheLibelleEquipement(this.objetrenoule.equipement_id),
+        code: this.AfficheCodeEquipement(this.objetrenoule.equipement_id),
         quantite: this.afficheQuantiteGlobal,
+        unite_comptage: this.AfficheuniteComptageEquipement(
+          this.objetrenoule.equipement_id
+        ),
         quantitesaisir: this.objetrenoule.quantitesaisir,
+        numero_lot: this.objetrenoule.numero_lot,
+        date_peremption: this.objetrenoule.date_peremption,
       };
-      this.modifierRenouvellement(ob);
+      this.enregistrerEquipement(ob);
       this.objetrenoule.quantitesaisir = 0;
       // $('#staticBackdrop').modal('hide');
       // modal.hide();

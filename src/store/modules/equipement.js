@@ -9,11 +9,15 @@ const role ={
     affectationEquipements: [],
     HistoAffectationEquipements: [],
     agentequipe: [] ,
-    equipements: [] ,
+    equipements: [],
+    stateGroupeEquipement:[],
 gpeTypeEquipement:[],
   error: null 
   },
   mutations: {
+     SET_GROUPE_EQUIPEMENT(state, modules){
+       state.stateGroupeEquipement = modules;
+    },
  SET_HISTO_AFFECTATION_EQUIPEMENT(state, modules){
        state.HistoAffectationEquipements = modules;
     },
@@ -73,7 +77,19 @@ gpeTypeEquipement:[],
   },
   
   actions: {
+   async getGroupeEquipement({ commit }) {
 
+    try {
+        const resultat = await apiGuest.get('/listeGroupeEquipementOpt', { headers: authHeader() });
+        
+        // Mettre à jour les données dans le store
+        commit('SET_GROUPE_EQUIPEMENT', resultat.data);
+    } catch (error) {
+      
+    } finally {
+    
+    }
+    },
    async getGpeEquipement({ commit }) {
 
     try {
@@ -559,7 +575,10 @@ dispatch('getEquipementAffecte');
   },
   getters: {
   
-   
+    
+       getterGroupeEquipement(state) {
+      return state.stateGroupeEquipement.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
     getterEquipement(state) {
       return state.equipements.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },
