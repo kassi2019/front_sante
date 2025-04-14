@@ -25,7 +25,7 @@
       <li>
         <a href="" @click.prevent="affichePage('RoleModule')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Affectation des Module</span></a
+          <span>Autorisation des Module</span></a
         >
       </li>
       <li>

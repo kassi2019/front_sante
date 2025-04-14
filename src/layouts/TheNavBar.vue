@@ -6,7 +6,7 @@
           type="button"
           id="sidebarCollapse"
           class="sidebar_toggle"
-          style="height: 135px"
+          style="height: 90px"
         >
           <i class="fa fa-bars"></i>
         </button>

@@ -70,51 +70,6 @@
                   </div>
 
                   <!-- fin module parametrage -->
-
-                  
-                    <div class="col-md-4 col-lg-4">
-                      <div
-                        class="full socile_icons fb margin_bottom_30"
-                        style="border-radius: 90% !important"
-                        @click="ParametreGeneraux(6)"
-                        v-if="VoirModuleactivitesTb == 6"
-                      >
-                        <div class="social_icon" style="cursor: pointer">
-                          <i class="fa fa-life-bouy"></i>
-                        </div>
-                        <!-- @click.prevent="affichePage('TableauBord')" -->
-                        <div class="social_cont" @click="ParametreGeneraux(6)">
-                          <ul>
-                            <span class="desigText1 logo-text1">{{
-                              afficheibelleModule(6)
-                            }}</span>
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div
-                        v-else
-                        class="full socile_icons fb margin_bottom_30"
-                        style="border-radius: 90% !important"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
-                      >
-                        <div class="social_icon" style="cursor: pointer">
-                          <i class="fa fa-life-bouy"></i>
-                        </div>
-                        <div
-                          class="social_cont"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staticBackdrop"
-                        >
-                          <ul>
-                            <span class="desigText1 logo-text1">{{
-                              afficheibelleModule(6)
-                            }}</span>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
                   <!-- *********************************************************** -->
 
                   <div class="col-md-4 col-lg-4">
@@ -164,20 +119,7 @@
                   </div>
                   <!-- debut Gestion des utilisateurs  -->
 
-                
-                  <!-- fin Gestion des utilisateurs -->
-                  <!-- ************************************************************** -->
-
-                  <!-- ********************************************************************** -->
-
-                  <!-- debut Gestion Communication  -->
-
-                  <!-- fin Gestion Communication -->
-                  <!-- ************************************************************* -->
-                </div>
-                <!-- graph -->
-                <div class="row column1 social_media_section">
-                    <div class="col-md-4 col-lg-4">
+                  <div class="col-md-4 col-lg-4">
                     <div
                       class="full socile_icons fb margin_bottom_30"
                       style="border-radius: 90% !important"
@@ -219,6 +161,18 @@
                       </div>
                     </div>
                   </div>
+                  <!-- fin Gestion des utilisateurs -->
+                  <!-- ************************************************************** -->
+
+                  <!-- ********************************************************************** -->
+
+                  <!-- debut Gestion Communication  -->
+
+                  <!-- fin Gestion Communication -->
+                  <!-- ************************************************************* -->
+                </div>
+                <!-- graph -->
+                <div class="row column1 social_media_section">
                   <!-- debut Gestion administrative  -->
                   <div class="col-md-4 col-lg-4">
                     <div
@@ -312,6 +266,49 @@
                   <!-- fin Gestion des événements et activités -->
                   <!-- *************************************************************************** -->
 
+                    <div class="col-md-4 col-lg-4">
+                      <div
+                        class="full socile_icons fb margin_bottom_30"
+                        style="border-radius: 90% !important"
+                        @click="ParametreGeneraux(6)"
+                        v-if="VoirModuleactivitesTb == 6"
+                      >
+                        <div class="social_icon" style="cursor: pointer">
+                          <i class="fa fa-life-bouy"></i>
+                        </div>
+                        <!-- @click.prevent="affichePage('TableauBord')" -->
+                        <div class="social_cont" @click="ParametreGeneraux(6)">
+                          <ul>
+                            <span class="desigText1 logo-text1">{{
+                              afficheibelleModule(6)
+                            }}</span>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div
+                        v-else
+                        class="full socile_icons fb margin_bottom_30"
+                        style="border-radius: 90% !important"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                      >
+                        <div class="social_icon" style="cursor: pointer">
+                          <i class="fa fa-life-bouy"></i>
+                        </div>
+                        <div
+                          class="social_cont"
+                          data-bs-toggle="modal"
+                          data-bs-target="#staticBackdrop"
+                        >
+                          <ul>
+                            <span class="desigText1 logo-text1">{{
+                              afficheibelleModule(6)
+                            }}</span>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                 </div>
                 <!-- graph -->
               </div>

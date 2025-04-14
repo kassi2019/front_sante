@@ -17,7 +17,7 @@ import zoneIntervention from './modules/zoneIntervention';
 import equipement from './modules/equipement'; 
 import typeEquipement from './modules/typeEquipement'; 
 import inventaireEquipement from './modules/inventaireEquipement'; 
-// import affectationEquipement from './modules/affectationEquipement'; 
+ import affectationEquipement from './modules/affectationEquipement'; 
 const store = createStore({
   modules: {
     utilisateur, 
@@ -36,7 +36,7 @@ const store = createStore({
     equipement,
     typeEquipement,
     inventaireEquipement,
-    // affectationEquipement
+     affectationEquipement
   },
 });
 

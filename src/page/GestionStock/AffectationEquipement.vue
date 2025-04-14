@@ -3,7 +3,7 @@
 
   <div>
     <!-- {{ afficheMessageAlertSiQteAffecteEstSupDispo }} -->
-    <br /><br /><br />
+    <br />
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
@@ -18,11 +18,10 @@
           <div
             class="full graph_head d-flex justify-content-end align-items-start"
           >
-            <div
+            <!-- <div
               class="heading1 margin_0 d-flex justify-content-between align-items-center"
             >
-              <h2></h2>
-              <!-- Aligner le bouton à droite et ouvrir le modal -->
+           
               <button
                 type="button"
                 class="btn btn-outline-primary ms-auto btn-rounded-shadow"
@@ -32,7 +31,7 @@
                 <i class="fa fa-plus"></i>
                 AJOUTER
               </button>
-            </div>
+            </div> -->
           </div>
           <div class="table_section padding_infor_info">
             <div class="table-responsive-sm">
@@ -41,8 +40,13 @@
                   <tr>
                     <th>#</th>
                     <!-- <th>Code</th> -->
-                    <th colspan="">Libelle</th>
-                    <th colspan="">Quantité</th>
+
+                    <th colspan="" style="text-align: center">Libelle</th>
+                    <th colspan="" style="text-align: center">Quantité</th>
+                    <th colspan="" style="text-align: center">N° du lot</th>
+                    <th colspan="" style="text-align: center">
+                      Date d'expiration
+                    </th>
                     <th style="width: 9% !important; text-align: center">
                       Action
                     </th>
@@ -53,11 +57,23 @@
                   :key="item.agent_id"
                 >
                   <tr style="background-color: #c4d7ed">
-                    <td style="color: #000" colspan="4">
+                    <td style="color: #000" colspan="5">
                       <span class="badge badge-dark" style="font-size: 14px"
                         >ASC :
                       </span>
                       <span style="font-size: 25px">{{ item.nom_agent }}</span>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary ms-auto btn-rounded-shadow"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdroprenouvel"
+                        @click.prevent="AfficheModalAjoute(item.agent_id)"
+                      >
+                        <i class="fa fa-plus"></i>
+                        AFFECTATION
+                      </button>
                     </td>
                   </tr>
                   <tr
@@ -70,7 +86,10 @@
                         >Equipement </span
                       >{{ data.libelle_equipement }}
                     </td>
+
                     <td class="text-center">{{ data.quantite_affecte }}</td>
+                    <td class="text-center">{{ data.numerolot }}</td>
+                    <td class="text-center">{{ data.date_expiration }}</td>
 
                     <td class="button_block">
                       <!-- <button
@@ -127,6 +146,44 @@
               ></button>
             </div>
             <div class="modal-body">
+              <div class="mb-3 row">
+                <div class="col-md-12">
+                  <label for="inputWithIcon" class="form-label"
+                    >Nom et Prénoms du superviseur</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      :value="ObjetAjoute.nom_superviseur"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-md-12">
+                  <label for="inputWithIcon" class="form-label"
+                    >Nom et Prénoms de l'ASC</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputWithIcon"
+                      :value="ObjetAjoute.nom_agent"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
               <div class="md-3">
                 <label for="inputWithIcon" class="form-label"
                   >Type équipement
@@ -210,15 +267,20 @@
                       type="date"
                       class="form-control"
                       id="inputWithIcon"
-                      :value="AfficheDateExpiration(objetrenoule.equipement_id,objetrenoule.numerolot)"
-                    disabled
+                      :value="
+                        AfficheDateExpiration(
+                          objetrenoule.equipement_id,
+                          objetrenoule.numerolot
+                        )
+                      "
+                      disabled
                     />
                   </div>
                 </div>
               </div>
               <div class="mb-3 row">
                 <div class="col-md-4">
-                      <label for="inputWithIcon" class="form-label"
+                  <label for="inputWithIcon" class="form-label"
                     >Quantite actuelle (A)</label
                   >
                   <div class="input-group">
@@ -238,83 +300,83 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                    <label for="inputWithIcon" class="form-label"
-                  >Quantité à affecté (B)</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="inputWithIcon"
-                    placeholder="Entrez quantite"
-                    v-model="objetrenoule.quantite_affecte"
-                  />
+                  <label for="inputWithIcon" class="form-label"
+                    >Quantité à affecté (B)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="inputWithIcon"
+                      placeholder="Entrez quantite"
+                      v-model="objetrenoule.quantite_affecte"
+                    />
+                  </div>
                 </div>
-                </div>
-                   <div class="col-md-4">
-                    <label for="inputWithIcon" class="form-label"
-                  >Quantité Disponible (C=A-B)</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa fa-book" aria-hidden="true"></i
-                  ></span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="inputWithIcon"
-                    :value="afficheQuantiteGlobal"
-                    disabled
-                  />
-                </div>
+                <div class="col-md-4">
+                  <label for="inputWithIcon" class="form-label"
+                    >Quantité Disponible (C=A-B)</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="fa fa-book" aria-hidden="true"></i
+                    ></span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="inputWithIcon"
+                      :value="afficheQuantiteGlobal"
+                      disabled
+                    />
+                  </div>
                 </div>
               </div>
-    <div class="mb-3 row">
+              <!-- <div class="mb-3 row">
                 <div class="col-md-6">
                   <label for="inputWithIcon" class="form-label"
-                  >Nom Superviseur
-                </label>
-                <select
-                  class="form-select form-select-lg mb-3"
-                  aria-label=".form-select-lg example"
-                  v-model="responsable_id"
-                >
-                  <option
-                    v-for="data in afficherListeDesSuperviseur"
-                    :key="data.id"
-                    :value="data.utilisateur_id"
+                    >Nom Superviseur
+                  </label>
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg example"
+                    v-model="responsable_id"
                   >
-                    {{ data.nom_utilisateur }}
-                  </option>
-                </select>
+                    <option
+                      v-for="data in afficherListeDesSuperviseur"
+                      :key="data.id"
+                      :value="data.utilisateur_id"
+                    >
+                      {{ data.nom_utilisateur }}
+                    </option>
+                  </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="inputWithIcon" class="form-label"
-                  >Agent de santé communautaire
-                  <span
-                    style="
-                      color: red;
-                      font-weight: 900 !important;
-                      font-size: 15px;
-                    "
-                  ></span
-                ></label>
-                <div class="input-group">
-                  <model-list-select
-                    style=""
-                    :list="afficheAgentParSuperviseurs"
-                    v-model="utilisateur_id"
-                    option-value="id"
-                    option-text="groupe"
-                    placeholder="séléctionner"
-                  >
-                  </model-list-select>
+                  <label for="inputWithIcon" class="form-label"
+                    >Agent de santé communautaire
+                    <span
+                      style="
+                        color: red;
+                        font-weight: 900 !important;
+                        font-size: 15px;
+                      "
+                    ></span
+                  ></label>
+                  <div class="input-group">
+                    <model-list-select
+                      style=""
+                      :list="afficheAgentParSuperviseurs"
+                      v-model="utilisateur_id"
+                      option-value="id"
+                      option-text="groupe"
+                      placeholder="séléctionner"
+                    >
+                    </model-list-select>
+                  </div>
                 </div>
-                </div>
-              </div>
+              </div> -->
             </div>
             <div class="modal-footer">
               <button
@@ -466,7 +528,7 @@ export default {
         quantite_affecte: 0,
         superviseur_id: "",
         agent_id: "",
-        numerolot:""
+        numerolot: "",
       },
       objet: {
         libelle: "",
@@ -474,6 +536,7 @@ export default {
         quantite: "",
       },
       selectItem: null,
+      ObjetAjoute: {},
       ObjetModifier: {
         type_equipement_id: "",
         libelle: "",
@@ -575,9 +638,9 @@ export default {
         }
       };
     },
-  AfficheDateExpiration() {
-      return ($id,$id2) => {
-        if ($id != null && $id != "" || $id2 != null && $id2 != "") {
+    AfficheDateExpiration() {
+      return ($id, $id2) => {
+        if (($id != null && $id != "") || ($id2 != null && $id2 != "")) {
           const qtereel = this.getterEquipement.find(
             (qtreel) => qtreel.id == $id && qtreel.numero_lot == $id2
           );
@@ -589,12 +652,12 @@ export default {
         }
       };
     },
-    
+
     afficherEquipementEnfonctionType() {
       let collet = [];
 
       this.getterEquipement.filter((item) => {
-        if (item.type_equipement_id === this.objetrenoule.type_equipement_id) {
+        if (item.type_equipement_id === this.objetrenoule.type_equipement_id && item.quantite!=0) {
           let data = {
             id: item.id,
             groupe: item.libelle,
@@ -607,7 +670,7 @@ export default {
       return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
     },
 
-  afficherNumeroLot() {
+    afficherNumeroLot() {
       let collet = [];
 
       this.getterEquipement.filter((item) => {
@@ -726,10 +789,13 @@ export default {
         equipement_id: this.objetrenoule.equipement_id,
         quantite_dispo: this.afficheQuantiteGlobal,
         quantite_affecte: this.objetrenoule.quantite_affecte,
-        superviseur_id: this.responsable_id,
-        agent_id: this.utilisateur_id,
+        superviseur_id: this.ObjetAjoute.responsable_id,
+        agent_id: this.ObjetAjoute.agent_id,
         numerolot: this.objetrenoule.numerolot,
-        date_expiration: this.AfficheDateExpiration(this.objetrenoule.equipement_id,this.objetrenoule.numerolot),
+        date_expiration: this.AfficheDateExpiration(
+          this.objetrenoule.equipement_id,
+          this.objetrenoule.numerolot
+        ),
       };
       this.enregistrerAffectationEquipement(ob);
       this.objetrenoule.quantite_affecte = 0;
@@ -741,6 +807,11 @@ export default {
     async AfficheModalModification(id) {
       this.ObjetModifier = this.getterEquipement.find(
         (items) => items.id == id
+      );
+    },
+    async AfficheModalAjoute(id) {
+      this.ObjetAjoute = this.getteragentEquipement.find(
+        (items) => items.agent_id == id
       );
     },
   },

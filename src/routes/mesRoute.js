@@ -20,22 +20,29 @@ import aireSanitaire from "../page/dossierParametrage/aireSanitaire.vue"
 import zoneIntervention from "../page/dossierParametrage/zoneIntervention1.vue"
 import equipement from "../page/GestionStock/equipement.vue"
 import typeEquipement from "../page/GestionStock/typeEquipement.vue"
-import inventaireEquipement from "../page/GestionStock/inventaireEquipement.vue"
+// import inventaireEquipement from "../page/GestionStock/inventaireEquipement.vue"
 import AffectationEquipement from "../page/GestionStock/AffectationEquipement.vue"
+import stockAsc from "../page/GestionStock/stockAsc.vue"
 // import accueil from "../page/accueil.vue"
 const gestionutilisateur = [
+   {
+        path: '/stockAsc',
+        name:"stockAsc",
+      component: stockAsc,
+     
+     },
   {
         path: '/AffectationEquipement',
         name:"AffectationEquipement",
       component: AffectationEquipement,
      
      },
-   {
-        path: '/inventaireEquipement',
-        name:"inventaireEquipement",
-      component: inventaireEquipement,
+  //  {
+  //       path: '/inventaireEquipement',
+  //       name:"inventaireEquipement",
+  //     component: inventaireEquipement,
      
-     },
+  //    },
    {
         path: '/typeEquipement',
         name:"typeEquipement",

@@ -1,10 +1,10 @@
 <template>
   <!-- dashboard inner -->
 
-  <div><br/><br/><br/>
+  <div><br/>
     <div class="row column_title">
       <div class="col-md-12">
-        <div class="page_title"><h2>Affectation module</h2></div>
+        <div class="page_title"><h2>Autorisation des modules</h2></div>
       </div>
     </div>
     <div v-if="loading" class="loader">Chargement...</div>

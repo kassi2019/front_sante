@@ -2,21 +2,26 @@
   <div class="sidebar_blog_2">
     <h4 style="text-align: center">Tableau de Bord</h4>
     <ul class="list-unstyled components">
-         <li>
+         <li v-if="codeRole(idRole)!=2">
         <a href="" @click.prevent="affichePage('typeEquipement')"
           ><i class="fa fa-hand-o-right"></i>
           <span>Type Equipement ASC</span></a
         >
       </li>
-       <li>
+       <li v-if="codeRole(idRole)!=2">
         <a href="" @click.prevent="affichePage('equipement')"
           ><i class="fa fa-hand-o-right"></i>
           <span>Equipement ASC</span></a
         >
       </li>
-      <li>
+      <li v-if="codeRole(idRole)!=2">
         <a href="" @click.prevent="affichePage('AffectationEquipement')"
           ><i class="fa fa-hand-o-right"></i> <span>Affectation des équipements</span></a
+        >
+      </li>
+       <li  v-if="codeRole(idRole)==2" >
+        <a href="" @click.prevent="affichePage('stockAsc')"
+          ><i class="fa fa-hand-o-right"></i> <span>Stock ASC</span></a
         >
       </li>
       <!-- 
@@ -43,7 +48,7 @@
 
 <script>
 //import { useStore } from "vuex"; // Importation du store
-import { mapActions } from "vuex";
+import { mapActions,mapGetters } from "vuex";
 
 export default {
   components: {},
@@ -60,16 +65,35 @@ export default {
     // this.id_module = localStorage.getItem("id_module");
   },
   computed: {
-    //  nameUser() {
-    //   let objLinea = localStorage.getItem("User");
-    //   let objJson = JSON.parse(objLinea);
-    //   return objJson.noms;
-    // },
+    ...mapGetters(["getterRole", "loading", "getterinventaireequipements"]),
+idRole() {
+      let objLinea = localStorage.getItem("User");
+      let objJson = JSON.parse(objLinea);
+      return objJson.id_roles;
+    },
+
+        codeRole() {
+      return (id) => {
+        if (id != null && id != "") {
+          let qtereel = this.getterRole.find((qtreel) => qtreel.id == id);
+
+          if (qtereel) {
+            return qtereel.code;
+          }
+          return "";
+        }
+      };
+    },
   },
 
   methods: {
-    ...mapActions(["login"]),
 
+...mapActions([
+      "login",
+      "logoutUser",
+      "getRoles",
+      "getInventaireEquipement",
+    ]),
     async affichePage(route_name) {
       this.$router.push({
         name: route_name,

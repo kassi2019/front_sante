@@ -59,8 +59,8 @@ async supprimerRoleModule({ commit,dispatch }, id) {
     if (result.isConfirmed) {
   apiGuest.delete('/supprimerRoleModule/' + id, { headers: authHeader() })
      commit('SUPPRIMER_ROLE_MODULE', id)
-      dispatch('getModulesParRole');
-      dispatch('getRoleModules');
+       dispatch('getRoleModules');
+  dispatch('getModulesParRole');
       
        Swal.fire({
                  position: "top-end",

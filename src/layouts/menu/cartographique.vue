@@ -18,12 +18,12 @@
         >
       </li> -->
 
-      <li>
+      <!-- <li>
         <a href="" @click.prevent="affichePage('inventaireEquipement')"
           ><i class="fa fa-hand-o-right"></i>
           <span>Inventaire d'équipement ASC</span></a
         >
-      </li>
+      </li> -->
 
       <li v-if="AfficheIdUtilisateur(idUser) == idUser && idrole != 7">
         <a href="" @click.prevent="affichePage('menage')"
