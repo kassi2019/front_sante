@@ -1,45 +1,33 @@
 <template>
   <div class="sidebar_blog_2">
-    <h4 style="text-align: center">Médicament / Intrant</h4>
+    <h4 style="text-align: center">Prise en charge</h4>
     <ul class="list-unstyled components">
-         <li v-if="codeRole(idRole)!=2">
-        <a href="" @click.prevent="affichePage('typeEquipement')"
+         <li >
+        <a href="" @click.prevent="affichePage('priseEnCharge')"
           ><i class="fa fa-hand-o-right"></i>
-          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Type Equipement ASC</span></a
+          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Prise en charge</span></a
         >
       </li>
-       <li v-if="codeRole(idRole)!=2">
+       <!-- <li v-if="codeRole(idRole)!=2">
         <a href="" @click.prevent="affichePage('equipement')"
           ><i class="fa fa-hand-o-right"></i>
-          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Equipement ASC</span></a
+          <span>Equipement ASC</span></a
         >
-      </li>
-      <li v-if="codeRole(idRole)!=2">
+      </li> -->
+      <!-- <li v-if="codeRole(idRole)!=2">
         <a href="" @click.prevent="affichePage('AffectationEquipement')"
-          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Affectation des équipements</span></a
+          ><i class="fa fa-hand-o-right"></i> <span>Affectation des équipements</span></a
         >
-      </li>
-       <li  >
+      </li> -->
+       <!-- <li  >
         <a href="" @click.prevent="affichePage('stockAsc')"
-          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Stock ASC</span></a
-        >
-      </li>
-      <!-- 
-      <li>
-        <a href="" @click.prevent="affichePage('')"
-          ><i class="fa fa-hand-o-right"></i>
-          <span>Equipement en panne</span></a
+          ><i class="fa fa-hand-o-right"></i> <span>Stock ASC</span></a
         >
       </li> -->
-  <!-- <li>
-        <a href="" @click.prevent="affichePage('')"
-          ><i class="fa fa-hand-o-right"></i>
-          <span>Suivi des stocks </span></a
-        >
-      </li> -->
-      <li style="background-color: #007b9a">
+      
+      <li style="background-color: #007b9a;">
         <a href="" @click.prevent="affichePage('presentation')"
-          ><i class="fa fa-eye"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">VOIR MODULES</span></a
+          ><i class="fa fa-eye"></i> <span style="font-size: 20px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">VOIR MODULES</span></a
         >
       </li>
     </ul>
@@ -111,4 +99,5 @@ li:hover {
   font-size: 16px !important;
   font-family: Arial, sans-serif !important;
 }
+
 </style>

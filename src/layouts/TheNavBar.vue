@@ -21,7 +21,7 @@
               class="img-responsive rounded-circle"
               src="/public/asset/images/layout_img/user_img.jpg"
               alt="#"
-              style="width: 70px; margin: 0 7px"
+              style="width: 70px; margin: 0"
             /> </a
           ><br />
           <div style="display: flex; flex-direction: column; color: #fff">
@@ -29,11 +29,13 @@
             <p
               style="
                 margin: 0;
-                padding: 0;
+                padding: 0px 15px;
                 cursor: pointer;
                 font-weight: bolder;
                 font-size: 15px;
                 color: #fff;
+                text-align: center;
+                font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;
               "
             >
               {{ nameUser }} {{ prenomUser }}
@@ -41,11 +43,13 @@
             <p
               style="
                 margin: 0;
-                padding: 0;
+               padding: 0px 15px;
                 cursor: pointer;
                 font-weight: bolder;
                 font-size: 15px;
                 color: #fff;
+                 text-align: center;
+                font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;
               "
             >
               {{ libelleRole(idRole) }}
@@ -53,11 +57,12 @@
             <p
               style="
                 margin: 0;
-                padding: 0;
+               padding: 0px 15px;
                 color: #ff140c;
                 cursor: pointer;
                 font-weight: bolder;
                 font-size: 15px;
+                 text-align: center;
               "
               @click.prevent="logoutUser()"
             >

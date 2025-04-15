@@ -15,7 +15,7 @@
                   <div class="col-md-12">
                     <div class="page_title">
                       <h2 style="text-align: left" class="logo-text marquee">
-                        <strong style="font-size: 30px !important"
+                        <strong style="font-size: 30px !important;font-family:Georgia, 'Times New Roman', Times, serif;"
                           >Votre santé, notre priorité, Bienvenue sur Pro-Santé.</strong
                         >
                       </h2>
@@ -613,7 +613,7 @@ else{
   text-align: center !important;
 }
 .logo-text {
-  font-family: "Roboto", sans-serif;
+ 
   font-weight: 700;
   font-size: 40px;
   text-transform: uppercase;
@@ -623,6 +623,8 @@ else{
   transition: all 0.3s ease;
   font-style: italic;
   text-align: center !important;
+
+
 }
 .desigText {
   font-size: 30px;

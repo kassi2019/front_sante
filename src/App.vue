@@ -38,6 +38,7 @@ th,
 td {
   border: 1px solid #000; /* couleur noire */
   border-collapse: collapse;
+font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;
 }
 
 </style>

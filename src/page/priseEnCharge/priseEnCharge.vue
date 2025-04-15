@@ -9,19 +9,7 @@
           class="page_title d-flex justify-content-between align-items-center"
         >
           <h2 style="font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Liste des ménages</h2>
-          <button
-            type="button"
-            class="btn btn-success position-relative"
-            v-if="compteNombrePatient > 0"
-          >
-            vous avez des nouveaux née à enregistrer
-            <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-            >
-              {{ compteNombrePatient }}
-              <span class="visually-hidden">unread messages</span>
-            </span>
-          </button>
+      
         </div>
       </div>
     </div>
@@ -29,14 +17,14 @@
     <div>
       <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
-          <div
+          <!-- <div
             class="full graph_head d-flex justify-content-end align-items-start"
           >
             <div
               class="heading1 margin_0 d-flex justify-content-between align-items-center"
             >
               <h2></h2>
-              <!-- Aligner le bouton à droite et ouvrir le modal -->
+             
               <button
                 type="button"
                 class="btn btn-outline-primary ms-auto btn-rounded-shadow"
@@ -47,7 +35,31 @@
                 AJOUTER
               </button>
             </div>
-          </div>
+          </div> -->
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label"
+                  >Récherche par Nom du menage
+                  <span
+                    style="
+                      color: red;
+                      font-weight: 900 !important;
+                      font-size: 15px;
+                    "
+                    ></span
+                  ></label
+                >
+                <div class="input-group">
+                  <model-list-select
+                    style=""
+                    :list="afficheNomChefFamille"
+                    v-model="objetPatient.chef_famille_id"
+                    option-value="id"
+                    option-text="groupe"
+                    placeholder="séléctionner"
+                  >
+                  </model-list-select>
+                </div>
+              </div>
           <div class="table_section padding_infor_info">
             <div class="table-responsive-sm">
               <table class="table">
@@ -56,13 +68,9 @@
                     <th>#</th>
                     <!-- <th>Code</th> -->
                     <th>Nom</th>
-                    <th>Prenoms</th>
-                    <th>Numero</th>
-                    <th>Longitude(-)</th>
-                    <th>Latitude(+)</th>
+                    <th style="width: 50%;">Prénoms</th>
                     <th>Zone intervention</th>
-                    <th>Nbre nouveau née</th>
-                    <th style="width: 15% !important; text-align: center">
+                    <th style="width: 8% !important; text-align: center">
                       Action
                     </th>
                   </tr>
@@ -71,28 +79,12 @@
                 <tbody>
                   <tr v-for="(data, index) in paginatedData" :key="data.id">
                     <td>{{ index + 1 }}</td>
-                    <!-- <td>{{ data.code }}</td> -->
                     <td>{{ data.nom }}</td>
                     <td>{{ data.prenoms }}</td>
-                    <td>{{ data.numero }}</td>
-                    <td>{{ data.longitude }}</td>
-                    <td>{{ data.latitude }}</td>
                     <td>
                       {{ libelleZoneIntervention(data.zone_intervention_id) }}
                     </td>
-                    <td
-                      style="text-align: center; cursor: pointer"
-                      v-if="compteNbrePatientParMenege(data.id) > 0"
-                    >
-                      <span class="badge rounded-pill text-bg-danger">{{
-                        compteNbrePatientParMenege(data.id)
-                      }}</span>
-                    </td>
-                    <td style="text-align: center; cursor: pointer" v-else>
-                      <span class="badge rounded-pill text-bg-success">{{
-                        compteNbrePatientParMenege(data.id)
-                      }}</span>
-                    </td>
+                
                     <td class="button_block">
                       <button
                         type="button"
@@ -108,22 +100,7 @@
                           Détail</i
                         >
                       </button>
-                      <button
-                        type="button"
-                        class="btn cur-p btn-success"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdropModification"
-                        @click.prevent="AfficheModalModification(data.id)"
-                      >
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      </button>
-                      <button
-                        type="button"
-                        class="btn cur-p btn-danger"
-                        @click.prevent="supprimermenages(data.id)"
-                      >
-                        <i class="fa fa-trash"></i>
-                      </button>
+                 
                     </td>
                   </tr>
                 </tbody>
@@ -911,7 +888,7 @@ export default {
         type_patient_id: "",
         lieu_naissance: "",
         numero_cmu: "",
-        chef_famille_id: "",
+        chef_famille_id: 0,
         numero_cni: "",
         mere_nouveau_id: "",
       },
@@ -938,10 +915,10 @@ export default {
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
     this.getZoneParAgent();
-    this.getTypePatient();
-    this.getVaccinTreeSelect();
+    // this.getTypePatient();
+    // this.getVaccinTreeSelect();
     this.getmenages();
-    this.getpatients();
+    // this.getpatients();
   },
 
   computed: {
@@ -954,6 +931,13 @@ export default {
       "getterZoneParAgent",
       "getterTypePatient",
     ]),
+      filterMenage() {
+          if (this.objetPatient.chef_famille_id == 0) {
+            return this.gettermenages
+          } else {
+            return this.gettermenages.filter(data=>data.id==this.objetPatient.chef_famille_id)
+        }
+    },
     MereParMenage() {
       return this.getterpatient.filter(
         (data) =>
@@ -1061,13 +1045,13 @@ export default {
     // Calcule les éléments à afficher en fonction de la page actuelle
     paginatedData() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      return this.gettermenages.slice(
+      return this.filterMenage.slice(
         startIndex,
         startIndex + this.itemsPerPage
       );
     },
     totalPages() {
-      return Math.ceil(this.gettermenages.length / this.itemsPerPage);
+      return Math.ceil(this.filterMenage.length / this.itemsPerPage);
     },
     loading() {
       return this.$store.state.loading;
@@ -1130,10 +1114,11 @@ export default {
     },
     async detailPatient(id) {
       this.$router.push({
-        name: "detailPatient",
+        name: "listeBeneficiaireSoin",
         params: { id: id },
       });
-    },
+      },
+    
     // Fonction pour changer de page
     changePage(page) {
       if (page > 0 && page <= this.totalPages) {

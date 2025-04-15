@@ -23,10 +23,10 @@
             />
           </div>
           <div class="user_info">
-            <h3>{{ nameUser }}</h3>
-            <p style="color: aliceblue;">{{ libelleRole(idRole) }}</p>
+            <h3 style="font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;text-align: center;">{{ nameUser }}</h3>
+            <p style="color: aliceblue;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;text-align: center;">{{ libelleRole(idRole) }}</p>
             
-            <p @click.prevent="logoutUser()" style="cursor: pointer">
+            <p @click.prevent="logoutUser()" style="cursor: pointer;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;text-align: center;">
               <span class="online_animation"></span> Se déconnecter
             </p>
           </div>
@@ -37,6 +37,8 @@
     <parametre v-if="id_module == 1"></parametre>
     <cartographique v-if="id_module == 4"></cartographique>
     <gestionStock v-if="id_module == 6"></gestionStock>
+    <priseEnCharge v-if="id_module == 2"></priseEnCharge>
+    
   </nav>
   <!-- end sidebar -->
 </template>
@@ -47,11 +49,13 @@ import { mapActions,mapGetters } from "vuex";
 import parametre from "../layouts/menu/parametre.vue";
 import cartographique from "../layouts/menu/cartographique.vue";
 import gestionStock from "./menu/gestionStock.vue";
+import priseEnCharge from "./menu/priseEnCharge.vue";
 export default {
   components: {
     parametre,
     cartographique,
     gestionStock,
+    priseEnCharge
   },
   name: "Counter",
 

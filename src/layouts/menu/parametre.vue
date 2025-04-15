@@ -5,40 +5,40 @@
 
       <li v-if="codeRole(idRole)==1">
         <a href="" @click.prevent="affichePage('Role')"
-          ><i class="fa fa-hand-o-right"></i> <span>Rôle</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Rôle</span></a
         >
       </li>
       <li v-if="codeRole(idRole)==1">
         <a href="" @click.prevent="affichePage('Module')"
-          ><i class="fa fa-hand-o-right"></i> <span>Module</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Module</span></a
         >
       </li>
 
       <li v-if="codeRole(idRole)==1">
         <a href="" @click.prevent="affichePage('RoleModule')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Autorisation des Module</span></a
+          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Autorisation des Module</span></a
         >
       </li>
       <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('utilisateur')"
-          ><i class="fa fa-hand-o-right"></i> <span>Utilisateur </span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Utilisateur </span></a
         >
       </li>
       <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('District')"
-          ><i class="fa fa-hand-o-right"></i> <span>District</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">District</span></a
         >
       </li>
       <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('aireSanitaire')"
-          ><i class="fa fa-hand-o-right"></i> <span>Aire Sanitaire</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Aire Sanitaire</span></a
         >
       </li>
       <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('zoneIntervention')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Zone d'Intervention</span></a
+          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Zone d'Intervention</span></a
         >
       </li>
       
@@ -49,7 +49,7 @@
       </li> -->
       <li v-if="codeRole(idRole)==1">
         <a href="" @click.prevent="affichePage('vaccin')"
-          ><i class="fa fa-hand-o-right"></i> <span>Vaccin</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Vaccin</span></a
         >
       </li>
 
@@ -71,12 +71,12 @@
        <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('ZoneUtilisateur')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Affectation des Zones</span></a
+          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Affectation des Zones</span></a
         >
       </li>
       <li style="background-color: #007b9a">
         <a href="" @click.prevent="affichePage('presentation')"
-          ><i class="fa fa-eye"></i> <span>VOIR LES MODULES</span></a
+          ><i class="fa fa-eye"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">VOIR MODULES</span></a
         >
       </li>
     </ul>

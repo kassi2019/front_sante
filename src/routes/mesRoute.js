@@ -24,7 +24,26 @@ import typeEquipement from "../page/GestionStock/typeEquipement.vue"
 import AffectationEquipement from "../page/GestionStock/AffectationEquipement.vue"
 import stockAsc from "../page/GestionStock/stockAsc.vue"
 // import accueil from "../page/accueil.vue"
+import priseEnCharge from "../page/priseEnCharge/priseEnCharge.vue"
+import listeBeneficiaireSoin from "../page/priseEnCharge/listeBeneficiaireSoin.vue"
+import pageQuestionnaire from "../page/priseEnCharge/pageQuestionnaire.vue"
 const gestionutilisateur = [
+   {
+    path: "/pageQuestionnaire/:id",
+    name: "pageQuestionnaire",
+    component: pageQuestionnaire,
+  },
+    {
+    path: "/listeBeneficiaireSoin/:id",
+    name: "listeBeneficiaireSoin",
+    component: listeBeneficiaireSoin,
+  },
+  {
+        path: '/priseEnCharge',
+        name:"priseEnCharge",
+      component: priseEnCharge,
+     
+     },
    {
         path: '/stockAsc',
         name:"stockAsc",

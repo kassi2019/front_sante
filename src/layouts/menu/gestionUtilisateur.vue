@@ -4,28 +4,28 @@
     <ul class="list-unstyled components">
       <li>
         <a href="" @click.prevent="affichePage('Role')"
-          ><i class="fa fa-hand-o-right"></i> <span>Rôle</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Rôle</span></a
         >
       </li>
       <li>
         <a href="" @click.prevent="affichePage('Module')"
-          ><i class="fa fa-hand-o-right"></i> <span>Module</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Module</span></a
         >
       </li>
       <li>
         <a href="" @click.prevent="affichePage('RoleModule')"
           ><i class="fa fa-hand-o-right"></i>
-          <span>Affectation des Module</span></a
+          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Affectation des Module</span></a
         >
       </li>
       <li>
         <a href="" @click.prevent="affichePage('utilisateur')"
-          ><i class="fa fa-hand-o-right"></i> <span>Utilisateur </span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Utilisateur </span></a
         >
       </li>
       <li style="background-color:#007b9a" >
         <a href="" @click.prevent="affichePage('presentation')"
-          ><i class="fa fa-eye"></i> <span>VOIR LES MODULES</span></a
+          ><i class="fa fa-eye"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">VOIR MODULES</span></a
         >
       </li>
     </ul>

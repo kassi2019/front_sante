@@ -27,7 +27,7 @@
 
       <li >
         <a href="" @click.prevent="affichePage('menage')"
-          ><i class="fa fa-hand-o-right"></i> <span>Ménages</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Ménages</span></a
         >
       </li>
       <!-- <li v-else-if="idrole == 7">
@@ -65,7 +65,7 @@
       </li> -->
       <li style="background-color: #007b9a">
         <a href="" @click.prevent="affichePage('presentation')"
-          ><i class="fa fa-eye"></i> <span>VOIR LES MODULES</span></a
+          ><i class="fa fa-eye"></i> <span>VOIR MODULES</span></a
         >
       </li>
     </ul>

@@ -4,7 +4,7 @@
   <div><br/>
     <div class="row column_title">
       <div class="col-md-12">
-        <div class="page_title"><h2>Autorisation des modules</h2></div>
+        <div class="page_title"><h2 style="font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Autorisation des modules</h2></div>
       </div>
     </div>
     <div v-if="loading" class="loader">Chargement...</div>

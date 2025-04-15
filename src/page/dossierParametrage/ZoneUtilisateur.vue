@@ -6,7 +6,7 @@
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Affectation des Zones</h2>
+          <h2 style="font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Affectation des Zones</h2>
         </div>
       </div>
     </div>
