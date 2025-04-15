@@ -2,48 +2,40 @@
   <div class="sidebar_blog_2">
     <h4 style="text-align: center">Paramètres Généraux</h4>
     <ul class="list-unstyled components">
-      <!-- <li>
-                        <a href="#element5" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-diamond purple_color"></i> <span>Elements</span></a>
-                        <ul class="collapse list-unstyled" id="element5">
-                           <li><a href="general_elements.html">> <span>General Elements</span></a></li>
-                           <li><a href="media_gallery.html">> <span>Media Gallery</span></a></li>
-                           <li><a href="icons.html">> <span>Icons</span></a></li>
-                           <li><a href="invoice.html">> <span>Invoice</span></a></li>
-                        </ul>
-                     </li> -->
-      <li>
+
+      <li v-if="codeRole(idRole)==1">
         <a href="" @click.prevent="affichePage('Role')"
           ><i class="fa fa-hand-o-right"></i> <span>Rôle</span></a
         >
       </li>
-      <li>
+      <li v-if="codeRole(idRole)==1">
         <a href="" @click.prevent="affichePage('Module')"
           ><i class="fa fa-hand-o-right"></i> <span>Module</span></a
         >
       </li>
 
-      <li>
+      <li v-if="codeRole(idRole)==1">
         <a href="" @click.prevent="affichePage('RoleModule')"
           ><i class="fa fa-hand-o-right"></i>
           <span>Autorisation des Module</span></a
         >
       </li>
-      <li>
+      <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('utilisateur')"
           ><i class="fa fa-hand-o-right"></i> <span>Utilisateur </span></a
         >
       </li>
-      <li>
+      <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('District')"
           ><i class="fa fa-hand-o-right"></i> <span>District</span></a
         >
       </li>
-      <li>
+      <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('aireSanitaire')"
           ><i class="fa fa-hand-o-right"></i> <span>Aire Sanitaire</span></a
         >
       </li>
-      <li>
+      <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('zoneIntervention')"
           ><i class="fa fa-hand-o-right"></i>
           <span>Zone d'Intervention</span></a
@@ -55,7 +47,7 @@
           ><i class="fa fa-hand-o-right"></i> <span>Médicaments</span></a
         >
       </li> -->
-      <li>
+      <li v-if="codeRole(idRole)==1">
         <a href="" @click.prevent="affichePage('vaccin')"
           ><i class="fa fa-hand-o-right"></i> <span>Vaccin</span></a
         >
@@ -76,7 +68,7 @@
      
       
    
-       <li>
+       <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('ZoneUtilisateur')"
           ><i class="fa fa-hand-o-right"></i>
           <span>Affectation des Zones</span></a
@@ -93,7 +85,7 @@
 
 <script>
 //import { useStore } from "vuex"; // Importation du store
-import { mapActions } from "vuex";
+import { mapActions,mapGetters } from "vuex";
 
 export default {
   components: {},
@@ -107,18 +99,36 @@ export default {
     return {};
   },
   created() {
-    // this.id_module = localStorage.getItem("id_module");
+
   },
   computed: {
-    //  nameUser() {
-    //   let objLinea = localStorage.getItem("User");
-    //   let objJson = JSON.parse(objLinea);
-    //   return objJson.noms;
-    // },
+        ...mapGetters(["getterRole", "loading", "getterinventaireequipements"]),
+ idRole() {
+      let objLinea = localStorage.getItem("User");
+      let objJson = JSON.parse(objLinea);
+      return objJson.id_roles;
+    },
+      codeRole() {
+      return (id) => {
+        if (id != null && id != "") {
+          let qtereel = this.getterRole.find((qtreel) => qtreel.id == id);
+
+          if (qtereel) {
+            return qtereel.code;
+          }
+          return "";
+        }
+      };
+    },
   },
 
   methods: {
-    ...mapActions(["login"]),
+    ...mapActions([
+      "login",
+      "logoutUser",
+      "getRoles",
+      "getInventaireEquipement",
+    ]),
 
     async affichePage(route_name) {
       this.$router.push({

@@ -41,7 +41,7 @@
                     <th>#</th>
                     <!-- <th>Code</th> -->
 
-                    <th colspan="" style="text-align: center">Libelle</th>
+                    <th colspan="" style="text-align: center">Médicament / Intrant</th>
                     <th colspan="" style="text-align: center">Quantité</th>
                     <th colspan="" style="text-align: center">N° du lot</th>
                     <th colspan="" style="text-align: center">

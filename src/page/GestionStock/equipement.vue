@@ -53,11 +53,14 @@
                   <tr>
                     <th>#</th>
                     <th>Code</th>
-                    <th>Numéro du lot</th>
-                    <th colspan="">Libelle</th>
-                    <th colspan="">Unite comptage</th>
-                    <th colspan="">Quantité</th>
-                    <th colspan="">Date d'expiration</th>
+                    <th style="text-align: center">Numéro du lot</th>
+                    <th colspan="" style="text-align: center">Médicament / Intrant</th>
+                    <th colspan="" style="text-align: center">Unite comptage</th>
+                    <th colspan="" style="text-align: center">Quantité</th>
+                    <th colspan="" style="text-align: center">Date d'expiration</th>
+                    <th style="width: 9% !important; text-align: center">
+                      Statut
+                    </th>
                     <th style="width: 9% !important; text-align: center"  v-if="codeRole(idRole)!=3">
                       Action
                     </th>
@@ -91,6 +94,28 @@
 
                     <td class="text-center">{{ data.quantite }}</td>
                     <td class="text-center">{{ data.date_peremption }}</td>
+                     <td
+                  class="statut_non_demare text-center taille_enfant"
+                  v-if="
+                   data.date_peremption==getToday && data.quantite!=0
+                  "
+                >
+                 Produit Expiré
+                </td>
+                <td
+                  class="statut_non_demare text-center taille_enfant"
+                  v-if="
+                   data.quantite==0
+                  "
+                >
+                 Stock Épuisé
+                </td>
+                <td
+                  class="statut_encours text-center taille_enfant"
+                 v-if="data.date_peremption!=getToday && data.quantite!=0"
+                >
+                Produits en Bon État
+                </td>
                     <td class="button_block"  v-if="codeRole(idRole)!=3">
                       <button
                         type="button"
@@ -700,6 +725,7 @@ export default {
 
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
+    this.fetchToday()
     this.gettypeequipements();
     this.getGpeEquipement();
     this.getGroupeEquipement();
@@ -713,7 +739,7 @@ export default {
       "getterEquipement",
       "loading",
       "gettertypeequipements",
-      "getterGpeTypeEquipement","getterGroupeEquipement","getterRole"
+      "getterGpeTypeEquipement","getterGroupeEquipement","getterRole",'getToday'
     ]),
        codeRole() {
       return (id) => {
@@ -868,7 +894,7 @@ export default {
       "supprimerEquipement",
       "modifierEquipement",
       "gettypeequipements",
-      "modifierRenouvellement","getGroupeEquipement","getRoles",
+      "modifierRenouvellement","getGroupeEquipement","getRoles",'fetchToday'
     ]),
     afficheEquipeParType($id) {
       return this.getterEquipement.filter(
@@ -999,5 +1025,24 @@ th {
   font-size: 16px;
   background-color: #007b9a;
   color: aliceblue;
+}
+.statut_encours {
+  background-color: orange;
+  color: #000;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.statut_terminer {
+  background-color: green;
+  color: #000;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.statut_non_demare {
+  background-color: red;
+  color: #000;
+  font-weight: bold;
 }
 </style>

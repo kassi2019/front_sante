@@ -25,12 +25,12 @@
         >
       </li> -->
 
-      <li v-if="AfficheIdUtilisateur(idUser) == idUser && idrole != 7">
+      <li >
         <a href="" @click.prevent="affichePage('menage')"
-          ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
+          ><i class="fa fa-hand-o-right"></i> <span>Ménages</span></a
         >
       </li>
-      <li v-else-if="idrole == 7">
+      <!-- <li v-else-if="idrole == 7">
         <a href="" @click.prevent="affichePage('menage')"
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
@@ -39,7 +39,7 @@
         <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
           ><i class="fa fa-hand-o-right"></i> <span>Liste des ménages</span></a
         >
-      </li>
+      </li> -->
 
       <!-- <li>
         <a href="" @click.prevent="affichePage('localisationChefFamille')"

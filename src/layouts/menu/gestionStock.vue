@@ -19,7 +19,7 @@
           ><i class="fa fa-hand-o-right"></i> <span>Affectation des équipements</span></a
         >
       </li>
-       <li  v-if="codeRole(idRole)==2" >
+       <li  >
         <a href="" @click.prevent="affichePage('stockAsc')"
           ><i class="fa fa-hand-o-right"></i> <span>Stock ASC</span></a
         >

@@ -29,12 +29,12 @@
                   <div class="col-md-4 col-lg-4">
                     <div
                       class="full socile_icons fb margin_bottom_30"
-                      style="border-radius: 90% !important"
+                      style="border-radius: 90% !important;"
                       @click="ParametreGeneraux(1)"
                       v-if="VoirModuleParametre == 1"
                     >
-                      <div class="social_icon" style="cursor: pointer">
-                        <i class="fa fa-cogs"></i>
+                      <div class="social_icon" style="cursor: pointer;">
+                        <i class="fa fa-cogs" ></i>
                       </div>
                       <div class="social_cont" @click="ParametreGeneraux(1)">
                         <ul>
@@ -52,7 +52,7 @@
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                     >
-                      <div class="social_icon" style="cursor: pointer">
+                      <div class="social_icon" style="cursor: pointer;">
                         <i class="fa fa-cogs"></i>
                       </div>
                       <div
@@ -77,13 +77,14 @@
                         class="full socile_icons fb margin_bottom_30"
                         style="border-radius: 90% !important"
                         @click="ParametreGeneraux(6)"
+                         @click.prevent="afficheStock()"
                         v-if="VoirModuleactivitesTb == 6"
                       >
                         <div class="social_icon" style="cursor: pointer">
                           <i class="fa fa-life-bouy"></i>
                         </div>
-                        <!-- @click.prevent="affichePage('TableauBord')" -->
-                        <div class="social_cont" @click="ParametreGeneraux(6)">
+                       
+                        <div class="social_cont" @click="ParametreGeneraux(6)"  @click.prevent="afficheStock()">
                           <ul>
                             <span class="desigText1 logo-text1">{{
                               afficheibelleModule(6)
@@ -561,11 +562,20 @@ export default {
         params: { id: $id },
       });
     },
-    async affichePage(route_name) {
-      this.$router.push({
-        name: route_name,
-      });
-    },
+    afficheStock() {
+      if (this.roleUtilisateur == 9) {
+        this.$router.push({
+          name: 'TableauBord',
+        });
+      }
+else{
+     this.$router.push({
+          name: 'stockAsc',
+        });
+    }
+  }
+   
+
 
   },
 };
@@ -596,7 +606,7 @@ export default {
   font-size: 20px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #005797;
+  color: #2E2E2E;;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-style: italic;
@@ -608,7 +618,7 @@ export default {
   font-size: 40px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #005797;
+  color: #2E2E2E;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-style: italic;

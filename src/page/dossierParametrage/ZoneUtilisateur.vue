@@ -6,7 +6,7 @@
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
-          <h2>Affectation des Zones Par Utilisateur</h2>
+          <h2>Affectation des Zones</h2>
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
             <div class="table-responsive-sm">
               <FormWizard @on-complete="onComplete" color="#457DBB">
                 <TabContent
-                  title="Afféctation du District au Agent"
+                  title="Affectation du District"
                   icon="fas fa-user-md"
                   ><div
                     class="full graph_head d-flex justify-content-end align-items-start"
@@ -137,7 +137,7 @@
                   </div> -->
                 </TabContent>
                 <TabContent
-                  title="Affectation des zones au Superviseurs"
+                  title="Affectation des aires de santé"
                   icon="fas fa-user-md"
                   ><div
                     class="full graph_head d-flex justify-content-end align-items-start"
@@ -255,7 +255,7 @@
                   </div> -->
                 </TabContent>
                 <TabContent
-                  title="Affectation des zones au agents"
+                  title="Affectation zones d'intervention"
                   icon="fas fa-user-nurse"
                   ><div
                     class="full graph_head d-flex justify-content-end align-items-start"
@@ -396,7 +396,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Afféctation Zone
+                Afféctation District
               </h5>
               <button
                 type="button"
@@ -408,7 +408,7 @@
             <div class="modal-body">
               <FormWizard @on-complete="onComplete" color="#457DBB">
                 <TabContent
-                  title="Afféctation du District au Agent"
+                  title="Affectation du District"
                   icon="fa fa-user-tie"
                   ><div class="mb-3">
                     <label for="inputWithIcon" class="form-label"
@@ -481,7 +481,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Afféctation Zone des Agents
+                Afféctation Zone d'intervention
               </h5>
               <button
                 type="button"
@@ -493,17 +493,18 @@
             <div class="modal-body">
               <FormWizard @on-complete="onComplete" color="#457DBB">
                 <TabContent
-                  title="Affectation des zones au agents"
+                  title="Affectation Zone d'intervention"
                   icon="fa fa-users"
                   ><div class="mb-3">
                     <label for="inputWithIcon" class="form-label"
-                      >Nom Superviseur
+                      >Superviseur
                     </label>
                     <select
                       class="form-select form-select-lg mb-3"
                       aria-label=".form-select-lg example"
                       v-model="responsable_id"
                     >
+                    <option></option>
                       <option
                         v-for="data in afficherListeDesSuperviseur"
                         :key="data.id"
@@ -614,7 +615,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Afféctation Zone
+                Afféctation aire sanitaire
               </h5>
               <button
                 type="button"
@@ -626,7 +627,7 @@
             <div class="modal-body">
               <FormWizard @on-complete="onComplete" color="#457DBB">
                 <TabContent
-                  title="Afféctation du District au Agent"
+                  title="Afféctation aire sanitaire"
                   icon="fa fa-user-tie"
                   ><div class="mb-3">
                     <label for="inputWithIcon" class="form-label"
@@ -649,7 +650,7 @@
 
                   <div class="md-3">
                     <label for="inputWithIcon" class="form-label"
-                      >Nom Superviseur
+                      >Superviseur
                       <span
                         style="
                           color: red;

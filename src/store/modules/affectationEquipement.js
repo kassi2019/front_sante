@@ -10,11 +10,14 @@ const role ={
   state: {
  
   stateAgentAsc:[],
-gpeTypeEquipement:[],
+    gpeTypeEquipement: [],
+ today: '',
   error: null 
   },
   mutations: {
-
+setToday(state, payload) {
+      state.today = payload
+    },
       SET_ASC_CONNECTER(state, modules){
        state.stateAgentAsc = modules;
     },
@@ -41,7 +44,14 @@ gpeTypeEquipement:[],
   },
   
   actions: {
-    
+     fetchToday({ commit }) {
+      const date = new Date()
+      const day = String(date.getDate()).padStart(2, '0')
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const year = date.getFullYear()
+      const formattedDate = `${day}/${month}/${year}`
+      commit('setToday', formattedDate)
+    },
        async getAfficheAscConnecter({ commit }) {
 
     try {
@@ -72,7 +82,7 @@ gpeTypeEquipement:[],
   },
   getters: {
   
-   
+   getToday: (state) => state.today,
     getterAscConnecter(state) {
       return state.stateAgentAsc
     },

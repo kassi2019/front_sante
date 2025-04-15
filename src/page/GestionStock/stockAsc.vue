@@ -35,33 +35,41 @@
           </div>
           <div class="table_section padding_infor_info">
             <div class="table-responsive-sm">
+           <div><span style="font-weight: bolder;">Légende : État du Stock :</span> <span style="font-weight: bolder;">Stock Restant est superieur ou egal a 50 :</span> <span style="font-weight: bolder;" class="statut_terminer">BON </span> <span style="font-weight: bolder;">sinon</span>  <span style="font-weight: bolder;" class="statut_non_demare">FAIBLE</span> / <span style="font-weight: bolder;">État d'expiration :</span> <span style="font-weight: bolder;">Date d'expiration  est  egal a la date du jour</span>: <span style="font-weight: bolder;" class="statut_non_demare">Produit Expiré </span>   <span style="font-weight: bolder;">sinon</span>  <span style="font-weight: bolder;" class="statut_encours">Produits en Bon État</span>   </div>
               <table class="table">
                 <thead>
                   <tr>
                     <th>#</th>
                     <!-- <th>Code</th> -->
 
-                    <th colspan="" style="text-align: center">Libelle</th>
-                    <th colspan="" class="text-center">Quantité Réçu (A)</th>
+                    <th colspan="" style="text-align: center">Médicament / Intrant</th>
+                    <th colspan="" class="text-center">Stock Initial (A)</th>
                     <th colspan="" class="text-center">
-                      Quantité utilisée (B)
+                      Quantité Distribuée (B)
                     </th>
                     <th colspan="" class="text-center">
-                      Quantité disponible (C=A-B)
+                      Stock Restant (C=A-B)
                     </th>
                     <th colspan="" style="text-align: center">N° du lot</th>
                     <th colspan="" style="text-align: center">
                       Date d'expiration
                     </th>
                     <th style="width: 9% !important; text-align: center">
-                      Statut
+                      État d'expiration
                     </th>
+                    <th style="width: 9% !important; text-align: center">
+                      État du Stock
+                    </th>
+                 
                   </tr>
+
                 </thead>
+                
+               
                 <tbody v-for="item in getterAscConnecter" :key="item.agent_id">
                   <tr style="background-color: #a67e2e">
-                    <td style="color: #000; font-weight: bolder" colspan="8">
-                      <span style="font-size: 30px">{{
+                    <td style="color: #000; font-weight: bolder" colspan="9">
+                      <span style="font-size: 20px">ASC   : {{
                         item.nom_prenoms_asc
                       }}</span>
                     </td>
@@ -77,13 +85,46 @@
                       >{{ data.libelle_equipement }}
                     </td>
 
-                    <td class="text-right">{{ data.quantite_affecte }}</td>
-                    <td class="text-right">{{ data.quantite_utilise }}</td>
-                    <td class="text-right">{{ parseInt(data.quantite_affecte)-parseInt(data.quantite_utilise) }}</td>
-                    <td class="text-right">{{ data.numerolot }}</td>
-                    <td class="text-right">{{ data.date_expiration }}</td>
+                    <td class="text-center">{{ data.quantite_affecte }}</td>
+                    <td class="text-center">{{ data.quantite_utilise }}</td>
+                    <td class="text-center">{{ calculMedicamentDisponible(data.quantite_affecte,data.quantite_utilise)}}</td>
+                    <td class="text-center">{{ data.numerolot }}</td>
+                    <td class="text-center">{{ data.date_expiration }}</td>
 
-                    <td class="button_block"></td>
+                   
+                <td
+                  class="statut_non_demare text-center taille_enfant"
+                  v-if="
+                   data.date_expiration==getToday && data.quantite_affecte!=0
+                  "
+                >
+                 Produit Expiré
+                </td>
+                <td
+                  class="statut_non_demare text-center taille_enfant"
+                  v-if="
+                   data.quantite_affecte==0
+                  "
+                >
+                  Stock Épuisé
+                </td>
+                <td
+                  class="statut_encours text-center taille_enfant"
+                  v-if="
+                   data.date_expiration!=getToday && data.quantite_affecte!=0
+                  "
+                >
+                Produits en Bon État
+                </td>
+                <td v-if="calculMedicamentDisponible(data.quantite_affecte,data.quantite_utilise) >= 50" style="background-color: #53872A;color: aliceblue;font-weight: bolder;text-align: center;">
+                   Bon
+                </td>
+                <!-- <td v-if="calculMedicamentDisponible(data.quantite_affecte,data.quantite_utilise) == 10" style="background-color: red;color: aliceblue;font-weight: bolder;text-align: center;">
+                 Critique
+                </td> -->
+                <td v-else style="background-color: red;color: #FFF;font-weight: bolder;text-align: center;">
+                  Faible
+                </td>
                   </tr>
                 </tbody>
               </table>
@@ -530,7 +571,8 @@ export default {
     this.getAfficheAscConnecter();
     // this.gettypeequipements();
     // this.getAgentAffecte();
-    this.getEquipementAffecte();
+      this.getEquipementAffecte();
+    this.fetchToday()
     // this.getEquipement();
     // this.getzoneUtilisateur();
   },
@@ -545,7 +587,7 @@ export default {
       "getterAgentParSuperviseurs",
       "getterZoneUtilisateur",
       "getterAscConnecter",
-      "getteraffectationEquipements",
+      "getteraffectationEquipements",'getToday'
     ]),
     afficheMessageAlertSiQteAffecteEstSupDispo() {
       const quantiteDisponible = this.AfficheQuantiteDisponible(
@@ -725,8 +767,13 @@ export default {
       "getListeAgentParSuperviseur",
       "enregistrerAffectationEquipement",
       "getAgentAffecte",
-      "getEquipementAffecte",
+      "getEquipementAffecte",'fetchToday'
     ]),
+
+
+    calculMedicamentDisponible($id,$id1) {
+  return (parseInt($id)-parseInt($id1))
+},
 
     afficheEquipeParType($id) {
       return this.getteraffectationEquipements.filter(
@@ -864,5 +911,24 @@ th {
   font-size: 16px;
   background-color: #007b9a;
   color: aliceblue;
+}
+.statut_encours {
+  background-color: orange;
+ color: #000;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.statut_terminer {
+  background-color: green;
+  color: #000;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.statut_non_demare {
+  background-color: red;
+  color: #000;
+  font-weight: bold;
 }
 </style>
