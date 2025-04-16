@@ -1,0 +1,246 @@
+// src/store/index.js
+//import { createStore } from 'vuex';
+import apiGuest from '../../request/AppRequest';
+import Swal from 'sweetalert2';  // Assurez-vous d'importer SweetAlert2
+import authHeader from '../../services/auth-header';
+
+const StockDistrict ={
+  state: {
+ 
+    StateEquipementParTypeProduit: [] ,
+        stateStockDistricts: [],
+     stateTypeEquipementStockDistricts:[],
+  error: null     // Erreur de l'enregistrement
+  },
+    mutations: {
+         SET_LISTE_STOCK_DISTRICT(state, StateModule) {
+    state.stateStockDistricts = StateModule;
+    },
+    SET_EQUIPEMENT_PAR_TYPE_EQUIPEMENT(state, StateModule) {
+    state.StateEquipementParTypeProduit = StateModule;
+    },
+   SET_TYPE_EQUIPEMENT_STOCK_DISTRICT(state, StateModule) {
+    state.stateTypeEquipementStockDistricts = StateModule;
+    },
+ SET_ERROR(state, error) {
+    state.error = error;
+    },
+ AJOUTER_STOCK_DISTRICT (state, elementAjouter){
+    state.stateStockDistricts.unshift(elementAjouter)
+        },
+ 
+   MODIFIER_STOCK_DISTRICT (state, elementModif){
+    state.stateStockDistricts = state.stateStockDistricts.map(response => {
+
+        if (response.id == elementModif.id) {
+            response = { ...elementModif }
+        }
+        return response
+    })
+    },
+     SUPPRIMER_STOCK_DISTRICT(state, produitId) {
+    state.stateStockDistricts = state.stateStockDistricts.filter(produit => produit.id !== produitId);
+    },
+  },
+  
+    actions: {
+      async supprimerStockDistrict({ commit,dispatch }, id) {
+        // Show the confirmation dialog with SweetAlert2
+        Swal.fire({
+          title: "Êtes-vous sûr de",
+          text: " vouloir Supprimer cette ligne ?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OUI'
+        }).then((result) => {
+          if (result.isConfirmed) {
+        apiGuest.delete('/supprimerStockDistrict/' + id, { headers: authHeader() })
+           commit('SUPPRIMER_STOCK_DISTRICT', id)
+              dispatch('getTypeEquipementDansStockDistrict');
+                 dispatch('getListeStockDistrict');
+            
+             Swal.fire({
+                       position: "top-end",
+                       icon: "success",
+                       title: "Suppression réussie",
+                       showConfirmButton: false,
+                       timer: 1500
+                     });
+          }
+        });
+          },
+async modifierStockDistrict({ commit, dispatch }, nouveau) {
+  if (!nouveau.id) {
+    console.error("ID manquant pour la mise à jour.");
+    return;
+  }
+
+  try {
+    const response = await apiGuest.put(`/updateStockDistrict/${nouveau.id}`, nouveau, {
+      headers: authHeader(),
+    });
+
+    commit("MODIFIER_STOCK_DISTRICT", response.data);
+
+    // Mise à jour des listes après modification
+    await dispatch('getTypeEquipementDansStockDistrict');
+    await dispatch('getListeStockDistrict');
+
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Modification réussie",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la modification du stock :", error);
+
+    Swal.fire({
+      icon: "error",
+      title: "Erreur",
+      text: "Une erreur est survenue lors de la modification du stock.",
+      confirmButtonText: "OK",
+    });
+  }
+},
+
+      
+
+  async getListeStockDistrict({ commit }) {
+  // Activer le loader si besoin
+  // commit('SET_LOADING', true);
+
+  try {
+    const { data } = await apiGuest.get('/listeStockDistrict', {
+      headers: authHeader(),
+    });
+
+    commit('SET_LISTE_STOCK_DISTRICT', data);
+  } catch (error) {
+    console.error("Erreur lors du chargement des types d'équipement :", error);
+
+    // Optionnel : notifier l'utilisateur
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: 'Impossible de charger la liste stock district.',
+      confirmButtonText: 'OK',
+    });
+  } finally {
+    // Désactiver le loader si activé
+    // commit('SET_LOADING', false);
+  }
+},    
+      
+      
+async getTypeEquipementDansStockDistrict({ commit }) {
+  // Activer le loader si besoin
+  // commit('SET_LOADING', true);
+
+  try {
+    const { data } = await apiGuest.get('/listeTypeEquipementDansStockDistrict', {
+      headers: authHeader(),
+    });
+
+    commit('SET_TYPE_EQUIPEMENT_STOCK_DISTRICT', data);
+  } catch (error) {
+    console.error("Erreur lors du chargement des types d'équipement :", error);
+
+    // Optionnel : notifier l'utilisateur
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: 'Impossible de charger les types d\'équipement.',
+      confirmButtonText: 'OK',
+    });
+  } finally {
+    // Désactiver le loader si activé
+    // commit('SET_LOADING', false);
+  }
+},
+
+  async getEquipementParTypeProduit({ commit }, objet) {
+  
+      try {
+          const resultat = await apiGuest.get('/afficheEquipementParTypeEquipement/'+ objet.typeEquipement, { headers: authHeader() });
+          // Mettre à jour les données dans le store
+          commit('SET_EQUIPEMENT_PAR_TYPE_EQUIPEMENT', resultat.data);
+      } catch (error) {
+        
+      }
+      },
+   
+
+   async enregistrerStockDistrict({ commit,dispatch }, objet) {
+  const champsRequis = ['type_equipement_id', 'equipement_id','quantite', 'numerolot', 'date_expiration'];
+  const champsManquants = champsRequis.filter(champ => !objet[champ]);
+
+  if (champsManquants.length > 0) {
+    commit('SET_CHAMP_VIDE_TRUE');
+    Swal.fire({
+      icon: 'error',
+      title: 'Champs vides',
+      text: `Veuillez remplir tous les champs requis : ${champsManquants.join(', ')}`,
+      confirmButtonText: 'OK',
+    });
+    return;
+  }
+
+  try {
+    const response = await apiGuest.post('/enregistrementStockDistrict', objet, {
+      headers: authHeader(),
+    });
+
+    commit('AJOUTER_STOCK_DISTRICT', response.data);
+      dispatch('getTypeEquipementDansStockDistrict');
+        dispatch('getListeStockDistrict');
+      
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Enregistrement réussi',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (error) {
+    const messageErreur = error?.response?.data?.message || "Une erreur est survenue lors de l'enregistrement.";
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: messageErreur,
+      confirmButtonText: 'OK',
+    });
+
+    console.error("Erreur API :", error);
+    return;
+  }
+}
+
+
+  },
+  getters: {
+  
+   
+    getterEquipementParTypeProduit(state) {
+      return state.StateEquipementParTypeProduit.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
+      
+ getterTypeEquipementStockDistricts(state) {
+      return state.stateTypeEquipementStockDistricts.sort((a, b) => (a.libelle_type_equipement < b.libelle_type_equipement) ? -1 : 1)
+    },
+    
+  getterStockDistricts(state) {
+      return state.stateStockDistricts.sort((a, b) => (a.quantite < b.quantite) ? -1 : 1)
+    },
+ 
+ 
+  error(state) {
+    return state.error;
+  }
+  }
+};
+export default StockDistrict;

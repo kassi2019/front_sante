@@ -27,7 +27,13 @@ import stockAsc from "../page/GestionStock/stockAsc.vue"
 import priseEnCharge from "../page/priseEnCharge/priseEnCharge.vue"
 import listeBeneficiaireSoin from "../page/priseEnCharge/listeBeneficiaireSoin.vue"
 import pageQuestionnaire from "../page/priseEnCharge/pageQuestionnaire.vue"
+import stockDistrict from "../page/GestionStock/stockDistrict.vue"
 const gestionutilisateur = [
+   {
+    path: "/stockDistrict",
+    name: "stockDistrict",
+    component: stockDistrict,
+  },
    {
     path: "/pageQuestionnaire/:id",
     name: "pageQuestionnaire",

@@ -48,7 +48,7 @@
                     <div
                       v-else
                       class="full socile_icons fb margin_bottom_30"
-                      style="border-radius: 90% !important"
+                   style="border-radius: 90% !important; background-color: #ccc; opacity: 0.6; pointer-events: none; cursor: not-allowed;"
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                     >
@@ -96,7 +96,7 @@
                       <div
                         v-else
                         class="full socile_icons fb margin_bottom_30"
-                        style="border-radius: 90% !important"
+                         style="border-radius: 90% !important; background-color: #ccc; opacity: 0.6; pointer-events: none; cursor: not-allowed;"
                         data-bs-toggle="modal"
                         data-bs-target="#staticBackdrop"
                       >
@@ -144,7 +144,7 @@
                     <div
                       v-else
                       class="full socile_icons fb margin_bottom_30"
-                      style="border-radius: 90% !important"
+                       style="border-radius: 90% !important; background-color: #ccc; opacity: 0.6; pointer-events: none; cursor: not-allowed;"
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                     >
@@ -200,7 +200,7 @@
                     <div
                       v-else
                       class="full socile_icons fb margin_bottom_30"
-                      style="border-radius: 90% !important"
+                     style="border-radius: 90% !important; background-color: #ccc; opacity: 0.6; pointer-events: none; cursor: not-allowed;"
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                     >
@@ -245,7 +245,7 @@
                     <div
                       v-else
                       class="full socile_icons fb margin_bottom_30"
-                      style="border-radius: 90% !important"
+                      style="border-radius: 90% !important; background-color: #ccc; opacity: 0.6; pointer-events: none; cursor: not-allowed;"
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                     >
@@ -290,7 +290,7 @@
                     <div
                       v-else
                       class="full socile_icons fb margin_bottom_30"
-                      style="border-radius: 90% !important"
+                       style="border-radius: 90% !important; background-color: #ccc; opacity: 0.6; pointer-events: none; cursor: not-allowed;"
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                     >

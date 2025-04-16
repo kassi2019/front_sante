@@ -3,39 +3,36 @@
     <h4 style="text-align: center">Paramètres Généraux</h4>
     <ul class="list-unstyled components">
 
-      <li v-if="codeRole(idRole)==1">
-        <a href="" @click.prevent="affichePage('Role')"
-          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Rôle</span></a
-        >
-      </li>
-      <li v-if="codeRole(idRole)==1">
-        <a href="" @click.prevent="affichePage('Module')"
-          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Module</span></a
-        >
-      </li>
 
-      <li v-if="codeRole(idRole)==1">
-        <a href="" @click.prevent="affichePage('RoleModule')"
+      <li >
+        <a href="" @click.prevent="affichePage('typeEquipement')"
           ><i class="fa fa-hand-o-right"></i>
-          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Autorisation des Module</span></a
+          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Type Equipement </span></a
         >
       </li>
-      <li v-if="codeRole(idRole)==4">
+       <li >
+        <a href="" @click.prevent="affichePage('equipement')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Equipement</span></a
+        >
+      </li>
+     
+      <li>
         <a href="" @click.prevent="affichePage('utilisateur')"
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Utilisateur </span></a
         >
       </li>
-      <li v-if="codeRole(idRole)==4">
+      <li>
         <a href="" @click.prevent="affichePage('District')"
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">District</span></a
         >
       </li>
-      <li v-if="codeRole(idRole)==4">
+      <li>
         <a href="" @click.prevent="affichePage('aireSanitaire')"
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Aire Sanitaire</span></a
         >
       </li>
-      <li v-if="codeRole(idRole)==4">
+      <li>
         <a href="" @click.prevent="affichePage('zoneIntervention')"
           ><i class="fa fa-hand-o-right"></i>
           <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Zone d'Intervention</span></a
@@ -47,7 +44,7 @@
           ><i class="fa fa-hand-o-right"></i> <span>Médicaments</span></a
         >
       </li> -->
-      <li v-if="codeRole(idRole)==1">
+      <li>
         <a href="" @click.prevent="affichePage('vaccin')"
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Vaccin</span></a
         >
@@ -68,10 +65,26 @@
      
       
    
-       <li v-if="codeRole(idRole)==4">
+       <li>
         <a href="" @click.prevent="affichePage('ZoneUtilisateur')"
           ><i class="fa fa-hand-o-right"></i>
           <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Affectation des Zones</span></a
+        >
+      </li>
+            <li>
+        <a href="" @click.prevent="affichePage('Role')"
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Rôle</span></a
+        >
+      </li>
+      <li>
+        <a href="" @click.prevent="affichePage('Module')"
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Module</span></a
+        >
+      </li>
+       <li>
+        <a href="" @click.prevent="affichePage('RoleModule')"
+          ><i class="fa fa-hand-o-right"></i>
+          <span style="font-size: 16px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Autorisation des Module</span></a
         >
       </li>
       <li style="background-color: #007b9a">

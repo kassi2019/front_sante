@@ -2,24 +2,32 @@
   <div class="sidebar_blog_2">
     <h4 style="text-align: center">Médicament / Intrant</h4>
     <ul class="list-unstyled components">
-         <li v-if="codeRole(idRole)!=2">
-        <a href="" @click.prevent="affichePage('typeEquipement')"
-          ><i class="fa fa-hand-o-right"></i>
-          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Type Equipement ASC</span></a
+   <li v-if="codeRole(idRole)==4">
+        <a href="" @click.prevent="affichePage('stockDistrict')"
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Stock District</span></a
         >
       </li>
-       <li v-if="codeRole(idRole)!=2">
-        <a href="" @click.prevent="affichePage('equipement')"
-          ><i class="fa fa-hand-o-right"></i>
-          <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Equipement ASC</span></a
-        >
-      </li>
-      <li v-if="codeRole(idRole)!=2">
+      <li v-if="codeRole(idRole)==4">
         <a href="" @click.prevent="affichePage('AffectationEquipement')"
-          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Affectation des équipements</span></a
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Dotation superviseur</span></a
         >
       </li>
-       <li  >
+         <li v-if="codeRole(idRole)==4">
+        <a href="" @click.prevent="affichePage('AffectationEquipement')"
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Stock superviseur</span></a
+        >
+      </li>
+         <li v-if="codeRole(idRole)==3">
+        <a href="" @click.prevent="affichePage('AffectationEquipement')"
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Stock Superviseur</span></a
+        >
+      </li>
+      <li v-if="codeRole(idRole)==3">
+        <a href="" @click.prevent="affichePage('AffectationEquipement')"
+          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Dotation ASC</span></a
+        >
+      </li>
+       <li  v-if="codeRole(idRole)==3 || codeRole(idRole)==2">
         <a href="" @click.prevent="affichePage('stockAsc')"
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 17px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Stock ASC</span></a
         >
