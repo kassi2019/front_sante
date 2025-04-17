@@ -15,35 +15,45 @@
             </h6> -->
             <p class="mb-4"></p>
             <form action="#" method="post">
-              <div class="form-group first">
-                <label
-                  for="username"
-                  style="font-weight: bold !important"
-                  class="logo-text1"
+          
+                 <div class="mb-3">
+                <label for="inputWithIcon" class="form-label logo-text1"
                   >Matricule ou Téléphone</label
                 >
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Entrer le matricule ou téléphone"
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-user" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputWithIcon"
+                    placeholder="Entrer le matricule ou téléphone"
                   v-model="numero"
-                />
+                  
+                  />
+                </div>
               </div>
-              <div class="form-group last mb-3">
-                <label
-                  for="password"
-                  style="font-weight: bold !important"
-                  class="logo-text1"
+              <div class="mb-3">
+                <label for="inputWithIcon" class="form-label logo-text1"
                   >Mot de Passe</label
                 >
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Entrer le mot de passe"
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fa fa-unlock" aria-hidden="true"></i
+                  ></span>
+                  <input
+                    type="password"
+                    class="form-control"
+                   
+                     id="password"
+                     placeholder="Entrer le mot de passe"
                   v-model="password"
-                />
+                  
+                  />
+                </div>
               </div>
+        
 
               <div class="d-flex mb-5 align-items-center">
                 <!-- <label class="control control--checkbox mb-0"

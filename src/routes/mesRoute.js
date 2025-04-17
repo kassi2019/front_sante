@@ -28,7 +28,13 @@ import priseEnCharge from "../page/priseEnCharge/priseEnCharge.vue"
 import listeBeneficiaireSoin from "../page/priseEnCharge/listeBeneficiaireSoin.vue"
 import pageQuestionnaire from "../page/priseEnCharge/pageQuestionnaire.vue"
 import stockDistrict from "../page/GestionStock/stockDistrict.vue"
+import dotationSuperviseurParDistrict from "../page/GestionStock/dotationSuperviseurParDistrict.vue"
 const gestionutilisateur = [
+  {
+    path: "/dotationSuperviseurParDistrict",
+    name: "dotationSuperviseurParDistrict",
+    component: dotationSuperviseurParDistrict,
+  },
    {
     path: "/stockDistrict",
     name: "stockDistrict",
