@@ -37,7 +37,7 @@
                 v-if="codeRole(idRole) != 3"
               >
                 <i class="fa fa-plus"></i>
-                 APPROVISIONNER STOCK
+                APPROVISIONNER STOCK
               </button>
               <!-- <button
                 type="button"
@@ -91,7 +91,9 @@
                       style="color: #fff; background-color: #a67e2e"
                       colspan="9"
                     >
-                      <span class="badge badge-dark">Type équipement : </span>
+                      <span class="badge badge-dark"
+                        >Type équipement{{ getToday }} :
+                      </span>
                       {{ item.libelle_type_equipement }}
                     </td>
                   </tr>
@@ -114,7 +116,7 @@
                     <td
                       class="statut_non_demare text-center taille_enfant"
                       v-if="
-                        data.date_expiration == getToday && data.quantite != 0
+                        formatDate2(data.date_expiration) <= getToday && data.quantite != 0
                       "
                     >
                       Produit Expiré
@@ -128,12 +130,13 @@
                     <td
                       class="statut_encours text-center taille_enfant"
                       v-if="
-                        data.date_expiration != getToday && data.quantite != 0
+                        formatDate2(data.date_expiration) > getToday && data.quantite != 0
                       "
                     >
-                      Produits en Bon État
+                      Produits en Bon
+                      État
                     </td>
-                    <td class="button_block" v-if="codeRole(idRole) != 3">
+                    <td class="button_block">
                       <button
                         type="button"
                         class="btn cur-p btn-success"
@@ -396,8 +399,6 @@
         </div>
       </div>
 
-
-
       <!-- modal de modification -->
       <div
         class="modal fade"
@@ -624,7 +625,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { ModelListSelect } from "vue-search-select";
-import { formatDate } from "../variableGlobal";
+import { formatDate,formatDate2 } from "../variableGlobal";
 export default {
   components: {
     ModelListSelect,
@@ -668,7 +669,7 @@ export default {
 
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
-    // this.fetchToday()
+    this.fetchToday();
     this.gettypeequipements();
     this.getTypeEquipementDansStockDistrict();
     this.getListeStockDistrict();
@@ -906,7 +907,7 @@ export default {
       "modifierStockDistrict",
     ]),
     formatDate,
-
+    formatDate2,
     afficheEquipeParType($id) {
       return this.getterStockDistricts.filter(
         (data) => data.type_equipement_id == $id
@@ -925,7 +926,7 @@ export default {
         numerolot: this.objet.numerolot,
         quantite: this.objet.quantite,
         date_expiration: this.objet.date_expiration,
-        quantite_initial:this.objet.quantite
+        quantite_initial: this.objet.quantite,
       };
 
       const champsRemplis = Object.values(objet).every((value) => value !== "");
@@ -955,7 +956,7 @@ export default {
         quantite: this.ObjetModifier.quantite,
         numerolot: this.ObjetModifier.numerolot,
         date_expiration: this.ObjetModifier.date_expiration,
-        quantite_initial:this.ObjetModifier.quantite
+        quantite_initial: this.ObjetModifier.quantite,
       };
       this.modifierStockDistrict(ob);
       // $('#staticBackdrop').modal('hide');

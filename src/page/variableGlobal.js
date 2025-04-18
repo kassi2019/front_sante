@@ -6,3 +6,14 @@ export function formatDate(date) {
     year: 'numeric',
   }).format(new Date(date));
 }
+
+
+
+export function formatDate2(date) {
+  if (!date) return '';
+  return new Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(new Date(date));
+}
