@@ -13,7 +13,7 @@
               font-family: Georgia, 'Times New Roman', Times, serif;
             "
           >
-            Dotation des suerviseurs
+            Dotation des superviseurs
           </h2>
         </div>
       </div>
@@ -24,39 +24,32 @@
         <div class="white_shd full margin_bottom_30">
           <div
             class="full graph_head d-flex justify-content-end align-items-start"
-          >
-            <!-- <div
-              class="heading1 margin_0 d-flex justify-content-between align-items-center"
-            >
-           
-              <button
-                type="button"
-                class="btn btn-outline-primary ms-auto btn-rounded-shadow"
-                data-bs-toggle="modal"
-                data-bs-target="#staticBackdroprenouvel"
-              >
-                <i class="fa fa-plus"></i>
-                AJOUTER
-              </button>
-            </div> -->
-          </div>
+          ></div>
           <div class="table_section padding_infor_info">
             <div class="table-responsive-sm">
               <table class="table">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <!-- <th>Code</th> -->
-
+                       <th>#</th>
+                    <th>Code</th>
+                    <th style="text-align: center">Numéro du lot</th>
                     <th colspan="" style="text-align: center">
                       Médicament / Intrant
                     </th>
+                    <th colspan="" style="text-align: center">
+                      Unite comptage
+                    </th>
                     <th colspan="" style="text-align: center">Quantité</th>
-                    <th colspan="" style="text-align: center">N° du lot</th>
                     <th colspan="" style="text-align: center">
                       Date d'expiration
                     </th>
-                    <th style="width: 13% !important; text-align: center">
+                    <th style="width: 9% !important; text-align: center">
+                      Statut
+                    </th>
+                    <th
+                      style="width: 9% !important; text-align: center"
+                      
+                    >
                       Action
                     </th>
                   </tr>
@@ -67,7 +60,7 @@
                 >
                   <tr>
                     <td
-                      colspan="5"
+                      colspan="8"
                       style="color: #fff; background-color: #a67e2e"
                     >
                       <span class="badge badge-dark" style="font-size: 14px"
@@ -80,44 +73,74 @@
                     <td class="button_block">
                       <button
                         type="button"
-                        class="btn cur-p btn-success"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
-                        @click.prevent="FaireAffectation(item.id_ustilisateur)"
-                      >
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        Affectation
-                      </button>
-                      <button
-                        type="button"
                         class="btn cur-p btn-warning"
                         style="color: #fff"
-                        
                         @click.prevent="afficherClique(item.id_ustilisateur)"
                       >
                         <i class="fa fa-eye"></i> Détail
                       </button>
                     </td>
                   </tr>
-                  <template  v-for="(data, index) in afficheEquipeParType(
+                  <template
+                    v-for="(data1, index) in afficheEquipeParType(
                       item.id_ustilisateur
                     )"
-                    :key="data.id">
-                      <tr
-                   v-if="item.id_ustilisateur==value"
+                    :key="data1.type_equipement_id"
                   >
-                    <td>{{ index + 1 }}</td>
-                    <td>
-                      {{ data.libelle }}
+                    <tr v-if="item.id_ustilisateur == value">
+                      <td>{{ index + 1 }}</td>
+                      <td colspan="8">
+                        <span class="badge badge-dark">Type équipement: </span>
+                        {{ data1.libelle_type_equipement }}
+                      </td>
+                    </tr>
+                    <template
+                      v-for="(data, index) in afficheEquipeSuperviseur(
+                        item.id_ustilisateur,
+                        data1.type_equipement_id
+                      )"
+                      :key="data.id"
+                    >
+                      <tr v-if="item.id_ustilisateur == value">
+                        <td>{{ index + 1 }}</td>
+                         <td class="text-center">
+                          {{ data.code }}
+                        </td>
+                          <td class="text-center">{{ data.numerolot }}</td>
+                        <td>
+                          {{ data.libelle }}
+                        </td>
+  <td class="text-center">{{ data.unite_comptage }}</td>
+                        <td class="text-center">{{ data.quantite }}</td>
+                      
+                        <td class="text-center">
+                          {{ formatDate(data.date_expiration) }}
+                        </td>
+                          <td
+                      class="statut_non_demare text-center taille_enfant"
+                      v-if="
+                        formatDate2(data.date_expiration) <= getToday && data.quantite != 0
+                      "
+                    >
+                      Produit Expiré
                     </td>
-
-                    <td class="text-center">{{ data.quantite }}</td>
-                    <td class="text-center">{{ data.numerolot }}</td>
-                    <td class="text-center">
-                      {{ formatDate(data.date_expiration) }}
+                    <td
+                      class="statut_non_demare text-center taille_enfant"
+                      v-if="data.quantite == 0"
+                    >
+                      Stock Épuisé
                     </td>
-
-                    <td class="button_block">
+                    <td
+                      class="statut_encours text-center taille_enfant"
+                      v-if="
+                        formatDate2(data.date_expiration) > getToday && data.quantite != 0
+                      "
+                    >
+                      Produits en Bon
+                      État
+                    </td>
+                      
+                        <!-- <td class="button_block">
                       <button
                         type="button"
                         class="btn cur-p btn-success"
@@ -135,10 +158,10 @@
                       >
                         <i class="fa fa-trash"></i>
                       </button>
-                    </td>
-                  </tr>
+                    </td> -->
+                      </tr>
+                    </template>
                   </template>
-                
                 </tbody>
               </table>
               <div class="pagination">
@@ -194,7 +217,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Enregistrer stock Superviseur{{ ObjetModifier }}----{{ val }}
+                Enregistrer stock Superviseur
               </h5>
               <button
                 type="button"
@@ -454,10 +477,7 @@
         </div>
       </div>
 
-
-
-
-         <div
+      <div
         class="modal fade"
         id="staticBackdropModification"
         data-bs-backdrop="static"
@@ -561,7 +581,11 @@
                       type="text"
                       class="form-control"
                       id="inputWithIcon"
-                      :value="AfficheCodeEquipementMod(ObjetModifierstockSup.equipement_id)"
+                      :value="
+                        AfficheCodeEquipementMod(
+                          ObjetModifierstockSup.equipement_id
+                        )
+                      "
                       disabled
                     />
                   </div>
@@ -578,7 +602,11 @@
                       type="text"
                       class="form-control"
                       id="inputWithIcon"
-                      :value="AfficheuniteComptageEquipementmod(ObjetModifierstockSup.equipement_id)"
+                      :value="
+                        AfficheuniteComptageEquipementmod(
+                          ObjetModifierstockSup.equipement_id
+                        )
+                      "
                       disabled
                     />
                   </div>
@@ -628,7 +656,11 @@
                       type="date"
                       class="form-control"
                       id="inputWithIcon"
-                      :value="AfficheDateExpirationEquipementMod(ObjetModifierstockSup.numerolot)"
+                      :value="
+                        AfficheDateExpirationEquipementMod(
+                          ObjetModifierstockSup.numerolot
+                        )
+                      "
                       disabled
                     />
                   </div>
@@ -636,7 +668,6 @@
               </div>
 
               <div class="mb-3 row">
-               
                 <div class="col-md-4">
                   <label for="inputWithIcon" class="form-label"
                     >Quantité Actuelle
@@ -646,9 +677,8 @@
                         font-weight: 900 !important;
                         font-size: 15px;
                       "
-                      ></span
-                    ></label
-                  >
+                    ></span
+                  ></label>
                   <div class="input-group">
                     <span class="input-group-text"
                       ><i class="fa fa-book" aria-hidden="true"></i
@@ -663,7 +693,7 @@
                     />
                   </div>
                 </div>
-              <div class="col-md-4">
+                <div class="col-md-4">
                   <label for="inputWithIcon" class="form-label"
                     >Quantité a retiré
                     <span
@@ -672,9 +702,8 @@
                         font-weight: 900 !important;
                         font-size: 15px;
                       "
-                      ></span
-                    ></label
-                  >
+                    ></span
+                  ></label>
                   <div class="input-group">
                     <span class="input-group-text"
                       ><i class="fa fa-book" aria-hidden="true"></i
@@ -697,9 +726,8 @@
                         font-weight: 900 !important;
                         font-size: 15px;
                       "
-                      ></span
-                    ></label
-                  >
+                    ></span
+                  ></label>
                   <div class="input-group">
                     <span class="input-group-text"
                       ><i class="fa fa-book" aria-hidden="true"></i
@@ -709,7 +737,7 @@
                       class="form-control"
                       id="inputWithIcon"
                       placeholder="Entrez quantite"
-                    :value="calculeQuantite"
+                      :value="calculeQuantite"
                     />
                   </div>
                 </div>
@@ -746,7 +774,7 @@
 import { mapActions, mapGetters } from "vuex";
 import { ModelListSelect } from "vue-search-select";
 import Swal from "sweetalert2";
-import { formatDate } from "../variableGlobal";
+import { formatDate,formatDate2 } from "../variableGlobal";
 export default {
   components: {
     ModelListSelect,
@@ -754,7 +782,7 @@ export default {
   data() {
     return {
       value: 0,
-      val:0,
+      val: 0,
       isLoading: false, // Définir isLoading ici
       responsable_id: "",
       utilisateur_id: "",
@@ -762,10 +790,8 @@ export default {
       numero_lot_id: 0,
       equipement_id: "",
       quantite: 0,
-       quantiteretire:0,
-      ObjetModifierstockSup: {
-       
-      },
+      quantiteretire: 0,
+      ObjetModifierstockSup: {},
       objetrenoule: {
         equipement_id: "",
         type_equipement_id: 0,
@@ -796,10 +822,11 @@ export default {
 
   // Hook created pour charger l'utilisateur quand le composant est créé
   created() {
+       this.fetchToday();
     this.getSuperviseurParDistrict();
-    this.getTypeEquipementDansStockDistrict();
+    this.getTypeEquipementSuperviseur();
     this.getListeEquipementSuperviseur();
-    this.getListeStockDistrict()
+
     // this.gettypeequipements();
     // this.getAgentAffecte();
     // this.getEquipementAffecte();
@@ -811,7 +838,8 @@ export default {
     // Accès aux getters Vuex pour obtenir la valeur du compteur et de l'utilisateur
     ...mapGetters([
       "getterEquipement",
-      "loading","getterStockDistricts",
+      "loading",
+      "getterStockDistricts",
       "getterTypeEquipementStockDistricts",
       "getterGpeTypeEquipement",
       "getterAgentParSuperviseurs",
@@ -820,23 +848,29 @@ export default {
       "getteraffectationEquipements",
       "getterEquipementDistrictParType",
       "getterListeEquipementSuperviseur",
+      "getterTypeEquipementParSUp",  "getToday",
     ]),
-      
-     calculeQuantite() {
-     
-        return (
-          parseFloat(this.ObjetModifierstockSup.quantite) -
-          parseFloat(this.quantiteretire)
-        );
-      
-    },                 
-      calculeQuantiteDispoModifier() {
-      if (this.AfficheQuantiteActuelleMod(this.ObjetModifierstockSup.numero_lot_id) == "") {
+
+    calculeQuantite() {
+      return (
+        parseFloat(this.ObjetModifierstockSup.quantite) -
+        parseFloat(this.quantiteretire)
+      );
+    },
+    calculeQuantiteDispoModifier() {
+      if (
+        this.AfficheQuantiteActuelleMod(
+          this.ObjetModifierstockSup.numero_lot_id
+        ) == ""
+      ) {
         return 0;
       } else {
         return (
-          parseFloat(this.AfficheQuantiteActuelleMod(this.ObjetModifierstockSup.numero_lot_id)) -
-          parseFloat(this.ObjetModifierstockSup.quantite)
+          parseFloat(
+            this.AfficheQuantiteActuelleMod(
+              this.ObjetModifierstockSup.numero_lot_id
+            )
+          ) - parseFloat(this.ObjetModifierstockSup.quantite)
         );
       }
     },
@@ -913,7 +947,7 @@ export default {
       // Trie les résultats par 'groupe' (anciennement 'libelle')
       return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
     },
-     afficherEquipementParTypeModifier() {
+    afficherEquipementParTypeModifier() {
       let collet = [];
 
       this.GroupeEquipementDistrictModifier.filter((item) => {
@@ -930,7 +964,7 @@ export default {
       // Trie les résultats par 'groupe' (anciennement 'libelle')
       return collet.sort((a, b) => (a.groupe > b.groupe ? 1 : -1));
     },
-     AfficheLibelleEquipementmodifier() {
+    AfficheLibelleEquipementmodifier() {
       return ($id) => {
         if ($id != null && $id != "") {
           const qtereel = this.getterStockDistricts.find(
@@ -944,7 +978,7 @@ export default {
         }
       };
     },
-     GroupeEquipementDistrictModifier() {
+    GroupeEquipementDistrictModifier() {
       let objet = this.getterStockDistricts;
 
       let array_exercie = [];
@@ -980,8 +1014,8 @@ export default {
       return [];
       // };
     },
-    
-     AfficheCodeEquipementMod() {
+
+    AfficheCodeEquipementMod() {
       return ($id) => {
         if ($id != null && $id != "") {
           const qtereel = this.getterStockDistricts.find(
@@ -995,7 +1029,7 @@ export default {
         }
       };
     },
-     AfficheuniteComptageEquipementmod() {
+    AfficheuniteComptageEquipementmod() {
       return ($id) => {
         if ($id != null && $id != "") {
           const qtereel = this.getterStockDistricts.find(
@@ -1023,7 +1057,7 @@ export default {
         }
       };
     },
-      AfficheDateExpirationEquipementMod() {
+    AfficheDateExpirationEquipementMod() {
       return ($id) => {
         if ($id != null && $id != "") {
           const qtereel = this.getterStockDistricts.find(
@@ -1147,7 +1181,6 @@ export default {
       );
     },
 
-   
     AfficheQuantiteDisponible() {
       return ($id) => {
         if ($id != null && $id != "") {
@@ -1257,92 +1290,98 @@ export default {
       "getSuperviseurParDistrict",
       "getTypeEquipementDansStockDistrict",
       "getListeEquipementSuperviseur",
-      "getEquipementDuDistrictParType","getListeStockDistrict",'supprimerStockSuperviseur'
+      "getTypeEquipementSuperviseur",
+      "getEquipementDuDistrictParType",
+      "getListeStockDistrict",
+      "supprimerStockSuperviseur","fetchToday"
     ]),
 
     afficherClique($id) {
-      if (this.value==0) {
-        return this.value=$id
+      if (this.value == 0) {
+        return (this.value = $id);
       } else {
-        return this.value=0;
+        return (this.value = 0);
       }
-},
-
- 
+    },
 
     formatDate,
+    formatDate2,
     async enregistreStockEquipement() {
-      if (this.val == 2) {
+      if (this.valeur == 2) {
         const objet = {
-        type_equipement_id: this.type_equipement_id,
-        equipement_id: this.equipement_id,
-        numerolot: this.numero_lot_id,
-        quantite: this.quantite,
-        date_expiration: this.AfficheDateExpirationEquipement(
-          this.numero_lot_id
-        ),
-        superviseur_id: this.ObjetModifier.id_ustilisateur,
-        valeur:this.val
-      };
+          type_equipement_id: this.type_equipement_id,
+          equipement_id: this.equipement_id,
+          numerolot: this.numero_lot_id,
+          quantite: this.quantite,
+          date_expiration: this.AfficheDateExpirationEquipement(
+            this.numero_lot_id
+          ),
+          superviseur_id: this.ObjetModifier.id_ustilisateur,
+          valeur: this.val,
+        };
 
-      const champsRemplis = Object.values(objet).every((value) => value != "");
+        const champsRemplis = Object.values(objet).every(
+          (value) => value != ""
+        );
 
-      if (!champsRemplis) {
-        // Affiche une alerte ou laisse la méthode appelée gérer les erreurs
-        await this.enregistrerStockSuperviseur(objet);
-        this.type_equipement_id != "";
-        this.equipement_id != "";
-        this.numerolot != "";
-        this.quantite != "";
-        this.date_expiration != "";
+        if (!champsRemplis) {
+          // Affiche une alerte ou laisse la méthode appelée gérer les erreurs
+          await this.enregistrerStockSuperviseur(objet);
+          this.type_equipement_id != "";
+          this.equipement_id != "";
+          this.numerolot != "";
+          this.quantite != "";
+          this.date_expiration != "";
         }
-      await this.enregistrerStockSuperviseur(objet);
+        await this.enregistrerStockSuperviseur(objet);
 
-      // Réinitialise les champs uniquement après tentative d'enregistrement avec des données valides
-      this.type_equipement_id = "";
-      this.equipement_id = "";
-      this.numerolot = "";
-      this.quantite = "";
-      this.date_expiration = "";
+        // Réinitialise les champs uniquement après tentative d'enregistrement avec des données valides
+        this.type_equipement_id = "";
+        this.equipement_id = "";
+        this.numerolot = "";
+        this.quantite = "";
+        this.date_expiration = "";
       } else {
         const objet = {
-        type_equipement_id: this.ObjetModifierstockSup.type_equipement_id,
-        equipement_id: this.ObjetModifierstockSup.equipement_id,
-        numerolot: this.ObjetModifierstockSup.numerolot,
-        quantite: this.quantiteretire,
-        date_expiration: this.AfficheDateExpirationEquipementMod(
-          this.ObjetModifierstockSup.numerolot
-        ),
-        superviseur_id: this.ObjetModifierstockSup.id_ustilisateur,
-        valeur:this.val
-      };
+          type_equipement_id: this.ObjetModifierstockSup.type_equipement_id,
+          equipement_id: this.ObjetModifierstockSup.equipement_id,
+          numerolot: this.ObjetModifierstockSup.numerolot,
+          quantite: this.quantiteretire,
+          date_expiration: this.AfficheDateExpirationEquipementMod(
+            this.ObjetModifierstockSup.numerolot
+          ),
+          superviseur_id: this.ObjetModifierstockSup.id_ustilisateur,
+          valeur: this.val,
+        };
 
-      const champsRemplis = Object.values(objet).every((value) => value != "");
+        const champsRemplis = Object.values(objet).every(
+          (value) => value != ""
+        );
 
-      if (!champsRemplis) {
-        // Affiche une alerte ou laisse la méthode appelée gérer les erreurs
-        await this.enregistrerStockSuperviseur(objet);
-        this.ObjetModifierstockSup.type_equipement_id != "";
-        this.ObjetModifierstockSup.equipement_id != "";
-        this.ObjetModifierstockSup.numerolot != "";
-        this.ObjetModifierstockSup.quantite != "";
-       
+        if (!champsRemplis) {
+          // Affiche une alerte ou laisse la méthode appelée gérer les erreurs
+          await this.enregistrerStockSuperviseur(objet);
+          this.ObjetModifierstockSup.type_equipement_id != "";
+          this.ObjetModifierstockSup.equipement_id != "";
+          this.ObjetModifierstockSup.numerolot != "";
+          this.ObjetModifierstockSup.quantite != "";
         }
-      await this.enregistrerStockSuperviseur(objet);
+        await this.enregistrerStockSuperviseur(objet);
 
-      // Réinitialise les champs uniquement après tentative d'enregistrement avec des données valides
-      this.ObjetModifierstockSup.type_equipement_id = "";
-      this.ObjetModifierstockSup.equipement_id = "";
-      this.ObjetModifierstockSup.numerolot = "";
-      this.ObjetModifierstockSup.quantite = "";
-      
+        // Réinitialise les champs uniquement après tentative d'enregistrement avec des données valides
+        this.ObjetModifierstockSup.type_equipement_id = "";
+        this.ObjetModifierstockSup.equipement_id = "";
+        this.ObjetModifierstockSup.numerolot = "";
+        this.ObjetModifierstockSup.quantite = "";
       }
-      
-
-      
+    },
+    afficheEquipeSuperviseur($id, $id2) {
+      return this.getterListeEquipementSuperviseur.filter(
+        (data) => data.superviseur_id == $id && data.type_equipement_id == $id2
+      );
     },
     afficheEquipeParType($id) {
-      return this.getterListeEquipementSuperviseur.filter(
+      return this.getterTypeEquipementParSUp.filter(
         (data) => data.superviseur_id == $id
       );
     },
@@ -1399,27 +1438,24 @@ export default {
     },
     async FaireAffectation(id) {
       this.ObjetModifier = this.getterSuperviseurParDistrict.find(
-        (items) => items.id_ustilisateur== id
+        (items) => items.id == id
       );
-      return this.val = 2
+      return (this.val = 2);
     },
 
     async AfficheModalModification(id) {
-  
       this.ObjetModifierstockSup = this.getterListeEquipementSuperviseur.find(
         (items) => items.id == id
-   );
-      return this.val = 1
+      );
+      return (this.val = 1);
     },
-
 
     async AfficheModalAjoute(id) {
       this.ObjetAjoute = this.getterSuperviseurParDistrict.find(
         (items) => items.agent_id == id
       );
-       return this.val = 2
+      return (this.val = 2);
     },
-    
   },
   watch: {
     type_equipement_id: function (value) {
@@ -1490,5 +1526,24 @@ th {
   font-size: 16px;
   background-color: #007b9a;
   color: aliceblue;
+}
+.statut_encours {
+  background-color: orange;
+  color: #000;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.statut_terminer {
+  background-color: green;
+  color: #000;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.statut_non_demare {
+  background-color: red;
+  color: #000;
+  font-weight: bold;
 }
 </style>

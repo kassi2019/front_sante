@@ -75,7 +75,7 @@
                     </th>
                     <th
                       style="width: 9% !important; text-align: center"
-                      v-if="codeRole(idRole) != 3"
+                      
                     >
                       Action
                     </th>
@@ -92,7 +92,7 @@
                       colspan="9"
                     >
                       <span class="badge badge-dark"
-                        >Type équipement{{ getToday }} :
+                        >Type équipement:
                       </span>
                       {{ item.libelle_type_equipement }}
                     </td>

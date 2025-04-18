@@ -7,7 +7,8 @@ import authHeader from '../../services/auth-header';
 const StockDistrict ={
   state: {
      stateListeEquipementSuperviseur:[],
- stateListeStockSuperviseur:[],
+    stateListeStockSuperviseur: [],
+ stateTypeEquipementParSUp:[],
     StateEquipementParTypeProduit: [] ,
         stateStockDistricts: [],
     stateTypeEquipementStockDistricts: [],
@@ -17,6 +18,12 @@ const StockDistrict ={
   },
 
   mutations: {
+          SET_TYPE_EQUIPEMENT_SUPERVISEUR(state, StateModule) {
+    state.stateTypeEquipementParSUp = StateModule;
+    },
+   SUPPRIMER_STOCK_SUPERVISEUR(state, produitId) {
+    state.stateListeStockSuperviseur = state.stateListeStockSuperviseur.filter(produit => produit.id !== produitId);
+    },
          SET_LISTE_EQUIPEMENT_SUPERVISEUR(state, StateModule) {
     state.stateListeEquipementSuperviseur = StateModule;
     },
@@ -61,7 +68,27 @@ const StockDistrict ={
   
   actions: {
       
+async getTypeEquipementSuperviseur({ commit }) {
 
+  try {
+    const { data } = await apiGuest.get('/listeTypeEquipementStockSuperviseur', {
+      headers: authHeader(),
+    });
+
+    commit('SET_TYPE_EQUIPEMENT_SUPERVISEUR', data);
+  } catch (error) {
+    console.error("Erreur lors du chargement liste des equipement des superviseur :", error);
+
+    // Optionnel : notifier l'utilisateur
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: 'Impossible de charger la liste des equipement des superviseur.',
+      confirmButtonText: 'OK',
+    });
+  } finally {
+  }
+}, 
 
 
    
@@ -371,10 +398,42 @@ async getTypeEquipementDansStockDistrict({ commit }) {
     console.error("Erreur API :", error);
     return;
   }
-},
+    },
+    
+
+    async supprimerStockSuperviseur({ commit,dispatch }, id) {
+        // Show the confirmation dialog with SweetAlert2
+        Swal.fire({
+          title: "Êtes-vous sûr de",
+          text: " vouloir Supprimer cette ligne ?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OUI'
+        }).then((result) => {
+          if (result.isConfirmed) {
+        apiGuest.delete('/supprimerEquipementSup/' + id, { headers: authHeader() })
+           commit('SUPPRIMER_STOCK_SUPERVISEUR', id)
+            dispatch('getSuperviseurParDistrict');
+        dispatch('getListeEquipementSuperviseur');
+            dispatch('getListeEquipementSuperviseur');
+             Swal.fire({
+                       position: "top-end",
+                       icon: "success",
+                       title: "Suppression réussie",
+                       showConfirmButton: false,
+                       timer: 1500
+                     });
+          }
+        });
+    },
   },
   getters: {
-  
+    
+           getterTypeEquipementParSUp(state) {
+      return state.stateTypeEquipementParSUp.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
          getterListeEquipementSuperviseur(state) {
       return state.stateListeEquipementSuperviseur.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },

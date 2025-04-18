@@ -12,16 +12,12 @@
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Dotation superviseur</span></a
         >
       </li>
-         <li v-if="codeRole(idRole)==4">
-        <a href="" @click.prevent="affichePage('AffectationEquipement')"
+         <li v-if="codeRole(idRole)==4 || codeRole(idRole)==3">
+        <a href="" @click.prevent="affichePage('stockSuperviseur')"
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Stock superviseur</span></a
         >
       </li>
-         <li v-if="codeRole(idRole)==3">
-        <a href="" @click.prevent="affichePage('AffectationEquipement')"
-          ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Stock Superviseur</span></a
-        >
-      </li>
+       
       <li v-if="codeRole(idRole)==3">
         <a href="" @click.prevent="affichePage('AffectationEquipement')"
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Dotation ASC</span></a

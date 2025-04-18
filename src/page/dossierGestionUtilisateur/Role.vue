@@ -19,7 +19,7 @@
             <div
               class="heading1 margin_0 d-flex justify-content-between align-items-center"
             >
-              <button
+              <!-- <button
                 type="button"
                 class="btn btn-outline-primary ms-auto btn-rounded-shadow"
                 data-bs-toggle="modal"
@@ -27,7 +27,7 @@
               >
                 <i class="fa fa-plus"></i>
                 AJOUTER
-              </button>
+              </button> -->
               <!-- Aligner le bouton à droite et ouvrir le modal -->
             </div>
           </div>
@@ -42,7 +42,7 @@
                     <!-- <th>Code</th> -->
                     <th>Libelle</th>
 
-                    <th style="width: 9% !important; text-align: center">
+                    <th style="width: 4% !important; text-align: center">
                       Action
                     </th>
                   </tr>
@@ -64,13 +64,13 @@
                       >
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       </button>
-                      <button
+                      <!-- <button
                         type="button"
                         class="btn cur-p btn-danger"
                         @click.prevent="supprimerRole(data.id)"
                       >
                         <i class="fa fa-trash"></i>
-                      </button>
+                      </button> -->
                     </td>
                   </tr>
                 </tbody>

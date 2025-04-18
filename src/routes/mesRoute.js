@@ -29,7 +29,13 @@ import listeBeneficiaireSoin from "../page/priseEnCharge/listeBeneficiaireSoin.v
 import pageQuestionnaire from "../page/priseEnCharge/pageQuestionnaire.vue"
 import stockDistrict from "../page/GestionStock/stockDistrict.vue"
 import dotationSuperviseurParDistrict from "../page/GestionStock/dotationSuperviseurParDistrict.vue"
+import stockSuperviseur from "../page/GestionStock/stockSuperviseur.vue"
 const gestionutilisateur = [
+   {
+    path: "/stockSuperviseur",
+    name: "stockSuperviseur",
+    component: stockSuperviseur,
+  },
   {
     path: "/dotationSuperviseurParDistrict",
     name: "dotationSuperviseurParDistrict",
