@@ -324,8 +324,9 @@ async getTypeEquipementDansStockDistrict({ commit }) {
      
      
      
-        async enregistrerStockSuperviseur({ commit,dispatch }, objet) {
-  const champsRequis = ['type_equipement_id', 'equipement_id','quantite', 'numerolot'];
+    async enregistrerStockSuperviseur({ commit, dispatch }, objet) {
+      if (objet.valeur == 2) {
+              const champsRequis = ['type_equipement_id', 'equipement_id','quantite', 'numerolot'];
   const champsManquants = champsRequis.filter(champ => !objet[champ]);
 
   if (champsManquants.length > 0) {
@@ -338,6 +339,8 @@ async getTypeEquipementDansStockDistrict({ commit }) {
     });
     return;
   }
+          }
+
 
   try {
     const response = await apiGuest.post('/enregistrementStockSuperviseur', objet, {
@@ -345,8 +348,8 @@ async getTypeEquipementDansStockDistrict({ commit }) {
     });
 
     commit('AJOUTER_STOCK_SUPERVISEUR', response.data);
-      dispatch('getTypeEquipementDansStockDistrict');
-        dispatch('getListeStockDistrict');
+      dispatch('getSuperviseurParDistrict');
+        dispatch('getListeEquipementSuperviseur');
       
     Swal.fire({
       position: 'top-end',
