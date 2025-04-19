@@ -6,7 +6,8 @@ import authHeader from '../../services/auth-header';
 
 const StockDistrict ={
   state: {
-     stateListeEquipementSuperviseur:[],
+    stateListeEquipementSuperviseur: [],
+       stateListeEquipementAsc:[],
     stateListeStockSuperviseur: [],
  stateTypeEquipementParSUp:[],
     StateEquipementParTypeProduit: [] ,
@@ -18,6 +19,9 @@ const StockDistrict ={
   },
 
   mutations: {
+           SET_LISTE_EQUIPEMENT_ASC(state, StateModule) {
+    state.stateListeEquipementAsc = StateModule;
+    },
           SET_TYPE_EQUIPEMENT_SUPERVISEUR(state, StateModule) {
     state.stateTypeEquipementParSUp = StateModule;
     },
@@ -91,7 +95,27 @@ async getTypeEquipementSuperviseur({ commit }) {
 }, 
 
 
-   
+   async getlisteEquipementDesAsc({ commit }) {
+
+  try {
+    const { data } = await apiGuest.get('/listeEquipementDesAsc', {
+      headers: authHeader(),
+    });
+
+    commit('SET_LISTE_EQUIPEMENT_ASC', data);
+  } catch (error) {
+    console.error("Erreur lors du chargement liste des equipement des superviseur :", error);
+
+    // Optionnel : notifier l'utilisateur
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: 'Impossible de charger la liste des equipement des superviseur.',
+      confirmButtonText: 'OK',
+    });
+  } finally {
+  }
+},   
 async getListeEquipementSuperviseur({ commit }) {
 
   try {
@@ -431,6 +455,9 @@ async getTypeEquipementDansStockDistrict({ commit }) {
   },
   getters: {
     
+     getterListeEquipementAsc(state) {
+      return state.stateListeEquipementAsc.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
+    },
            getterTypeEquipementParSUp(state) {
       return state.stateTypeEquipementParSUp.sort((a, b) => (a.libelle < b.libelle) ? -1 : 1)
     },

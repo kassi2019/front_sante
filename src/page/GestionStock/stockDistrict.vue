@@ -88,7 +88,7 @@
                 >
                   <tr>
                     <td
-                      style="color: #fff; background-color: #a67e2e"
+                      style="color: #fff; background-color: #5BC0EB"
                       colspan="9"
                     >
                       <span class="badge badge-dark"

@@ -19,7 +19,7 @@
       </li>
        
       <li v-if="codeRole(idRole)==3">
-        <a href="" @click.prevent="affichePage('AffectationEquipement')"
+        <a href="" @click.prevent="affichePage('DotationAscParSuperviseur')"
           ><i class="fa fa-hand-o-right"></i> <span style="font-size: 15px !important;font-weight: bolder;font-family:Georgia, 'Times New Roman', Times, serif;">Dotation ASC</span></a
         >
       </li>

@@ -13,7 +13,7 @@
               font-family: Georgia, 'Times New Roman', Times, serif;
             "
           >
-            Dotation des suerviseurs
+            Dotation des superviseurs
           </h2>
         </div>
       </div>
@@ -56,7 +56,7 @@
                     <th colspan="" style="text-align: center">
                       Date d'expiration
                     </th>
-                    <th style="width: 13% !important; text-align: center">
+                    <th style="width: 15% !important; text-align: center">
                       Action
                     </th>
                   </tr>
@@ -68,7 +68,7 @@
                   <tr>
                     <td
                       colspan="5"
-                      style="color: #fff; background-color: #a67e2e"
+                      style="color: #fff; background-color: #5BC0EB"
                     >
                       <span class="badge badge-dark" style="font-size: 14px"
                         >Superviseur :
@@ -194,7 +194,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Enregistrer stock Superviseur{{ ObjetModifier }}----{{ val }}
+                Enregistrer stock Superviseur
               </h5>
               <button
                 type="button"

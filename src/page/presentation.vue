@@ -565,7 +565,15 @@ export default {
     afficheStock() {
       if (this.roleUtilisateur == 9) {
         this.$router.push({
-          name: 'TableauBord',
+          name: 'stockSuperviseur',
+        });
+      } else if (this.roleUtilisateur == 10) {
+        this.$router.push({
+          name: 'stockDistrict',
+        });
+      }else if (this.roleUtilisateur == 7) {
+        this.$router.push({
+          name: 'Accueil',
         });
       }
 else{

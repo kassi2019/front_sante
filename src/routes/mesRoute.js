@@ -21,7 +21,7 @@ import zoneIntervention from "../page/dossierParametrage/zoneIntervention1.vue"
 import equipement from "../page/GestionStock/equipement.vue"
 import typeEquipement from "../page/GestionStock/typeEquipement.vue"
 // import inventaireEquipement from "../page/GestionStock/inventaireEquipement.vue"
-import AffectationEquipement from "../page/GestionStock/AffectationEquipement.vue"
+import DotationAscParSuperviseur from "../page/GestionStock/DotationAscParSuperviseur.vue"
 import stockAsc from "../page/GestionStock/stockAsc.vue"
 // import accueil from "../page/accueil.vue"
 import priseEnCharge from "../page/priseEnCharge/priseEnCharge.vue"
@@ -69,9 +69,9 @@ const gestionutilisateur = [
      
      },
   {
-        path: '/AffectationEquipement',
-        name:"AffectationEquipement",
-      component: AffectationEquipement,
+        path: '/DotationAscParSuperviseur',
+        name:"DotationAscParSuperviseur",
+      component: DotationAscParSuperviseur,
      
      },
   //  {
