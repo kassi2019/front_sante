@@ -67,7 +67,7 @@
                 
                
                 <tbody v-for="item in getterAscConnecter" :key="item.agent_id">
-                  <tr style="background-color: #a67e2e">
+                  <tr style="background-color: #5BC0EB">
                     <td style="color: #000; font-weight: bolder" colspan="9">
                       <span style="font-size: 20px">ASC   : {{
                         item.nom_prenoms_asc
@@ -85,17 +85,17 @@
                       >{{ data.libelle_equipement }}
                     </td>
 
-                    <td class="text-center">{{ data.quantite_affecte }}</td>
+                    <td class="text-center">{{ data.quantite }}</td>
                     <td class="text-center">{{ data.quantite_utilise }}</td>
-                    <td class="text-center">{{ calculMedicamentDisponible(data.quantite_affecte,data.quantite_utilise)}}</td>
+                    <td class="text-center">{{ calculMedicamentDisponible(data.quantite,data.quantite_utilise)}}</td>
                     <td class="text-center">{{ data.numerolot }}</td>
-                    <td class="text-center">{{ data.date_expiration }}</td>
+                    <td class="text-center">{{ formatDate(data.date_expiration) }}</td>
 
                    
                 <td
                   class="statut_non_demare text-center taille_enfant"
                   v-if="
-                   data.date_expiration==getToday && data.quantite_affecte!=0
+                   data.date_expiration<=getToday && data.quantite!=0
                   "
                 >
                  Produit Expiré
@@ -103,7 +103,7 @@
                 <td
                   class="statut_non_demare text-center taille_enfant"
                   v-if="
-                   data.quantite_affecte==0
+                   data.quantite==0
                   "
                 >
                   Stock Épuisé
@@ -111,12 +111,12 @@
                 <td
                   class="statut_encours text-center taille_enfant"
                   v-if="
-                   data.date_expiration!=getToday && data.quantite_affecte!=0
+                   data.date_expiration>getToday && data.quantite!=0
                   "
                 >
                 Produits en Bon État
                 </td>
-                <td v-if="calculMedicamentDisponible(data.quantite_affecte,data.quantite_utilise) >= 50" style="background-color: #53872A;color: aliceblue;font-weight: bolder;text-align: center;">
+                <td v-if="calculMedicamentDisponible(data.quantite,data.quantite_utilise) >= 50" style="background-color: #53872A;color: aliceblue;font-weight: bolder;text-align: center;">
                    Bon
                 </td>
                 <!-- <td v-if="calculMedicamentDisponible(data.quantite_affecte,data.quantite_utilise) == 10" style="background-color: red;color: aliceblue;font-weight: bolder;text-align: center;">
@@ -529,6 +529,7 @@
 import { mapActions, mapGetters } from "vuex";
 import { ModelListSelect } from "vue-search-select";
 import Swal from "sweetalert2";
+import { formatDate } from "../variableGlobal";
 export default {
   components: {
     ModelListSelect,
@@ -769,7 +770,7 @@ export default {
       "getAgentAffecte",
       "getEquipementAffecte",'fetchToday'
     ]),
-
+  formatDate,
 
     calculMedicamentDisponible($id,$id1) {
   return (parseInt($id)-parseInt($id1))
@@ -777,7 +778,7 @@ export default {
 
     afficheEquipeParType($id) {
       return this.getteraffectationEquipements.filter(
-        (data) => data.agent_id == $id
+        (data) => data.asc_id == $id
       );
     },
     changePage(page, $id) {

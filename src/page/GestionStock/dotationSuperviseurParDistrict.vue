@@ -2,7 +2,7 @@
   <!-- dashboard inner -->
 
   <div>
-    <!-- {{ afficheMessageAlertSiQteAffecteEstSupDispo }} -->
+    {{ afficheMessageAlertSiQteAffecteEstSupDispo }}
     <br />
     <div class="row column_title">
       <div class="col-md-12">
@@ -383,7 +383,7 @@
                 </div>
                 <div class="col-md-4">
                   <label for="inputWithIcon" class="form-label"
-                    >Quantité Distribuée ( B )
+                    >Quantité à Distribuée ( B )
                     <span
                       style="
                         color: red;
@@ -446,6 +446,7 @@
                 class="btn btn-success"
                 :disabled="loading"
                 @click.prevent="enregistreStockEquipement()"
+                v-if="AfficheQuantiteActuelle(numero_lot_id)>=quantite"
               >
                 Enregistrer
               </button>
@@ -474,7 +475,7 @@
                 id="staticBackdropLabel"
                 style="text-transform: capitalize !important"
               >
-                Modifier stock Superviseur{{ quantiteretire }}
+                Modifier stock Superviseur
               </h5>
               <button
                 type="button"
@@ -1108,11 +1109,10 @@ export default {
         }
       };
     },
+
     afficheMessageAlertSiQteAffecteEstSupDispo() {
-      const quantiteDisponible = this.AfficheQuantiteDisponible(
-        this.objetrenoule.equipement_id
-      );
-      const quantiteAffecte = this.objetrenoule.quantite_affecte;
+      const quantiteDisponible = this.AfficheQuantiteActuelle(this.numero_lot_id);
+      const quantiteAffecte = this.quantite;
 
       // Vérification si la quantité affectée est supérieure à la quantité disponible
       if (quantiteAffecte > quantiteDisponible) {
@@ -1120,7 +1120,7 @@ export default {
           position: "top-end",
           title: "Quantité insuffisante",
           icon: "error",
-          text: `La quantité affectée de ${quantiteAffecte} dépasse la quantité disponible de ${quantiteDisponible}.`,
+          text: ` La quantité à distribuer de ${quantiteAffecte} dépasse la quantité actuelle de ${quantiteDisponible}.`,
         });
       }
     },
@@ -1259,7 +1259,20 @@ export default {
       "getListeEquipementSuperviseur",
       "getEquipementDuDistrictParType","getListeStockDistrict",'supprimerStockSuperviseur'
     ]),
+afficheMessageAlertSiQteAffecteEstSupDispo(id1, id) {
+      const quantiteDisponible = id1;
+      const quantiteAffecte = id;
 
+      // Vérification si la quantité affectée est supérieure à la quantité disponible
+      if (quantiteAffecte > quantiteDisponible) {
+        Swal.fire({
+          position: "top-end",
+          title: "Quantité insuffisante",
+          icon: "error",
+          text: `La Quantité saisie de ${quantiteAffecte} dépasse la quantité disponible de ${quantiteDisponible}.`,
+        });
+      }
+    },
     afficherClique($id) {
       if (this.value==0) {
         return this.value=$id

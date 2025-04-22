@@ -2,7 +2,7 @@
   <!-- dashboard inner -->
 
   <div>
-    <!-- {{ afficheMessageAlertSiQteAffecteEstSupDispo }} -->
+    {{ afficheMessageAlertSiQteAffecteEstSupDispo }}
     <br />
     <div class="row column_title">
       <div class="col-md-12">
@@ -446,6 +446,7 @@
                 class="btn btn-success"
                 :disabled="loading"
                 @click.prevent="enregistreStockEquipement()"
+                v-if="AfficheQuantiteActuelle(numero_lot_id)>=quantite"
               >
                 Enregistrer
               </button>
@@ -821,7 +822,20 @@ export default {
       "getterEquipementDistrictParType",
       "getterListeEquipementAsc",
     ]),
-      
+        afficheMessageAlertSiQteAffecteEstSupDispo() {
+      const quantiteDisponible = this.AfficheQuantiteActuelle(this.numero_lot_id);
+      const quantiteAffecte = this.quantite;
+
+      // Vérification si la quantité affectée est supérieure à la quantité disponible
+      if (quantiteAffecte > quantiteDisponible) {
+        Swal.fire({
+          position: "top-end",
+          title: "Quantité insuffisante",
+          icon: "error",
+          text: ` La quantité à distribuer de ${quantiteAffecte} dépasse la quantité actuelle de ${quantiteDisponible}.`,
+        });
+      }
+    },  
      calculeQuantite() {
      
         return (
@@ -1108,22 +1122,7 @@ export default {
         }
       };
     },
-    afficheMessageAlertSiQteAffecteEstSupDispo() {
-      const quantiteDisponible = this.AfficheQuantiteDisponible(
-        this.objetrenoule.equipement_id
-      );
-      const quantiteAffecte = this.objetrenoule.quantite_affecte;
 
-      // Vérification si la quantité affectée est supérieure à la quantité disponible
-      if (quantiteAffecte > quantiteDisponible) {
-        Swal.fire({
-          position: "top-end",
-          title: "Quantité insuffisante",
-          icon: "error",
-          text: `La quantité affectée de ${quantiteAffecte} dépasse la quantité disponible de ${quantiteDisponible}.`,
-        });
-      }
-    },
     afficherListeDesSuperviseur() {
       return this.getterZoneUtilisateur.filter((data) => data.code_role == 3);
     },
@@ -1251,7 +1250,7 @@ export default {
       "getzoneUtilisateur",
       "getListeAgentParSuperviseur",
       "enregistrerAffectationEquipement",
-      "enregistrerStockSuperviseur",
+      "enregistrerStockAsc",
       "getAgentAffecte",
       "getEquipementAffecte",
       "getSuperviseurParDistrict",
@@ -1289,14 +1288,14 @@ export default {
 
       if (!champsRemplis) {
         // Affiche une alerte ou laisse la méthode appelée gérer les erreurs
-        await this.enregistrerStockSuperviseur(objet);
+        await this.enregistrerStockAsc(objet);
         this.type_equipement_id != "";
         this.equipement_id != "";
         this.numerolot != "";
         this.quantite != "";
         this.date_expiration != "";
         }
-      await this.enregistrerStockSuperviseur(objet);
+      await this.enregistrerStockAsc(objet);
 
       // Réinitialise les champs uniquement après tentative d'enregistrement avec des données valides
       this.type_equipement_id = "";
@@ -1321,14 +1320,14 @@ export default {
 
       if (!champsRemplis) {
         // Affiche une alerte ou laisse la méthode appelée gérer les erreurs
-        await this.enregistrerStockSuperviseur(objet);
+        await this.enregistrerStockAsc(objet);
         this.ObjetModifierstockSup.type_equipement_id != "";
         this.ObjetModifierstockSup.equipement_id != "";
         this.ObjetModifierstockSup.numerolot != "";
         this.ObjetModifierstockSup.quantite != "";
        
         }
-      await this.enregistrerStockSuperviseur(objet);
+      await this.enregistrerStockAsc(objet);
 
       // Réinitialise les champs uniquement après tentative d'enregistrement avec des données valides
       this.ObjetModifierstockSup.type_equipement_id = "";

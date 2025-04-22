@@ -425,6 +425,56 @@ async getTypeEquipementDansStockDistrict({ commit }) {
     },
     
 
+
+
+       async enregistrerStockAsc({ commit, dispatch }, objet) {
+      if (objet.valeur == 2) {
+              const champsRequis = ['type_equipement_id', 'equipement_id','quantite', 'numerolot'];
+  const champsManquants = champsRequis.filter(champ => !objet[champ]);
+
+  if (champsManquants.length > 0) {
+    commit('SET_CHAMP_VIDE_TRUE');
+    Swal.fire({
+      icon: 'error',
+      title: 'Champs vides',
+      text: `Veuillez remplir tous les champs requis : ${champsManquants.join(', ')}`,
+      confirmButtonText: 'OK',
+    });
+    return;
+  }
+          }
+
+
+  try {
+    const response = await apiGuest.post('/enregistrementStockSuperviseur', objet, {
+      headers: authHeader(),
+    });
+
+    commit('AJOUTER_STOCK_SUPERVISEUR', response.data);
+      dispatch('getSuperviseurParDistrict');
+        dispatch('getlisteEquipementDesAsc');
+      
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Enregistrement réussi',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (error) {
+    const messageErreur = error?.response?.data?.message || "Une erreur est survenue lors de l'enregistrement.";
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: messageErreur,
+      confirmButtonText: 'OK',
+    });
+
+    console.error("Erreur API :", error);
+    return;
+  }
+    },
     async supprimerStockSuperviseur({ commit,dispatch }, id) {
         // Show the confirmation dialog with SweetAlert2
         Swal.fire({
